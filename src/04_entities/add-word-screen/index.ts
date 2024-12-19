@@ -1,0 +1,1 @@
+export { AddWordScreen } from "./ui";
