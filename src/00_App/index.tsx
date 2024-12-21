@@ -1,16 +1,22 @@
 import { MainPage } from "src/01_Pages/main-page";
 
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom/client";
 import "@mantine/core/styles.css";
-import { MantineProvider } from "@mantine/core";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <MantineProvider>
-      <>
-        <MainPage />
-      </>
-    </MantineProvider>
-  </StrictMode>
-);
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import React from "react";
+
+const rootEl = document.getElementById("root");
+if (rootEl) {
+  const root = ReactDOM.createRoot(rootEl);
+  root.render(
+    <React.StrictMode>
+      <ColorSchemeScript defaultColorScheme="auto" />
+      <MantineProvider defaultColorScheme="auto">
+        <>
+          <MainPage />
+        </>
+      </MantineProvider>
+    </React.StrictMode>
+  );
+}

@@ -6,7 +6,7 @@ interface AddWordScreenProps {
 }
 export function AddWordScreen({ opened, close }: AddWordScreenProps) {
   return (
-    <Drawer opened={opened} onClose={close} title="Add word" size={"xl"}>
+    <Drawer opened={opened} onClose={close} title="Add a word" size={"xl"}>
       <form>
         <TextInput placeholder="word" />
         <TextInput placeholder="translate" />
