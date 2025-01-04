@@ -1,0 +1,9 @@
+/* For light mode */
+/* :root[data-mantine-color-scheme="light"] {
+  --mantine-color-body: #faf7f5 !important;
+} */
+
+/* For dark mode */
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #1a191b !important;
+}

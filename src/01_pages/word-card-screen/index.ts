@@ -1,0 +1,1 @@
+export { WordCardScreen } from "./ui";

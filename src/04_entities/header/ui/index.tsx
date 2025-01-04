@@ -1,6 +1,7 @@
-import { Burger, Container } from "@mantine/core";
+import { Box, Burger, Container, Title } from "@mantine/core";
 import classes from "./style.module.css";
 import { useDisclosure } from "@mantine/hooks";
+import { JSX } from "react";
 // import { useState } from "react";
 
 // const links = [
@@ -9,7 +10,17 @@ import { useDisclosure } from "@mantine/hooks";
 //   { link: "/learn", label: "Learn" },
 //   { link: "/community", label: "Community" },
 // ];
-export function Header({ addIcon }: { addIcon: JSX.Element }) {
+export function Header({
+  title = "",
+  addIcon,
+  deleteWordIcon,
+  returnBack,
+}: {
+  title?: string;
+  addIcon?: JSX.Element;
+  deleteWordIcon?: JSX.Element;
+  returnBack?: JSX.Element;
+}) {
   const [opened, { toggle }] = useDisclosure(false);
   // const [active, setActive] = useState(links[0].link);
 
@@ -35,7 +46,12 @@ export function Header({ addIcon }: { addIcon: JSX.Element }) {
         </Group> */}
 
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        <Title order={3}>{title}</Title>
         {addIcon}
+        <Box>
+          {deleteWordIcon}
+          {returnBack}
+        </Box>
       </Container>
     </header>
   );

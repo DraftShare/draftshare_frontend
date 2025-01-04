@@ -1,11 +1,17 @@
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
+import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack'
 
 export default defineConfig({
   plugins: [pluginReact()],
   source: {
     entry: {
-      index: "src/00_App/index.tsx",
+      index: "src/index.tsx",
     },
   },
+  tools: {
+    rspack: {
+      plugins: [TanStackRouterRspack()]
+    }
+  }
 });
