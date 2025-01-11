@@ -35,7 +35,7 @@ export function WordCardScreen() {
 
       <Text>Id: {id}</Text>
       <Text>Word: {data[id].word}</Text>
-      <Text>Transcription: ...</Text>
+      <Text>Transcription: {data[id].transcription}</Text>
       <Text>Translate: {data[id].translate}</Text>
     </>
   );

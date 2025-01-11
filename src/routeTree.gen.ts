@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as WordCardImport } from './routes/word-card'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -19,6 +20,11 @@ import { Route as IndexImport } from './routes/index'
 const WordCardRoute = WordCardImport.update({
   id: '/word-card',
   path: '/word-card',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,6 +45,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
+      parentRoute: typeof rootRoute
+    }
     '/word-card': {
       id: '/word-card'
       path: '/word-card'
@@ -53,36 +66,41 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRoute
   '/word-card': typeof WordCardRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRoute
   '/word-card': typeof WordCardRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRoute
   '/word-card': typeof WordCardRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/word-card'
+  fullPaths: '/' | '' | '/word-card'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/word-card'
-  id: '__root__' | '/' | '/word-card'
+  to: '/' | '' | '/word-card'
+  id: '__root__' | '/' | '/_authenticated' | '/word-card'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRoute
   WordCardRoute: typeof WordCardRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRoute,
   WordCardRoute: WordCardRoute,
 }
 
@@ -97,11 +115,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_authenticated",
         "/word-card"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx"
     },
     "/word-card": {
       "filePath": "word-card.tsx"

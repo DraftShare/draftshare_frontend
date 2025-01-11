@@ -1,2 +1,2 @@
-export type { word } from "../api/types";
-export { wordSchema } from "../api/types";
+export type { addWordCard } from "../api/types";
+export { wordCardSchema } from "../api/types";

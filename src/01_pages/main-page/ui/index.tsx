@@ -16,7 +16,6 @@ export function MainPage() {
   return (
     <>
       <Header title="All words" addIcon={<AddWordIcon />} />
-
       <ul className={classes["list-cards"]}>{listCards}</ul>
     </>
   );

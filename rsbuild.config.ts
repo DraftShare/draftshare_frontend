@@ -1,6 +1,6 @@
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
-import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack'
+import { TanStackRouterRspack } from "@tanstack/router-plugin/rspack";
 
 export default defineConfig({
   plugins: [pluginReact()],
@@ -11,7 +11,10 @@ export default defineConfig({
   },
   tools: {
     rspack: {
-      plugins: [TanStackRouterRspack()]
-    }
-  }
+      plugins: [TanStackRouterRspack()],
+    },
+  },
+  html: {
+    tags: [{ tag: "script", attrs: { src: "telegram-web-app.js" } }],
+  },
 });

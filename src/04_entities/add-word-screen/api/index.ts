@@ -1,7 +1,10 @@
-import { word, wordSchema } from "src/04_entities/word/@x/add-word-screen";
+import {
+  addWordCard,
+  wordCardSchema,
+} from "src/04_entities/word/@x/add-word-screen";
 import { baseFetch } from "src/05_shared/api";
 
-export async function addOneWord(initialData: word) {
+export async function addOneWord(initialData: addWordCard) {
   const data = await baseFetch("api/words", {
     method: "POST",
     headers: {
@@ -11,7 +14,7 @@ export async function addOneWord(initialData: word) {
   });
 
   try {
-    return wordSchema.parse(data);
+    return wordCardSchema.parse(data);
   } catch (e) {
     console.log(e);
     throw e;
