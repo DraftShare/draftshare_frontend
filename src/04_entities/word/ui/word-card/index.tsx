@@ -3,6 +3,7 @@ import { word } from "../../api/types";
 import classes from "./classes.module.css";
 import { useAppDispatch } from "src/05_shared/redux";
 import { openedWordCard } from "../../model";
+import { Box, Text } from "@mantine/core";
 
 export function WordCard({ card }: { card: word }) {
   const dispatch = useAppDispatch();
@@ -14,7 +15,13 @@ export function WordCard({ card }: { card: word }) {
       onClick={() => dispatch(openedWordCard(card.id))}
     >
       <li className={classes["card"]}>
-        {card.id} | {card.word}
+        <Box className={classes["card__left-section"]}>
+          <Text>{card.word}</Text>
+          <Text>{card.transcription}</Text>
+        </Box>
+        <Box className={classes["card__right-section"]}>
+          <Text>{card.translate}</Text>
+        </Box>
       </li>
     </Link>
   );

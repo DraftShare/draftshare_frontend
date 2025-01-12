@@ -1,7 +1,6 @@
-.list-cards {
+.body {
   padding: var(--mantine-spacing-xs);
-  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--mantine-spacing-xs) 0;
+  gap: var(--mantine-spacing-xs) 0
 }

@@ -5,6 +5,7 @@ import {
 import { baseFetch } from "src/05_shared/api";
 
 export async function addOneWord(initialData: addWordCard) {
+  console.log(initialData)
   const data = await baseFetch("api/words", {
     method: "POST",
     headers: {

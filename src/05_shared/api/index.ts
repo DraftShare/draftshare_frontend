@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 
-const baseUrl = "http://localhost:3000";
+const baseUrl = "http://localhost:7829";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
