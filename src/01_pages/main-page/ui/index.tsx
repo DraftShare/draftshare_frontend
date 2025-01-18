@@ -7,7 +7,7 @@ import { getAllWords } from "src/04_entities/word/api";
 
 export function MainPage() {
   const { data } = useSuspenseQuery(getAllWords());
-  console.log(data);
+  // console.log(data);
 
   const listCards = Object.entries(data).map((card, index) => (
     <WordCard key={index} card={card[1]} />

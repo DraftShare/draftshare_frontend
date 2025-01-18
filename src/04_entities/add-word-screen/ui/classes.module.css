@@ -1,5 +1,54 @@
+.drawer__content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.drawer__body {
+  flex: 1;
+  padding: 0;
+}
 .form {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.properties-list {
+  display: flex;
+  flex-direction: column;
   gap: 10px 0;
+  padding: var(--mantine-spacing-md);
+  padding-bottom: 0;
+}
+
+.add-property-btn__root {
+  background-color: var(--mantine-color-dark-6);
+  border: 2px dashed var(--mantine-color-dark-3);
+}
+.fieldset {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+.add-prpoerty-input__wrap {
+  display: flex;
+}
+
+.btn-group__wrap {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    var(--mantine-color-body) 85%,
+    rgba(1, 1, 1, 0)
+  );
+}
+.btn-group {
+  padding: var(--mantine-spacing-md);
+}
+.add-property-btn {
+  width: 100%;
+}
+.create-btn {
+  width: 100%;
 }

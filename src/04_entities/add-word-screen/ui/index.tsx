@@ -1,7 +1,16 @@
-import { Button, Drawer, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Drawer,
+  Fieldset,
+  LoadingOverlay,
+  TextInput,
+} from "@mantine/core";
 import { useAddWord } from "../api/use-add-word";
 import { useState } from "react";
 import classes from "./classes.module.css";
+import { IconTrash } from "@tabler/icons-react";
 
 interface AddWordScreenProps {
   opened: boolean;
@@ -12,31 +21,18 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     console.log("submit");
     e.preventDefault();
-    addWordMutation.mutate(
-      { word, transcription, translate },
-      {
-        onSuccess: () => {
-          clearFields();
-          close();
-        },
-      }
-    );
+    addWordMutation.mutate(getResultObj(), {
+      onSuccess: () => {
+        setProperties(defaultProperties);
+        close();
+      },
+    });
   }
-  const [word, setWord] = useState("");
-  const [transcription, setTranscription] = useState("");
-  const [translate, setTranslate] = useState("");
 
-  function clearFields() {
-    setWord("");
-    setTranscription("");
-    setTranslate("");
-  }
   function handleClose() {
-    clearFields();
+    setProperties(defaultProperties);
     close();
   }
-
-  //===================================
 
   function changeProperty(
     e: React.ChangeEvent<HTMLInputElement>,
@@ -56,8 +52,30 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
   interface property {
     property: string;
     value: string;
+    required?: boolean;
   }
-  const [properties, setProperties] = useState<property[]>([]);
+
+  const defaultProperties: property[] = [
+    {
+      property: "word",
+      value: "",
+      required: true,
+    },
+    {
+      property: "transcription",
+      value: "",
+    },
+    {
+      property: "translate",
+      value: "",
+    },
+  ];
+  const [properties, setProperties] = useState<property[]>(defaultProperties);
+  function getResultObj() {
+    const result: { [key: string]: string } = {};
+    properties.forEach((prop) => (result[prop.property] = prop.value));
+    return result;
+  }
 
   return (
     <Drawer
@@ -65,64 +83,84 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
       onClose={handleClose}
       title="Add a word"
       size={"xl"}
+      classNames={{
+        body: classes["drawer__body"],
+        content: classes["drawer__content"],
+      }}
+      pos="relative"
     >
+      <LoadingOverlay
+        visible={addWordMutation.isPending}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
       <form onSubmit={(e) => handleSubmit(e)} className={classes["form"]}>
-        <TextInput
-          placeholder="word"
-          onChange={(e) => setWord(e.target.value)}
-          value={word}
-        />
-        <TextInput
-          placeholder="transcription"
-          onChange={(e) => setTranscription(e.target.value)}
-          value={transcription}
-        />
-        <TextInput
-          placeholder="translate"
-          onChange={(e) => setTranslate(e.target.value)}
-          value={translate}
-        />
+        <Box className={classes["properties-list"]}>
+          {properties.map((property, index) => {
+            if (property.required)
+              return (
+                <TextInput
+                  key={index}
+                  placeholder={property.property}
+                  onChange={(e) => changeProperty(e, index, "value")}
+                  value={property.value}
+                  required
+                />
+              );
 
-        {/* <TextInput placeholder="transliteration" />
-        <Textarea placeholder="definition in the language being studied" />
-        <Textarea placeholder="context" />
-        <Textarea placeholder="source" /> */}
-        <Button type="submit">Create</Button>
-      </form>
+            return (
+              <Fieldset
+                key={index}
+                variant="unstyled"
+                className={classes["fieldset"]}
+              >
+                <Box className={classes["add-prpoerty-input__wrap"]}>
+                  <TextInput
+                    placeholder="property"
+                    value={property.property}
+                    onChange={(e) => changeProperty(e, index, "property")}
+                  />
+                  <TextInput
+                    placeholder="value"
+                    value={property.value}
+                    onChange={(e) => changeProperty(e, index, "value")}
+                  />
+                </Box>
 
-      <button
-        onClick={() =>
-          setProperties((oldData) => [{ property: "", value: "" }, ...oldData])
-        }
-        type="button"
-      >
-        Add propery
-      </button>
-
-      <form>
-        {properties.map((property, index) => {
-          return (
-            <fieldset key={index}>
-              <input
-                placeholder="property"
-                value={property.property}
-                onChange={(e) => changeProperty(e, index, "property")}
-              />
-              <input
-                placeholder="value"
-                value={property.value}
-                onChange={(e) => changeProperty(e, index, "value")}
-              />
-              <button type="button" onClick={() => handleDelete(index)}>
-                Delete
-              </button>
-            </fieldset>
-          );
-        })}
-        <fieldset>
-          <input placeholder="property" />
-          <input placeholder="value" />
-        </fieldset>
+                <ActionIcon
+                  type="button"
+                  onClick={() => handleDelete(index)}
+                  size="lg"
+                >
+                  <IconTrash />
+                </ActionIcon>
+              </Fieldset>
+            );
+          })}
+        </Box>
+        <Box className={classes["btn-group__wrap"]}>
+          <Button.Group className={classes["btn-group"]}>
+            <Button
+              onClick={() =>
+                setProperties((oldData) => [
+                  ...oldData,
+                  { property: "", value: "" },
+                ])
+              }
+              type="button"
+              className={classes["add-property-btn"]}
+              classNames={{ root: classes["add-property-btn__root"] }}
+            >
+              Add a property
+            </Button>
+            <Button
+              type="submit"
+              className={classes["create-btn"]}
+            >
+              Create
+            </Button>
+          </Button.Group>
+        </Box>
       </form>
     </Drawer>
   );

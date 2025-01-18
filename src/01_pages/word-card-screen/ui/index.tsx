@@ -14,12 +14,21 @@ import { useState } from "react";
 export function WordCardScreen() {
   const dispatch = useAppDispatch();
   const { data } = useSuspenseQuery(getAllWords());
-  const [editable, setEditable] = useState(false)
+  const [editable, setEditable] = useState(false);
 
   const id = useAppSelector((state) =>
     wordSlice.selectors.selectOpenWordId(state)
   );
   if (!id) return <Box>Error! wordId === null</Box>;
+
+  const filteredData = Object.entries(data[id])
+    .map(([key, value]) => {
+      if (key !== "id" && key !== "_id") {
+        return [key, value];
+      }
+      return null;
+    })
+    .filter((item) => item !== null);
 
   const returnBack = (
     <Link to="/" onClick={() => dispatch(closedWordCard())}>
@@ -32,7 +41,7 @@ export function WordCardScreen() {
     <ActionIcon onClick={() => setEditable(true)}>
       <IconEdit />
     </ActionIcon>
-  )
+  );
 
   return (
     <>
@@ -44,33 +53,16 @@ export function WordCardScreen() {
         variant="word info"
       />
       <form className={classes["body"]}>
-        <CardTextInfo
-          label={"Word"}
-          content={data[id].word}
-          disabled={!editable}
-        />
-        <CardTextInfo
-          label={"Transcription"}
-          content={data[id].transcription}
-          disabled={!editable}
-        />
-        <CardTextInfo
-          label={"Translate"}
-          content={data[id].translate}
-          disabled={!editable}
-        />
-
-        {/* <Text>Id: {id}</Text>
-        <Text>Word: {data[id].word}</Text>
-        <Text>Transcription: {data[id].transcription}</Text>
-        <Text>Translate: {data[id].translate}</Text> */}
-
-        {/* <TextInput
-          disabled
-          label={"Label"}
-          placeholder="Content"
-          variant="unstyled"
-        /> */}
+        {filteredData.map((item, index) => {
+          return (
+            <CardTextInfo
+              key={index}
+              label={item[0]}
+              content={item[1]}
+              disabled={!editable}
+            />
+          );
+        })}
       </form>
     </>
   );

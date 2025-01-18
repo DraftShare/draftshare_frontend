@@ -2,23 +2,19 @@ import { z } from "zod";
 
 const idSchema = z.string();
 const wordSchema = z.string();
-const translate = z.string();
-const definition = z.string();
-const transcription = z.string();
 
-export const wordCardSchema = z.object({
-  id: idSchema,
-  word: wordSchema,
-  transcription: transcription.optional(),
-  translate: translate.optional(),
-  definition: definition.optional(),
-});
-export const addWordCardSchema = z.object({
-  word: wordSchema,
-  transcription: transcription.optional(),
-  translate: translate.optional(),
-  definition: definition.optional(),
-});
+export const responseIdSchema = z.object({ id: idSchema });
+export const wordCardSchema = z
+  .object({
+    id: idSchema,
+    word: wordSchema,
+  })
+  .catchall(z.string());
+export const addWordCardSchema = z
+  .object({
+    word: wordSchema,
+  })
+  .catchall(z.string());
 export const wordsSchema = z.record(idSchema, wordCardSchema);
 
 export type wordId = z.infer<typeof idSchema>;
