@@ -1,6 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
 
-const baseUrl = "http://localhost:7829";
+let baseUrl = "";
+if (import.meta.env.DEV) {
+  baseUrl = "http://localhost:7829";
+} else if (import.meta.env.PROD) {
+  baseUrl = "https://flying-squirrel.duckdns.org";
+}
 
 export const queryClient = new QueryClient({
   defaultOptions: {
