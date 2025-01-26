@@ -1,4 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
+import { retrieveLaunchParams } from '@telegram-apps/sdk';
 
 let baseUrl = "";
 if (import.meta.env.DEV) {
@@ -16,9 +17,19 @@ export const queryClient = new QueryClient({
   },
 });
 
+// const initData = window.Telegram.WebApp.initData;
+const { initDataRaw } = retrieveLaunchParams();
+
 export const baseFetch = async (url: string, init?: RequestInit) => {
   try {
-    const response = await fetch(baseUrl + "/" + url, init);
+    const response = await fetch(baseUrl + "/" + url, {
+      ...init,
+      headers: {
+        Authorization: `tma ${initDataRaw}`,
+        ...init?.headers,
+
+      },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
