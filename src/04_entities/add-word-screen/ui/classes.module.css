@@ -25,14 +25,8 @@
   background-color: var(--mantine-color-dark-6);
   border: 2px dashed var(--mantine-color-dark-3);
 }
-.fieldset {
-  display: flex;
-  align-items: center;
-  margin: 0;
-}
-.add-prpoerty-input__wrap {
-  display: flex;
-}
+
+
 
 .btn-group__wrap {
   position: sticky;

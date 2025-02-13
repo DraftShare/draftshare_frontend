@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { retrieveLaunchParams } from '@telegram-apps/sdk';
+import { retrieveLaunchParams } from "@telegram-apps/sdk";
 
 let baseUrl = "";
 if (import.meta.env.DEV) {
@@ -26,8 +26,8 @@ export const baseFetch = async (url: string, init?: RequestInit) => {
       ...init,
       headers: {
         Authorization: `tma ${initDataRaw}`,
+        // Authorization: "test abc",
         ...init?.headers,
-
       },
     });
     if (!response.ok) {

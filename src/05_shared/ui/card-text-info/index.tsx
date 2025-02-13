@@ -1,30 +1,40 @@
-import { TextInput } from "@mantine/core";
+import { ActionIcon, TextInput } from "@mantine/core";
 import classes from "./classes.module.css";
-import { useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 export function CardTextInfo({
   label,
   content = "",
-  disabled,
+  editable,
+  onChangeValue,
+  handleDelete,
 }: {
   label: string;
   content: string | undefined;
-  disabled: boolean;
+  editable: boolean;
+  onChangeValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDelete: () => void;
 }) {
-  const [value, setValue] = useState(content);
+  // const [value, setValue] = useState(content);
   return (
     <TextInput
-      disabled={disabled}
+      disabled={!editable}
       label={label}
-      placeholder={value === "" ? "Type here" : ""}
+      // placeholder={value === "" ? "Type here" : ""}
       variant="unstyled"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
+      value={content}
+      // onChange={(e) => setValue(e.target.value)}
+      onChange={onChangeValue}
       classNames={{
         root: classes.root,
         label: classes.label,
         input: classes.input,
       }}
+      rightSection={editable &&
+        <ActionIcon>
+          <IconTrash onClick={handleDelete} />
+        </ActionIcon>
+      }
     />
     // <Box className={classes["card"]}>
     //   <Text classNames={{ root: classes.label }}>{label}</Text>

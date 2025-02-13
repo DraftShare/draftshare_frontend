@@ -13,9 +13,11 @@ export function MainPage() {
     <WordCard key={index} card={card[1]} />
   ));
 
+
+
   return (
     <>
-      <Header title="All words" addIcon={<AddWordIcon />} variant="word list" />
+      <Header title="All words" btnGroup={<AddWordIcon />} />
       <ul className={classes["list-cards"]}>{listCards}</ul>
     </>
   );
