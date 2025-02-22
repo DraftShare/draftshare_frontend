@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { rootReducer } from "src/05_shared/redux";
-import { wordId } from "../api/types";
+import { cardId } from "../api/types";
 
 interface initialState {
-  openWordId: null | wordId;
+  openWordId: null | cardId;
 }
 const initialState: initialState = {
   openWordId: null,
@@ -16,7 +16,7 @@ export const wordSlice = createSlice({
     selectOpenWordId: (state) => state.openWordId,
   },
   reducers: {
-    openedWordCard: (state, action: PayloadAction<wordId>) => {
+    openedWordCard: (state, action: PayloadAction<cardId>) => {
       state.openWordId = action.payload;
     },
     closedWordCard: (state) => {

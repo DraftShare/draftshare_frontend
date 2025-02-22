@@ -1,10 +1,8 @@
 import { useState } from "react";
 import {
   addWordCard,
-  addWordCardSchema,
-  updateWordCard,
-  updateWordCardSchema,
-  wordId,
+  addCardSchema,
+  cardId,
 } from "src/04_entities/word/api/types";
 
 export interface property {
@@ -46,10 +44,10 @@ export function useDynamicProps(initialProps: property[] = []) {
   }
 
   function getProps(operation: "add"): addWordCard;
-  function getProps(operation: "update", id: wordId): updateWordCard;
+  function getProps(operation: "update", id: cardId): updateWordCard;
   function getProps(
     operation: "add" | "update",
-    id?: wordId
+    id?: cardId
   ): addWordCard | updateWordCard {
     const result: { [key: string]: string } = id ? { id: id } : {};
     properties.forEach((prop) => (result[prop.property] = prop.value));
@@ -58,7 +56,7 @@ export function useDynamicProps(initialProps: property[] = []) {
     // Валидируем результат с помощью Zod
     let validatedResult;
     if (operation === "add") {
-      validatedResult = addWordCardSchema.safeParse(result);
+      validatedResult = addCardSchema.safeParse(result);
     } else if (operation === "update") {
       validatedResult = updateWordCardSchema.safeParse(result);
     }
