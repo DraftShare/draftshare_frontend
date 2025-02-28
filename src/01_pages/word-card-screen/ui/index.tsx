@@ -20,6 +20,7 @@ export function WordCardScreen() {
   const updateWordMutation = useUpdateWord();
 
   const {
+    wordProp,
     properties,
     setDefaultProps,
     handleChangeProp,
@@ -27,6 +28,7 @@ export function WordCardScreen() {
     resetProps,
     addEmptyProp,
     getProps,
+    handleChangeWord,
   } = useDynamicProps();
 
   const id = useAppSelector((state) =>
@@ -34,18 +36,21 @@ export function WordCardScreen() {
   );
   if (!id) return <Box>Error! wordId === null</Box>;
 
-  const filteredData = Object.entries(data[id])
-    .map(([key, value]) => {
-      if (key !== "id" && key !== "_id") {
-        return { property: key, value };
-      }
-      return null;
-    })
-    .filter((item) => item !== null);
+  // const filteredData = Object.entries(data[id])
+  //   .map(([key, value]) => {
+  //     if (key !== "id" && key !== "_id") {
+  //       return { property: key, value };
+  //     }
+  //     return null;
+  //   })
+  //   .filter((item) => item !== null);
+
+  const word = data[id].word;
+  const dataProps = data[id].properties;
 
   function handleEdit() {
     setEditable(!editable);
-    setDefaultProps(filteredData);
+    setDefaultProps(word, dataProps);
   }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     console.log("submit");
@@ -59,7 +64,7 @@ export function WordCardScreen() {
     });
   }
 
-  const listProps = editable ? properties : filteredData;
+  const listProps = editable ? properties : dataProps;
 
   const btnGroup = editable ? (
     <>
@@ -97,9 +102,17 @@ export function WordCardScreen() {
         className={classes["body"]}
         onSubmit={(e) => handleSubmit(e)}
       >
+        <WordPropField
+          inputProp={"word"}
+          inputVal={editable ? wordProp : word}
+          handleChangeWord={handleChangeWord}
+          readOnlyProp={true}
+          editable={editable}
+        />
         {listProps.map((item, index) => (
           <WordPropField
-            inputProp={item.property}
+            key={index}
+            inputProp={item.name}
             inputVal={item.value}
             index={index}
             handleChangeProp={handleChangeProp}

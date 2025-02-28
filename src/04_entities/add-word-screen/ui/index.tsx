@@ -1,7 +1,7 @@
 import { Box, Button, Drawer, LoadingOverlay } from "@mantine/core";
 import { useAddWord } from "../api/use-add-word";
 import classes from "./classes.module.css";
-import { property, useDynamicProps } from "src/05_shared/lib/useDynamicProps";
+import { Property, useDynamicProps } from "src/05_shared/lib/useDynamicProps";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 
 interface AddWordScreenProps {
@@ -9,29 +9,26 @@ interface AddWordScreenProps {
   close: () => void;
 }
 export function AddWordScreen({ opened, close }: AddWordScreenProps) {
-  const defaultProperties: property[] = [
+  const defaultProperties: Property[] = [
     {
-      property: "word",
-      value: "",
-      required: true,
-    },
-    {
-      property: "transcription",
+      name: "transcription",
       value: "",
     },
     {
-      property: "translate",
+      name: "translate",
       value: "",
     },
   ];
   const {
+    wordProp,
+    handleChangeWord,
     properties,
     handleChangeProp,
     handleDeleteProp,
     resetProps,
     addEmptyProp,
     getProps,
-  } = useDynamicProps(defaultProperties);
+  } = useDynamicProps("", defaultProperties);
   const addWordMutation = useAddWord();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -69,11 +66,18 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
       />
       <form onSubmit={(e) => handleSubmit(e)} className={classes["form"]}>
         <Box className={classes["properties-list"]}>
+          <WordPropField
+            inputProp={"word"}
+            inputVal={wordProp}
+            handleChangeWord={handleChangeWord}
+            editable={true}
+            readOnlyProp={true}
+          />
           {properties.map((property, index) => {
-
             return (
               <WordPropField
-                inputProp={property.property}
+                key={index}
+                inputProp={property.name}
                 inputVal={property.value}
                 index={index}
                 handleChangeProp={handleChangeProp}

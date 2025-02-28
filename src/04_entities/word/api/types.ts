@@ -30,9 +30,22 @@ export const addCardSchema = z.object({
   properties: z.array(addCardPropertySchema),
 });
 
+const updatePropertySchema = z.object({
+  _id: z.optional(propertyIdSchema),
+  word: z.optional(cardIdShcema),
+  name: propertyNameSchema,
+  value: propertyValueSchema,
+});
+export const updateCardSchema = z.object({
+  _id: cardIdShcema,
+  word: wordSchema,
+  properties: z.array(updatePropertySchema),
+});
+
 
 export const wordCardsSchema = z.record(cardIdShcema, cardSchema);
 
+export type word = z.infer<typeof wordSchema>;
 export type cardId = z.infer<typeof cardIdShcema>;
 export type wordCard = z.infer<typeof cardSchema>;
 export type wordCards = z.infer<typeof wordCardsSchema>;

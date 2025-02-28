@@ -3,27 +3,41 @@ import {
   addWordCard,
   addCardSchema,
   cardId,
+  word,
+  wordCard,
+  updateCardSchema,
 } from "src/04_entities/word/api/types";
 
-export interface property {
-  property: string;
+export interface Property {
+  name: string;
   value: string;
-  required?: boolean;
+  word?: string;
+  _id?: string;
 }
+// interface DynamicProps {
+//   word: word;
+//   properties: Property[];
+// }
 
-export function useDynamicProps(initialProps: property[] = []) {
-  const [properties, setProperties] = useState<property[]>(initialProps);
-  const [initData, setInitData] = useState<property[]>(initialProps);
+export type PropField = keyof Property;
 
-  function setDefaultProps(defaultProps: property[] = []) {
-    setInitData(defaultProps);
+export function useDynamicProps(initWord: word = "", initProps: Property[] = []) {
+  const [wordProp, setWordProp] = useState(initWord)
+  const [properties, setProperties] = useState<Property[]>(initProps);
+
+  function setDefaultProps(word: word = "", defaultProps: Property[] = []) {
+    setWordProp(word)
     setProperties(defaultProps);
+  }
+
+  function handleChangeWord(e: React.ChangeEvent<HTMLInputElement>) {
+    setWordProp(e.target.value);
   }
 
   function handleChangeProp(
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
-    field: "property" | "value"
+    field: PropField
   ) {
     setProperties((oldData) =>
       oldData.map((item, idx) =>
@@ -36,21 +50,35 @@ export function useDynamicProps(initialProps: property[] = []) {
   }
 
   function resetProps() {
-    setProperties(initData);
+    setWordProp(initWord)
+    setProperties(initProps);
   }
 
   function addEmptyProp() {
-    setProperties((oldData) => [...oldData, { property: "", value: "" }]);
+    setProperties((oldData) => [...oldData, { name: "", value: "" }]);
   }
 
   function getProps(operation: "add"): addWordCard;
-  function getProps(operation: "update", id: cardId): updateWordCard;
+  function getProps(operation: "update", id: cardId): wordCard;
   function getProps(
     operation: "add" | "update",
     id?: cardId
-  ): addWordCard | updateWordCard {
-    const result: { [key: string]: string } = id ? { id: id } : {};
-    properties.forEach((prop) => (result[prop.property] = prop.value));
+  ): addWordCard | wordCard {
+    // const result: { [key: string]: string } = id ? { id: id } : {};
+    // const result: addWordCard = {word: word, properties: properties}
+    // const result: wordCard = {_id: id, word: word, properties: properties}
+    // properties.forEach((prop) => (result[prop.property] = prop.value));
+
+    let result: addWordCard | wordCard;
+
+    if (operation === "add") {
+      result = { word: wordProp, properties: properties };
+    } else if (operation === "update" && id) {
+      result = { _id: id, word: wordProp, properties: properties };
+    } else {
+      throw new Error("Invalid operation or missing id for update");
+    }
+
 
     console.log(result);
     // Валидируем результат с помощью Zod
@@ -58,7 +86,7 @@ export function useDynamicProps(initialProps: property[] = []) {
     if (operation === "add") {
       validatedResult = addCardSchema.safeParse(result);
     } else if (operation === "update") {
-      validatedResult = updateWordCardSchema.safeParse(result);
+      validatedResult = updateCardSchema.safeParse(result);
     }
     if (!validatedResult || !validatedResult.success) {
       throw new Error("Invalid properties: " + validatedResult?.error.message);
@@ -68,8 +96,10 @@ export function useDynamicProps(initialProps: property[] = []) {
   }
 
   return {
+    wordProp,
     properties,
     setDefaultProps,
+    handleChangeWord,
     handleChangeProp,
     handleDeleteProp,
     resetProps,
