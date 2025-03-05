@@ -1,23 +1,24 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { AddWordIcon } from "src/03_features/add-word";
-import { Header } from "src/04_entities/header/ui";
+import { useState } from "react";
+import { MainPageHeader } from "src/04_entities/main-page-header";
 import { WordCard } from "src/04_entities/word";
-import classes from "./style.module.css";
 import { getAllWords } from "src/04_entities/word/api";
-// import { useInitData } from "src/05_shared/api/auth";
+import classes from "./style.module.css";
 
 export function MainPage() {
   const { data } = useSuspenseQuery(getAllWords());
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const listCards = Object.entries(data).map((card, index) => (
-    <WordCard key={index} card={card[1]} />
+  const filteredData = Object.values(data).filter((card) =>
+    card.word.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const listCards = filteredData.map((card, index) => (
+    <WordCard key={index} card={card} />
   ));
-
-
 
   return (
     <>
-      <Header title="All words" btnGroup={<AddWordIcon />} />
+      <MainPageHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <ul className={classes["list-cards"]}>{listCards}</ul>
     </>
   );

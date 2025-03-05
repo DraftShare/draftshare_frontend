@@ -3,7 +3,7 @@ import { IconArrowBackUp, IconCheck, IconEdit } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { DeleteWord } from "src/03_features/delete-word";
-import { Header } from "src/04_entities/header";
+import { Header } from "src/05_shared/ui/header";
 import { getAllWords } from "src/04_entities/word/api";
 import { closedWordCard, wordSlice } from "src/04_entities/word/model";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
