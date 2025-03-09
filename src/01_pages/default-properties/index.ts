@@ -1,0 +1,1 @@
+export { DefaultProperties } from "./ui";

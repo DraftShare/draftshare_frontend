@@ -1,4 +1,4 @@
-import { Box, Burger, Container, Title } from "@mantine/core";
+import { Box, Burger, Container, Drawer, Title } from "@mantine/core";
 import classes from "./style.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import { JSX, ReactNode } from "react";
@@ -7,20 +7,27 @@ export function Header({
   title = "",
   btnGroup = <></>,
   children,
+  menu
 }: {
   title?: string;
   btnGroup?: JSX.Element;
   children?: ReactNode;
+  menu: JSX.Element;
 }) {
-  const [opened, { toggle }] = useDisclosure(false);
+  // const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <header className={classes.header}>
-      <Container size="md" className={classes.inner}>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-        {children ? children : <Title order={3}>{title}</Title>}
-        <Box>{btnGroup}</Box>
-      </Container>
-    </header>
+    <>
+      <header className={classes.header}>
+        <Container size="md" className={classes.inner}>
+          {menu}
+          {/* <Burger opened={opened} onClick={open} hiddenFrom="xs" size="sm" />
+          <Drawer opened={opened} onClose={close} size={"75%"}>efef</Drawer> */}
+
+          {children ? children : <Title order={3}>{title}</Title>}
+          <Box>{btnGroup}</Box>
+        </Container>
+      </header>
+    </>
   );
 }

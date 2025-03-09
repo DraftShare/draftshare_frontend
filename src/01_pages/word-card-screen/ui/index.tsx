@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { useUpdateWord } from "../api/use-update-word";
+import { SideMenu } from "src/04_entities/side-menu";
 
 export function WordCardScreen() {
   const dispatch = useAppDispatch();
@@ -96,7 +97,7 @@ export function WordCardScreen() {
 
   return (
     <>
-      <Header title="Word info" btnGroup={btnGroup} />
+      <Header title="Word info" btnGroup={btnGroup} menu={<SideMenu />}/>
       <form
         id="word-card-form"
         className={classes["body"]}

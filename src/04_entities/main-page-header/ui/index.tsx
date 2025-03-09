@@ -2,6 +2,7 @@ import { ActionIcon, TextInput, Title } from "@mantine/core";
 import { IconArrowBackUp, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { AddWordIcon } from "src/03_features/add-word";
+import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
 export function MainPageHeader({
@@ -29,7 +30,7 @@ export function MainPageHeader({
   );
 
   return (
-    <Header title="All words" btnGroup={btnGroup}>
+    <Header title="All words" btnGroup={btnGroup} menu={<SideMenu />}>
       {searchMod && (
         <TextInput
           leftSection={<IconSearch />}
