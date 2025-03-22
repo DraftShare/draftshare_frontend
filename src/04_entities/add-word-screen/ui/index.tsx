@@ -1,8 +1,9 @@
-import { Box, Button, Drawer, LoadingOverlay } from "@mantine/core";
+import { Box, Drawer, LoadingOverlay } from "@mantine/core";
 import { useAddWord } from "../api/use-add-word";
 import classes from "./classes.module.css";
 import { Property, useDynamicProps } from "src/05_shared/lib/useDynamicProps";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
+import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
 
 interface AddWordScreenProps {
   opened: boolean;
@@ -20,15 +21,13 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
     },
   ];
   const {
-    wordProp,
-    handleChangeWord,
     properties,
     handleChangeProp,
     handleDeleteProp,
     resetProps,
     addEmptyProp,
     getProps,
-  } = useDynamicProps("", defaultProperties);
+  } = useDynamicProps(defaultProperties);
   const addWordMutation = useAddWord();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -66,19 +65,11 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
       />
       <form onSubmit={(e) => handleSubmit(e)} className={classes["form"]}>
         <Box className={classes["properties-list"]}>
-          <WordPropField
-            inputProp={"word"}
-            inputVal={wordProp}
-            handleChangeWord={handleChangeWord}
-            editable={true}
-            readOnlyProp={true}
-          />
           {properties.map((property, index) => {
             return (
               <WordPropField
                 key={index}
-                inputProp={property.name}
-                inputVal={property.value}
+                inputValue={[property.name, property.value]}
                 index={index}
                 handleChangeProp={handleChangeProp}
                 handleDeleteProp={handleDeleteProp}
@@ -87,21 +78,7 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
             );
           })}
         </Box>
-        <Box className={classes["btn-group__wrap"]}>
-          <Button.Group className={classes["btn-group"]}>
-            <Button
-              onClick={addEmptyProp}
-              type="button"
-              className={classes["add-property-btn"]}
-              classNames={{ root: classes["add-property-btn__root"] }}
-            >
-              Add a property
-            </Button>
-            <Button type="submit" className={classes["create-btn"]}>
-              Create
-            </Button>
-          </Button.Group>
-        </Box>
+        <BlockOfTwoButtons addEmptyProp={addEmptyProp} secondName="Create" />
       </form>
     </Drawer>
   );

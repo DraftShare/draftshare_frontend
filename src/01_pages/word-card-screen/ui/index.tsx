@@ -21,7 +21,6 @@ export function WordCardScreen() {
   const updateWordMutation = useUpdateWord();
 
   const {
-    wordProp,
     properties,
     setDefaultProps,
     handleChangeProp,
@@ -29,7 +28,6 @@ export function WordCardScreen() {
     resetProps,
     addEmptyProp,
     getProps,
-    handleChangeWord,
   } = useDynamicProps();
 
   const id = useAppSelector((state) =>
@@ -46,12 +44,11 @@ export function WordCardScreen() {
   //   })
   //   .filter((item) => item !== null);
 
-  const word = data[id].word;
   const dataProps = data[id].properties;
 
   function handleEdit() {
     setEditable(!editable);
-    setDefaultProps(word, dataProps);
+    setDefaultProps(dataProps);
   }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     console.log("submit");
@@ -97,24 +94,16 @@ export function WordCardScreen() {
 
   return (
     <>
-      <Header title="Word info" btnGroup={btnGroup} menu={<SideMenu />}/>
+      <Header title="Word info" btnGroup={btnGroup} menu={<SideMenu />} />
       <form
         id="word-card-form"
         className={classes["body"]}
         onSubmit={(e) => handleSubmit(e)}
       >
-        <WordPropField
-          inputProp={"word"}
-          inputVal={editable ? wordProp : word}
-          handleChangeWord={handleChangeWord}
-          readOnlyProp={true}
-          editable={editable}
-        />
         {listProps.map((item, index) => (
           <WordPropField
             key={index}
-            inputProp={item.name}
-            inputVal={item.value}
+            inputValue={[item.name, item.value]}
             index={index}
             handleChangeProp={handleChangeProp}
             handleDeleteProp={handleDeleteProp}

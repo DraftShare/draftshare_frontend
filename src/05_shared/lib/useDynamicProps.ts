@@ -3,16 +3,15 @@ import {
   addWordCard,
   addCardSchema,
   cardId,
-  word,
   wordCard,
   updateCardSchema,
 } from "src/04_entities/word/api/types";
 
 export interface Property {
   name: string;
-  value: string;
-  word?: string;
-  _id?: string;
+  value?: string;
+  // word?: string;
+  // _id?: string;
 }
 // interface DynamicProps {
 //   word: word;
@@ -21,17 +20,11 @@ export interface Property {
 
 export type PropField = keyof Property;
 
-export function useDynamicProps(initWord: word = "", initProps: Property[] = []) {
-  const [wordProp, setWordProp] = useState(initWord)
+export function useDynamicProps(initProps: Property[] = []) {
   const [properties, setProperties] = useState<Property[]>(initProps);
 
-  function setDefaultProps(word: word = "", defaultProps: Property[] = []) {
-    setWordProp(word)
+  function setDefaultProps(defaultProps: Property[] = []) {
     setProperties(defaultProps);
-  }
-
-  function handleChangeWord(e: React.ChangeEvent<HTMLInputElement>) {
-    setWordProp(e.target.value);
   }
 
   function handleChangeProp(
@@ -50,7 +43,6 @@ export function useDynamicProps(initWord: word = "", initProps: Property[] = [])
   }
 
   function resetProps() {
-    setWordProp(initWord)
     setProperties(initProps);
   }
 
@@ -72,9 +64,9 @@ export function useDynamicProps(initWord: word = "", initProps: Property[] = [])
     let result: addWordCard | wordCard;
 
     if (operation === "add") {
-      result = { word: wordProp, properties: properties };
+      result = { properties: properties };
     } else if (operation === "update" && id) {
-      result = { _id: id, word: wordProp, properties: properties };
+      result = { _id: id, properties: properties };
     } else {
       throw new Error("Invalid operation or missing id for update");
     }
@@ -96,10 +88,8 @@ export function useDynamicProps(initWord: word = "", initProps: Property[] = [])
   }
 
   return {
-    wordProp,
     properties,
     setDefaultProps,
-    handleChangeWord,
     handleChangeProp,
     handleDeleteProp,
     resetProps,

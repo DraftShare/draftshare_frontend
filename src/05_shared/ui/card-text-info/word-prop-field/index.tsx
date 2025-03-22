@@ -4,79 +4,63 @@ import classes from "./classes.module.css";
 import { useState } from "react";
 import { PropField } from "src/05_shared/lib/useDynamicProps";
 
+type ActiveField = "name" | "value" | null;
+
 export function WordPropField({
-  inputProp,
-  inputVal,
+  inputValue,
   index,
   handleChangeProp,
   handleDeleteProp,
-  handleChangeWord,
   editable,
-  readOnlyProp = false,
-  readOnlyVal = false,
+  display,
 }: {
-  inputProp: string;
-  inputVal: string;
-  index?: number;
-  handleChangeProp?: (
+  inputValue: [string, string];
+  index: number;
+  handleChangeProp: (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
     field: PropField
   ) => void;
   handleDeleteProp?: (index: number) => void;
-  handleChangeWord?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   editable: boolean;
-  readOnlyProp?: boolean;
-  readOnlyVal?: boolean;
+  display?: "name" | "value";
 }) {
-  const [activeField, setActiveField] = useState<"prop" | "val" | null>(null);
-  // const readOnlyProp = inputProp === "word";
+  const [activeField, setActiveField] = useState<ActiveField>(null);
 
-  const handleChange = function (field: PropField) {
-    if (handleChangeWord) {
-      return (e: React.ChangeEvent<HTMLInputElement>) => handleChangeWord(e);
-    }
-    if (index !== undefined && handleChangeProp) {
-      return (e: React.ChangeEvent<HTMLInputElement>) =>
-        handleChangeProp(e, index, field);
-    }
-  };
-  if (!handleChange) return <Box>Error handleChange === undefined</Box>;
+  const nameField = (
+    <FieldInput
+      activeField={activeField}
+      setActiveField={setActiveField}
+      inputValue={inputValue[0]}
+      field="name"
+      handleChangeProp={handleChangeProp}
+      index={index}
+      editable={editable}
+    />
+  );
+  const valueField = (
+    <FieldInput
+      activeField={activeField}
+      setActiveField={setActiveField}
+      inputValue={inputValue[1]}
+      field="value"
+      handleChangeProp={handleChangeProp}
+      index={index}
+      editable={editable}
+    />
+  );
 
   return (
     <Fieldset variant="unstyled" className={classes["fieldset-n"]}>
       <Box className={classes["add-prpoerty-input__wrap-n"]}>
-        <TextInput
-          classNames={{
-            root: `${classes.root} ${activeField === "prop" ? classes["root_active"] : ""}`,
-            input: `${classes.input} ${activeField !== "prop" ? classes["input_inactive"] : ""}`,
-          }}
-          variant="unstyled"
-          placeholder="property"
-          value={inputProp}
-          onChange={handleChange("name")}
-          onFocus={() => setActiveField("prop")}
-          onBlur={() => setActiveField(null)}
-          disabled={!editable || readOnlyProp}
-          rightSection={editable && readOnlyProp && <IconLock />}
-        />
-        <TextInput
-          classNames={{
-            root: `${classes.root} ${activeField === "val" ? classes["root_active"] : ""}`,
-            input: `${classes.input} ${activeField === "prop" ? classes["input_inactive"] : ""}`,
-          }}
-          variant="unstyled"
-          placeholder="value"
-          value={inputVal}
-          onChange={handleChange("value")}
-          onFocus={() => setActiveField("val")}
-          onBlur={() => setActiveField(null)}
-          disabled={!editable || readOnlyVal}
-          required={inputProp === "word"}
-        />
+        {display === "name"
+          ? nameField
+          : display === "value"
+            ? valueField
+            : [nameField, valueField]}
       </Box>
 
-      {editable && !readOnlyProp && index !== undefined && handleDeleteProp && (
+      {editable && index !== undefined && handleDeleteProp && (
         <ActionIcon
           type="button"
           onClick={() => handleDeleteProp(index)}
@@ -86,5 +70,65 @@ export function WordPropField({
         </ActionIcon>
       )}
     </Fieldset>
+  );
+}
+
+function FieldInput({
+  activeField,
+  setActiveField,
+  inputValue,
+  field,
+  handleChangeProp,
+  index,
+  editable,
+  // readOnly,
+  // placeholder
+}: {
+  activeField: ActiveField;
+  setActiveField: React.Dispatch<React.SetStateAction<ActiveField>>;
+  inputValue: string;
+  field: "name" | "value";
+  handleChangeProp: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+    field: PropField
+  ) => void;
+  index: number;
+  editable: boolean;
+  // readOnly: boolean;
+  // placeholder: string
+}) {
+  const inputStyle =
+    field === "name"
+      ? {
+          root: `${classes.root} ${activeField === "name" ? classes["root_active"] : ""}`,
+          input: `${classes.input} ${activeField !== "name" ? classes["input_inactive"] : ""}`,
+        }
+      : field === "value"
+        ? {
+            root: `${classes.root} ${activeField === "value" ? classes["root_active"] : ""}`,
+            input: `${classes.input} ${activeField === "name" ? classes["input_inactive"] : ""}`,
+          }
+        : {};
+  const placeholder =
+    field === "name"
+      ? "property name"
+      : field === "value"
+        ? "property value"
+        : "";
+
+  return (
+    <TextInput
+      classNames={inputStyle}
+      variant="unstyled"
+      placeholder={placeholder}
+      value={inputValue}
+      onChange={(e) => handleChangeProp(e, index, field)}
+      onFocus={() => setActiveField(field)}
+      onBlur={() => setActiveField(null)}
+      disabled={!editable}
+      // rightSection={editable && readOnlyProp && <IconLock />}
+      // required={inputProp === "word"}
+    />
   );
 }
