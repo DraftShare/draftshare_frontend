@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { EditSetOfFields } from "src/01_pages/set-of-fields/ui/edit-set-of-fields";
+import { EditSetOfFields } from "src/01_pages/set-of-fields";
 
 export const Route = createFileRoute("/settings/set-of-fields/$id")({
   component: EditSetOfFields,
