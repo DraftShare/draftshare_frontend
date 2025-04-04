@@ -1,11 +1,4 @@
 import { useState } from "react";
-import {
-  addWordCard,
-  addCardSchema,
-  cardId,
-  wordCard,
-  updateCardSchema,
-} from "src/04_entities/word/api/types";
 
 export interface Property {
   name: string;
@@ -50,42 +43,49 @@ export function useDynamicProps(initProps: Property[] = []) {
     setProperties((oldData) => [...oldData, { name: "", value: "" }]);
   }
 
-  function getProps(operation: "add"): addWordCard;
-  function getProps(operation: "update", id: cardId): wordCard;
-  function getProps(
-    operation: "add" | "update",
-    id?: cardId
-  ): addWordCard | wordCard {
-    // const result: { [key: string]: string } = id ? { id: id } : {};
-    // const result: addWordCard = {word: word, properties: properties}
-    // const result: wordCard = {_id: id, word: word, properties: properties}
-    // properties.forEach((prop) => (result[prop.property] = prop.value));
 
-    let result: addWordCard | wordCard;
+  function getFields() {
+    const result = properties.map(prop => ({name: prop.name}))
+    return result
 
-    if (operation === "add") {
-      result = { properties: properties };
-    } else if (operation === "update" && id) {
-      result = { _id: id, properties: properties };
-    } else {
-      throw new Error("Invalid operation or missing id for update");
-    }
-
-
-    console.log(result);
-    // Валидируем результат с помощью Zod
-    let validatedResult;
-    if (operation === "add") {
-      validatedResult = addCardSchema.safeParse(result);
-    } else if (operation === "update") {
-      validatedResult = updateCardSchema.safeParse(result);
-    }
-    if (!validatedResult || !validatedResult.success) {
-      throw new Error("Invalid properties: " + validatedResult?.error.message);
-    }
-
-    return validatedResult.data;
   }
+
+  // function getProps(operation: "add"): addWordCard;
+  // function getProps(operation: "update", id: cardId): wordCard;
+  // function getProps(
+  //   operation: "add" | "update",
+  //   id?: cardId
+  // ): addWordCard | wordCard {
+  //   // const result: { [key: string]: string } = id ? { id: id } : {};
+  //   // const result: addWordCard = {word: word, properties: properties}
+  //   // const result: wordCard = {_id: id, word: word, properties: properties}
+  //   // properties.forEach((prop) => (result[prop.property] = prop.value));
+
+  //   let result: addWordCard | wordCard;
+
+  //   if (operation === "add") {
+  //     result = { properties: properties };
+  //   } else if (operation === "update" && id) {
+  //     result = { _id: id, properties: properties };
+  //   } else {
+  //     throw new Error("Invalid operation or missing id for update");
+  //   }
+
+
+  //   console.log(result);
+  //   // Валидируем результат с помощью Zod
+  //   let validatedResult;
+  //   if (operation === "add") {
+  //     validatedResult = addCardSchema.safeParse(result);
+  //   } else if (operation === "update") {
+  //     validatedResult = updateCardSchema.safeParse(result);
+  //   }
+  //   if (!validatedResult || !validatedResult.success) {
+  //     throw new Error("Invalid properties: " + validatedResult?.error.message);
+  //   }
+
+  //   return validatedResult.data;
+  // }
 
   return {
     properties,
@@ -94,6 +94,7 @@ export function useDynamicProps(initProps: Property[] = []) {
     handleDeleteProp,
     resetProps,
     addEmptyProp,
-    getProps,
+    getFields
+    // getProps,
   };
 }

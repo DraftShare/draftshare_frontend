@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const cardIdShcema = z.string();
+const cardIdShcema = z.number();
 const wordSchema = z.string();
 
 const propertyIdSchema = z.string();
@@ -9,16 +9,13 @@ const propertyValueSchema = z.string();
 
 export const responseIdSchema = z.object({ id: cardIdShcema });
 
-const propertySchema = z.object({
-  _id: propertyIdSchema,
-  word: cardIdShcema,
+const fieldsSchema = z.object({
   name: propertyNameSchema,
   value: propertyValueSchema,
 });
 export const cardSchema = z.object({
-  _id: cardIdShcema,
-  word: wordSchema,
-  properties: z.array(propertySchema),
+  id: cardIdShcema,
+  fields: z.array(fieldsSchema),
 });
 
 const addCardPropertySchema = z.object({
@@ -42,11 +39,14 @@ export const updateCardSchema = z.object({
   properties: z.array(updatePropertySchema),
 });
 
-
-export const wordCardsSchema = z.record(cardIdShcema, cardSchema);
+// export const wordCardsSchema = z.record(cardIdShcema, cardSchema);
 
 export type word = z.infer<typeof wordSchema>;
 export type cardId = z.infer<typeof cardIdShcema>;
 export type wordCard = z.infer<typeof cardSchema>;
-export type wordCards = z.infer<typeof wordCardsSchema>;
+// export type wordCards = z.infer<typeof wordCardsSchema>;
 export type addWordCard = z.infer<typeof addCardSchema>;
+
+// =====================
+
+export const incomingCardsSchema = z.record(cardIdShcema, cardSchema);

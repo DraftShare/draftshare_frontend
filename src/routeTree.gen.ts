@@ -14,8 +14,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as WordCardImport } from './routes/word-card'
 import { Route as SettingsPageImport } from './routes/settings-page'
 import { Route as IndexImport } from './routes/index'
-import { Route as SettingsDefaultPropertiesImport } from './routes/settings/default-properties'
+import { Route as SettingsSetsOfFieldsImport } from './routes/settings/sets-of-fields'
 import { Route as SettingsChangePropertiesImport } from './routes/settings/change-properties'
+import { Route as SettingsSetOfFieldsIndexImport } from './routes/settings/set-of-fields/index'
+import { Route as SettingsSetOfFieldsIdImport } from './routes/settings/set-of-fields/$id'
 
 // Create/Update Routes
 
@@ -37,15 +39,27 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const SettingsDefaultPropertiesRoute = SettingsDefaultPropertiesImport.update({
-  id: '/settings/default-properties',
-  path: '/settings/default-properties',
+const SettingsSetsOfFieldsRoute = SettingsSetsOfFieldsImport.update({
+  id: '/settings/sets-of-fields',
+  path: '/settings/sets-of-fields',
   getParentRoute: () => rootRoute,
 } as any)
 
 const SettingsChangePropertiesRoute = SettingsChangePropertiesImport.update({
   id: '/settings/change-properties',
   path: '/settings/change-properties',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsSetOfFieldsIndexRoute = SettingsSetOfFieldsIndexImport.update({
+  id: '/settings/set-of-fields/',
+  path: '/settings/set-of-fields/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsSetOfFieldsIdRoute = SettingsSetOfFieldsIdImport.update({
+  id: '/settings/set-of-fields/$id',
+  path: '/settings/set-of-fields/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -81,11 +95,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsChangePropertiesImport
       parentRoute: typeof rootRoute
     }
-    '/settings/default-properties': {
-      id: '/settings/default-properties'
-      path: '/settings/default-properties'
-      fullPath: '/settings/default-properties'
-      preLoaderRoute: typeof SettingsDefaultPropertiesImport
+    '/settings/sets-of-fields': {
+      id: '/settings/sets-of-fields'
+      path: '/settings/sets-of-fields'
+      fullPath: '/settings/sets-of-fields'
+      preLoaderRoute: typeof SettingsSetsOfFieldsImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings/set-of-fields/$id': {
+      id: '/settings/set-of-fields/$id'
+      path: '/settings/set-of-fields/$id'
+      fullPath: '/settings/set-of-fields/$id'
+      preLoaderRoute: typeof SettingsSetOfFieldsIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings/set-of-fields/': {
+      id: '/settings/set-of-fields/'
+      path: '/settings/set-of-fields'
+      fullPath: '/settings/set-of-fields'
+      preLoaderRoute: typeof SettingsSetOfFieldsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -98,7 +126,9 @@ export interface FileRoutesByFullPath {
   '/settings-page': typeof SettingsPageRoute
   '/word-card': typeof WordCardRoute
   '/settings/change-properties': typeof SettingsChangePropertiesRoute
-  '/settings/default-properties': typeof SettingsDefaultPropertiesRoute
+  '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
+  '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
+  '/settings/set-of-fields': typeof SettingsSetOfFieldsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -106,7 +136,9 @@ export interface FileRoutesByTo {
   '/settings-page': typeof SettingsPageRoute
   '/word-card': typeof WordCardRoute
   '/settings/change-properties': typeof SettingsChangePropertiesRoute
-  '/settings/default-properties': typeof SettingsDefaultPropertiesRoute
+  '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
+  '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
+  '/settings/set-of-fields': typeof SettingsSetOfFieldsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -115,7 +147,9 @@ export interface FileRoutesById {
   '/settings-page': typeof SettingsPageRoute
   '/word-card': typeof WordCardRoute
   '/settings/change-properties': typeof SettingsChangePropertiesRoute
-  '/settings/default-properties': typeof SettingsDefaultPropertiesRoute
+  '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
+  '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
+  '/settings/set-of-fields/': typeof SettingsSetOfFieldsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -125,21 +159,27 @@ export interface FileRouteTypes {
     | '/settings-page'
     | '/word-card'
     | '/settings/change-properties'
-    | '/settings/default-properties'
+    | '/settings/sets-of-fields'
+    | '/settings/set-of-fields/$id'
+    | '/settings/set-of-fields'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/settings-page'
     | '/word-card'
     | '/settings/change-properties'
-    | '/settings/default-properties'
+    | '/settings/sets-of-fields'
+    | '/settings/set-of-fields/$id'
+    | '/settings/set-of-fields'
   id:
     | '__root__'
     | '/'
     | '/settings-page'
     | '/word-card'
     | '/settings/change-properties'
-    | '/settings/default-properties'
+    | '/settings/sets-of-fields'
+    | '/settings/set-of-fields/$id'
+    | '/settings/set-of-fields/'
   fileRoutesById: FileRoutesById
 }
 
@@ -148,7 +188,9 @@ export interface RootRouteChildren {
   SettingsPageRoute: typeof SettingsPageRoute
   WordCardRoute: typeof WordCardRoute
   SettingsChangePropertiesRoute: typeof SettingsChangePropertiesRoute
-  SettingsDefaultPropertiesRoute: typeof SettingsDefaultPropertiesRoute
+  SettingsSetsOfFieldsRoute: typeof SettingsSetsOfFieldsRoute
+  SettingsSetOfFieldsIdRoute: typeof SettingsSetOfFieldsIdRoute
+  SettingsSetOfFieldsIndexRoute: typeof SettingsSetOfFieldsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -156,7 +198,9 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsPageRoute: SettingsPageRoute,
   WordCardRoute: WordCardRoute,
   SettingsChangePropertiesRoute: SettingsChangePropertiesRoute,
-  SettingsDefaultPropertiesRoute: SettingsDefaultPropertiesRoute,
+  SettingsSetsOfFieldsRoute: SettingsSetsOfFieldsRoute,
+  SettingsSetOfFieldsIdRoute: SettingsSetOfFieldsIdRoute,
+  SettingsSetOfFieldsIndexRoute: SettingsSetOfFieldsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -173,7 +217,9 @@ export const routeTree = rootRoute
         "/settings-page",
         "/word-card",
         "/settings/change-properties",
-        "/settings/default-properties"
+        "/settings/sets-of-fields",
+        "/settings/set-of-fields/$id",
+        "/settings/set-of-fields/"
       ]
     },
     "/": {
@@ -188,8 +234,14 @@ export const routeTree = rootRoute
     "/settings/change-properties": {
       "filePath": "settings/change-properties.tsx"
     },
-    "/settings/default-properties": {
-      "filePath": "settings/default-properties.tsx"
+    "/settings/sets-of-fields": {
+      "filePath": "settings/sets-of-fields.tsx"
+    },
+    "/settings/set-of-fields/$id": {
+      "filePath": "settings/set-of-fields/$id.tsx"
+    },
+    "/settings/set-of-fields/": {
+      "filePath": "settings/set-of-fields/index.tsx"
     }
   }
 }

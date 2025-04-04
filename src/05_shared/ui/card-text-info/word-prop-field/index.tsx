@@ -1,25 +1,30 @@
 import { ActionIcon, Box, Fieldset, TextInput } from "@mantine/core";
-import { IconLock, IconTrash } from "@tabler/icons-react";
-import classes from "./classes.module.css";
+import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { PropField } from "src/05_shared/lib/useDynamicProps";
+import classes from "./classes.module.css";
 
 type ActiveField = "name" | "value" | null;
 
 export function WordPropField({
   inputValue,
   index,
-  handleChangeProp,
+  // handleChangeProp,
+  handleChangeField,
   handleDeleteProp,
   editable,
   display,
 }: {
   inputValue: [string, string];
   index: number;
-  handleChangeProp: (
+  // handleChangeProp: (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   index: number,
+  //   field: PropField
+  // ) => void;
+  handleChangeField: (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-    field: PropField
+    id: number
   ) => void;
   handleDeleteProp?: (index: number) => void;
   editable: boolean;
@@ -33,7 +38,8 @@ export function WordPropField({
       setActiveField={setActiveField}
       inputValue={inputValue[0]}
       field="name"
-      handleChangeProp={handleChangeProp}
+      // handleChangeProp={handleChangeProp}
+      handleChangeProp={handleChangeField}
       index={index}
       editable={editable}
     />
@@ -44,7 +50,8 @@ export function WordPropField({
       setActiveField={setActiveField}
       inputValue={inputValue[1]}
       field="value"
-      handleChangeProp={handleChangeProp}
+      // handleChangeProp={handleChangeProp}
+      handleChangeProp={handleChangeField}
       index={index}
       editable={editable}
     />

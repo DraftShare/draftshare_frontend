@@ -9,9 +9,12 @@ export function MainPage() {
   const { data } = useSuspenseQuery(getAllWords());
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredData = Object.values(data).filter((card) =>
-    card.word.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredData = Object.values(data).filter((card) =>
+  //   card.word.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  const filteredData = Object.values(data).filter((card) => card.id);
+
   const listCards = filteredData.map((card, index) => (
     <WordCard key={index} card={card} />
   ));

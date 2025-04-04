@@ -1,44 +1,37 @@
-import { Box, TextInput } from "@mantine/core";
+import { ActionIcon, Box, Fieldset, TextInput } from "@mantine/core";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
-import classes from "./style.module.css";
-import { IconSearch } from "@tabler/icons-react";
-import { useState } from "react";
-import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
-import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
+import { IconSearch, IconTrash } from "@tabler/icons-react";
+import { useMemo, useState } from "react";
 import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
+import { useUpdateFields } from "../api/use-update-fields";
+import { useDynamicFields } from "../lib/useDynamicFields";
+import classes from "./style.module.css";
 
 export function SettingsChangeProperties() {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const mockProps = [
-    {
-      id: 0,
-      name: "translate",
-    },
-    {
-      id: 1,
-      name: "transcription",
-    },
-    {
-      id: 2,
-      name: "part of speech",
-    },
-  ];
+  const updateMutation = useUpdateFields();
 
   const {
-    properties,
-    handleChangeProp,
-    handleDeleteProp,
-    // resetProps,
-    addEmptyProp,
-    // getProps,
-  } = useDynamicProps(mockProps);
+    fields,
+    handleChangeField,
+    handleDeleteField,
+    addEmptyField,
+    dataToSend,
+    // resetStore,
+  } = useDynamicFields();
 
-  const filteredList = properties.filter((prop) =>
-    prop.name.toLowerCase().includes(searchTerm)
+  const filteredList = useMemo(
+    () =>
+      fields.filter((field) => field.name.toLowerCase().includes(searchTerm)),
+    [fields, searchTerm]
   );
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    updateMutation.mutate(dataToSend());
+  }
 
   return (
     <>
@@ -51,22 +44,59 @@ export function SettingsChangeProperties() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <form className={classes["form"]}>
-          {filteredList.map((item, index) => (
-            <WordPropField
-              key={index}
-              inputValue={[item.name, ""]}
+        <form className={classes["form"]} onSubmit={handleSubmit}>
+          {filteredList.map((field, index) => (
+            <FieldPanel
+              key={field.id}
               index={index}
-              handleChangeProp={handleChangeProp}
-              handleDeleteProp={handleDeleteProp}
-              editable={true}
-              display="name"
+              value={field.name}
+              handleDeleteField={handleDeleteField}
+              handleChangeField={handleChangeField}
             />
           ))}
 
-          <BlockOfTwoButtons addEmptyProp={addEmptyProp} secondName="Save" />
+          <BlockOfTwoButtons addEmptyProp={addEmptyField} secondName="Save" />
         </form>
       </Box>
+    </>
+  );
+}
+
+function FieldPanel({
+  index,
+  value,
+  handleDeleteField,
+  handleChangeField,
+}: {
+  index: number;
+  value: string;
+  handleDeleteField: (index: number) => void;
+  handleChangeField: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => void;
+}) {
+  return (
+    <>
+      <Fieldset>
+        <Box
+          style={{
+            display: "flex",
+          }}
+        >
+          <TextInput
+            value={value}
+            onChange={(e) => handleChangeField(e, index)}
+          />
+          <ActionIcon
+            type="button"
+            onClick={() => handleDeleteField(index)}
+            size="lg"
+          >
+            <IconTrash />
+          </ActionIcon>
+        </Box>
+      </Fieldset>
     </>
   );
 }

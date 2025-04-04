@@ -1,14 +1,14 @@
 import { queryOptions } from "@tanstack/react-query";
 import { baseFetch } from "src/05_shared/api";
-import { wordCardsSchema } from "./types";
+import { incomingCardsSchema } from "./types";
 
 export const getAllWords = () => {
   return queryOptions({
-    queryKey: ["words"],
+    queryKey: ["cards"],
     queryFn: async () => {
-      const data = await baseFetch("api/words/");
+      const data = await baseFetch("api/cards/");
       try {
-        return wordCardsSchema.parse(data);
+        return incomingCardsSchema.parse(data);
       } catch (e) {
         console.log(e);
         throw e;

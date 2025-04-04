@@ -20,8 +20,8 @@ export function SettingsPage() {
               </Link>
             </ListItem>
             <ListItem>
-              <Link to={"/settings/default-properties"}>
-                <Text>Set default properties</Text>
+              <Link to={"/settings/sets-of-fields"}>
+                <Text>Change field sets</Text>
               </Link>
             </ListItem>
           </List>
@@ -41,9 +41,7 @@ export function SettingsPage() {
     <>
       <Header title="Settings" menu={<SideMenu />} />
       <Box className={classes["body"]}>
-        <Accordion variant="separated">
-          {items}
-        </Accordion>
+        <Accordion variant="separated">{items}</Accordion>
       </Box>
     </>
   );
