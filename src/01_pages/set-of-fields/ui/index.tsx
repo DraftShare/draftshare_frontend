@@ -13,27 +13,7 @@ export function SetOfFieldsForm({
 }: {
   initialData?: setOfFields;
 }) {
-  //   {
-  //   id,
-  //   setName = "",
-  //   existingFields = [],
-  // }: {
-  //   id?: SetId;
-  //   setName?: SetName;
-  //   existingFields?: Field[];
-  // }
   const { data: fields } = useSuspenseQuery(getAllFields());
-  // const { id } = useParams({ from: "/settings/set-of-fields/$id" });
-  // const isEditMode = !!id;
-  // const { data } = useQuery({
-  //   queryKey: [SET_OF_FIELDS_KEY, id],
-  //   queryFn: async () => {
-  //     const data = await baseFetch(`api/sets-of-fields/${id}`);
-  //     return setOfFieldsSchema.parse(data);
-  //   },
-  //   staleTime: 5 * 1000 * 60,
-  //   enabled: isEditMode
-  // });
 
   const fieldNames = fields.map((field) => field.name);
   const [nameOfSet, setNameOfSet] = useState(initialData?.name || "");
