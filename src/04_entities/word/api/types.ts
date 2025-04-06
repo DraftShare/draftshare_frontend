@@ -1,52 +1,40 @@
 import { z } from "zod";
 
 const cardIdShcema = z.number();
-const wordSchema = z.string();
 
-const propertyIdSchema = z.string();
 const propertyNameSchema = z.string();
 const propertyValueSchema = z.string();
 
 export const responseIdSchema = z.object({ id: cardIdShcema });
 
-const fieldsSchema = z.object({
+const fieldSchema = z.object({
   name: propertyNameSchema,
   value: propertyValueSchema,
 });
 export const cardSchema = z.object({
   id: cardIdShcema,
-  fields: z.array(fieldsSchema),
+  fields: z.array(fieldSchema),
 });
 
-const addCardPropertySchema = z.object({
-  name: propertyNameSchema,
-  value: propertyValueSchema,
-});
 export const addCardSchema = z.object({
-  word: wordSchema,
-  properties: z.array(addCardPropertySchema),
+  fields: z.array(fieldSchema),
 });
 
-const updatePropertySchema = z.object({
-  _id: z.optional(propertyIdSchema),
-  word: z.optional(cardIdShcema),
-  name: propertyNameSchema,
-  value: propertyValueSchema,
-});
 export const updateCardSchema = z.object({
-  _id: cardIdShcema,
-  word: wordSchema,
-  properties: z.array(updatePropertySchema),
+  id: cardIdShcema,
+  fields: z.array(fieldSchema),
 });
 
 // export const wordCardsSchema = z.record(cardIdShcema, cardSchema);
 
-export type word = z.infer<typeof wordSchema>;
 export type cardId = z.infer<typeof cardIdShcema>;
 export type wordCard = z.infer<typeof cardSchema>;
 // export type wordCards = z.infer<typeof wordCardsSchema>;
-export type addWordCard = z.infer<typeof addCardSchema>;
+export type addCard = z.infer<typeof addCardSchema>;
+export type field = z.infer<typeof fieldSchema>;
 
 // =====================
 
-export const incomingCardsSchema = z.record(cardIdShcema, cardSchema);
+export const incomingCardsSchema = z.record(z.string(), cardSchema);
+export type cards = z.infer<typeof incomingCardsSchema>;
+export type updateCard = z.infer<typeof updateCardSchema>;

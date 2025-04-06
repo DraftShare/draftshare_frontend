@@ -33,7 +33,7 @@ export const baseFetch = async (url: string, init?: RequestInit) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    if (response.status === 204) {
+    if (response.status === 204 || response.status === 201) {
       return null;
     }
     const data = await response.json();

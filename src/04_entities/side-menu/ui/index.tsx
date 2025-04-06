@@ -3,14 +3,12 @@ import {
   Drawer,
   Group,
   Text,
-  ThemeIcon,
-  Title,
-  UnstyledButton,
+  ThemeIcon
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconMenu3, IconSettings } from "@tabler/icons-react";
-import classes from "./classes.module.css";
 import { Link } from "@tanstack/react-router";
+import classes from "./classes.module.css";
 
 export function SideMenu() {
   const [opened, { open, close }] = useDisclosure(false);

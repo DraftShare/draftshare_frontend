@@ -2,23 +2,20 @@ import { useState } from "react";
 
 export interface Property {
   name: string;
-  value?: string;
-  // word?: string;
-  // _id?: string;
+  value: string;
 }
-// interface DynamicProps {
-//   word: word;
-//   properties: Property[];
-// }
 
 export type PropField = keyof Property;
 
-export function useDynamicProps(initProps: Property[] = []) {
-  const [properties, setProperties] = useState<Property[]>(initProps);
+export function useDynamicProps(initialData: Property[] = []) {
+  const [properties, setProperties] = useState<Property[]>(initialData);
 
-  function setDefaultProps(defaultProps: Property[] = []) {
-    setProperties(defaultProps);
-  }
+  // function setDefaultProps(defaultProps: Property[] = []) {
+  //   setProperties(defaultProps);
+  // }
+  // function setDefaultProps(cards: cards, id: cardId | null) {
+  //   if (id) setProperties(cards[id].fields);
+  // }
 
   function handleChangeProp(
     e: React.ChangeEvent<HTMLInputElement>,
@@ -36,18 +33,27 @@ export function useDynamicProps(initProps: Property[] = []) {
   }
 
   function resetProps() {
-    setProperties(initProps);
+    setProperties(initialData);
   }
 
   function addEmptyProp() {
     setProperties((oldData) => [...oldData, { name: "", value: "" }]);
   }
 
-
   function getFields() {
-    const result = properties.map(prop => ({name: prop.name}))
-    return result
+    const result = properties.map((prop) => ({ name: prop.name }));
+    return result;
+  }
 
+  function getProps() {
+    const fields = properties.map((prop) => ({
+      name: prop.name,
+      value: prop.value,
+    }));
+
+    return {
+      fields,
+    };
   }
 
   // function getProps(operation: "add"): addWordCard;
@@ -71,7 +77,6 @@ export function useDynamicProps(initProps: Property[] = []) {
   //     throw new Error("Invalid operation or missing id for update");
   //   }
 
-
   //   console.log(result);
   //   // Валидируем результат с помощью Zod
   //   let validatedResult;
@@ -89,12 +94,12 @@ export function useDynamicProps(initProps: Property[] = []) {
 
   return {
     properties,
-    setDefaultProps,
+    // setDefaultProps,
     handleChangeProp,
     handleDeleteProp,
     resetProps,
     addEmptyProp,
-    getFields
-    // getProps,
+    getFields,
+    getProps,
   };
 }

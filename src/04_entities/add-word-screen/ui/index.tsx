@@ -1,25 +1,26 @@
 import { Box, Drawer, LoadingOverlay } from "@mantine/core";
+import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
+import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
+import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { useAddWord } from "../api/use-add-word";
 import classes from "./classes.module.css";
-import { Property, useDynamicProps } from "src/05_shared/lib/useDynamicProps";
-import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
-import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
 
 interface AddWordScreenProps {
   opened: boolean;
   close: () => void;
 }
 export function AddWordScreen({ opened, close }: AddWordScreenProps) {
-  const defaultProperties: Property[] = [
-    {
-      name: "transcription",
-      value: "",
-    },
-    {
-      name: "translate",
-      value: "",
-    },
-  ];
+  // const defaultProperties: Property[] = [
+  //   {
+  //     name: "transcription",
+  //     value: "",
+  //   },
+  //   {
+  //     name: "translate",
+  //     value: "",
+  //   },
+  // ];
+
   const {
     properties,
     handleChangeProp,
@@ -27,13 +28,13 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
     resetProps,
     addEmptyProp,
     getProps,
-  } = useDynamicProps(defaultProperties);
+  } = useDynamicProps();
   const addWordMutation = useAddWord();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     console.log("submit");
     e.preventDefault();
-    addWordMutation.mutate(getProps("add"), {
+    addWordMutation.mutate(getProps(), {
       onSuccess: () => {
         resetProps();
         close();
@@ -71,7 +72,7 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
                 key={index}
                 inputValue={[property.name, property.value]}
                 index={index}
-                handleChangeProp={handleChangeProp}
+                handleChangeField={handleChangeProp}
                 handleDeleteProp={handleDeleteProp}
                 editable={true}
               />

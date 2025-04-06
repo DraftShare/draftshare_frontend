@@ -2,19 +2,27 @@ import { ActionIcon, Box, Button } from "@mantine/core";
 import { IconArrowBackUp, IconCheck, IconEdit } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { DeleteWord } from "src/03_features/delete-word";
-import { Header } from "src/05_shared/ui/header";
-import { getAllWords } from "src/04_entities/word/api";
-import { closedWordCard, wordSlice } from "src/04_entities/word/model";
-import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
-import classes from "./classes.module.css";
 import { useState } from "react";
-import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
-import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
-import { useUpdateWord } from "../api/use-update-word";
+import { DeleteWord } from "src/03_features/delete-word";
 import { SideMenu } from "src/04_entities/side-menu";
+import { getAllWords } from "src/04_entities/word/api";
+import { cardId } from "src/04_entities/word/api/types";
+import { closedWordCard, wordSlice } from "src/04_entities/word/model";
+import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
+import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
+import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
+import { Header } from "src/05_shared/ui/header";
+import { useUpdateWord } from "../api/use-update-word";
+import classes from "./classes.module.css";
 
 export function WordCardScreen() {
+  const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
+  if (!id) return <Box>Error! wordId === null</Box>;
+
+  return <WordCardScreenContent key={id} id={id} />;
+}
+
+function WordCardScreenContent({ id }: { id: cardId }) {
   const dispatch = useAppDispatch();
   const { data } = useSuspenseQuery(getAllWords());
   const [editable, setEditable] = useState(false);
@@ -22,18 +30,18 @@ export function WordCardScreen() {
 
   const {
     properties,
-    setDefaultProps,
+    // setDefaultProps,
     handleChangeProp,
     handleDeleteProp,
     resetProps,
     addEmptyProp,
     getProps,
-  } = useDynamicProps();
+  } = useDynamicProps(data[id].fields);
 
-  const id = useAppSelector((state) =>
-    wordSlice.selectors.selectOpenWordId(state)
-  );
-  if (!id) return <Box>Error! wordId === null</Box>;
+  // const id = useAppSelector((state) =>
+  //   wordSlice.selectors.selectOpenWordId(state)
+  // );
+  // if (!id) return <Box>Error! wordId === null</Box>;
 
   // const filteredData = Object.entries(data[id])
   //   .map(([key, value]) => {
@@ -44,25 +52,28 @@ export function WordCardScreen() {
   //   })
   //   .filter((item) => item !== null);
 
-  const dataProps = data[id].properties;
+  // const dataProps = data[id].fields;
 
   function handleEdit() {
     setEditable(!editable);
-    setDefaultProps(dataProps);
+    resetProps();
   }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     console.log("submit");
     e.preventDefault();
     if (!id) return <Box>Error! wordId === null</Box>;
-    updateWordMutation.mutate(getProps("update", id), {
-      onSuccess: () => {
-        resetProps();
-        setEditable(false);
-      },
-    });
+    updateWordMutation.mutate(
+      { ...getProps(), id: id },
+      {
+        onSuccess: () => {
+          // resetProps();
+          setEditable(false);
+        },
+      }
+    );
   }
 
-  const listProps = editable ? properties : dataProps;
+  // const listProps = editable ? properties : dataProps;
 
   const btnGroup = editable ? (
     <>
@@ -72,7 +83,7 @@ export function WordCardScreen() {
       <ActionIcon
         onClick={() => {
           setEditable(!editable);
-          // resetProps()
+          resetProps();
         }}
       >
         <IconArrowBackUp />
@@ -100,12 +111,12 @@ export function WordCardScreen() {
         className={classes["body"]}
         onSubmit={(e) => handleSubmit(e)}
       >
-        {listProps.map((item, index) => (
+        {properties.map((item, index) => (
           <WordPropField
             key={index}
             inputValue={[item.name, item.value]}
             index={index}
-            handleChangeProp={handleChangeProp}
+            handleChangeField={handleChangeProp}
             handleDeleteProp={handleDeleteProp}
             editable={editable}
           />

@@ -17,15 +17,15 @@ export function WordPropField({
 }: {
   inputValue: [string, string];
   index: number;
-  // handleChangeProp: (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   index: number,
-  //   field: PropField
-  // ) => void;
   handleChangeField: (
     e: React.ChangeEvent<HTMLInputElement>,
-    id: number
+    index: number,
+    field: PropField
   ) => void;
+  // handleChangeField: (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   id: number
+  // ) => void;
   handleDeleteProp?: (index: number) => void;
   editable: boolean;
   display?: "name" | "value";
@@ -34,6 +34,7 @@ export function WordPropField({
 
   const nameField = (
     <FieldInput
+      key={index + "name"}
       activeField={activeField}
       setActiveField={setActiveField}
       inputValue={inputValue[0]}
@@ -46,6 +47,7 @@ export function WordPropField({
   );
   const valueField = (
     <FieldInput
+      key={index + "value"}
       activeField={activeField}
       setActiveField={setActiveField}
       inputValue={inputValue[1]}

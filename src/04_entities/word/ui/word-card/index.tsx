@@ -1,4 +1,4 @@
-import { Box } from "@mantine/core";
+import { Box, Text } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import { useAppDispatch } from "src/05_shared/redux";
 import { wordCard } from "../../api/types";
@@ -20,10 +20,14 @@ export function WordCard({ card }: { card: wordCard }) {
     >
       <li className={classes["card"]}>
         <Box className={classes["card__left-section"]}>
+          <Text>{card.fields[0].name}</Text>
+          <Text>{card.id}</Text>
           {/* <Text>{card.word}</Text> */}
           {/* <Text>{transcription}</Text> */}
         </Box>
         <Box className={classes["card__right-section"]}>
+          <Text>{card.fields[0].value}</Text>
+
           {/* <Text>{translate}</Text> */}
         </Box>
       </li>
