@@ -14,6 +14,7 @@ import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { Header } from "src/05_shared/ui/header";
 import { useUpdateWord } from "../api/use-update-word";
 import classes from "./classes.module.css";
+import { getAllFields } from "src/01_pages/settings-change-properties/api";
 
 export function WordCardScreen() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -25,6 +26,8 @@ export function WordCardScreen() {
 function WordCardScreenContent({ id }: { id: cardId }) {
   const dispatch = useAppDispatch();
   const { data } = useSuspenseQuery(getAllWords());
+  const { data: fields } = useSuspenseQuery(getAllFields());
+  const fieldNames = fields.map((field) => field.name);
   const [editable, setEditable] = useState(false);
   const updateWordMutation = useUpdateWord();
 
@@ -36,6 +39,8 @@ function WordCardScreenContent({ id }: { id: cardId }) {
     addEmptyProp,
     getProps,
   } = useDynamicProps(data[id].fields);
+
+  // const sortedList = properties.sort((a, b) => a.name.localeCompare(b.name));
 
   function handleEdit() {
     setEditable(!editable);
@@ -99,6 +104,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
             handleChangeField={handleChangeProp}
             handleDeleteProp={handleDeleteProp}
             editable={editable}
+            fieldNames={fieldNames}
           />
         ))}
 

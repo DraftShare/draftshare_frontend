@@ -4,22 +4,16 @@ import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { useAddWord } from "../api/use-add-word";
 import classes from "./classes.module.css";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getAllFields } from "src/01_pages/settings-change-properties/api";
 
 interface AddWordScreenProps {
   opened: boolean;
   close: () => void;
 }
 export function AddWordScreen({ opened, close }: AddWordScreenProps) {
-  // const defaultProperties: Property[] = [
-  //   {
-  //     name: "transcription",
-  //     value: "",
-  //   },
-  //   {
-  //     name: "translate",
-  //     value: "",
-  //   },
-  // ];
+  const { data: fields } = useSuspenseQuery(getAllFields());
+  const fieldNames = fields.map((field) => field.name);
 
   const {
     properties,
@@ -75,6 +69,7 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
                 handleChangeField={handleChangeProp}
                 handleDeleteProp={handleDeleteProp}
                 editable={true}
+                fieldNames={fieldNames}
               />
             );
           })}

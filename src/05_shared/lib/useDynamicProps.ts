@@ -18,13 +18,14 @@ export function useDynamicProps(initialData: Property[] = []) {
   // }
 
   function handleChangeProp(
-    e: React.ChangeEvent<HTMLInputElement>,
+    // e: React.ChangeEvent<HTMLInputElement>,
+    value: string,
     index: number,
     field: PropField
   ) {
     setProperties((oldData) =>
       oldData.map((item, idx) =>
-        idx === index ? { ...item, [field]: e.target.value } : item
+        idx === index ? { ...item, [field]: value } : item
       )
     );
   }

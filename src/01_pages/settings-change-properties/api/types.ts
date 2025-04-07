@@ -14,7 +14,7 @@ export const fieldsSchema = z.array(fieldSchema);
 // })
 
 export type FieldId = z.infer<typeof fieldIdSchema>;
-type FieldName = z.infer<typeof fieldNameSchema>;
+export type FieldName = z.infer<typeof fieldNameSchema>;
 export type Field = z.infer<typeof fieldSchema>;
 export type DynamicField = {
   id?: FieldId;

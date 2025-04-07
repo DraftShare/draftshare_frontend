@@ -1,6 +1,9 @@
-import { ActionIcon, Box, Fieldset, TextInput } from "@mantine/core";
+import { ActionIcon, Autocomplete, Box, Fieldset } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
+import {
+  FieldName
+} from "src/01_pages/settings-change-properties/api/types";
 import { PropField } from "src/05_shared/lib/useDynamicProps";
 import classes from "./classes.module.css";
 
@@ -9,26 +12,24 @@ type ActiveField = "name" | "value" | null;
 export function WordPropField({
   inputValue,
   index,
-  // handleChangeProp,
   handleChangeField,
   handleDeleteProp,
   editable,
   display,
+  fieldNames,
 }: {
   inputValue: [string, string];
   index: number;
   handleChangeField: (
-    e: React.ChangeEvent<HTMLInputElement>,
+    // e: React.ChangeEvent<HTMLInputElement>,
+    value: string,
     index: number,
     field: PropField
   ) => void;
-  // handleChangeField: (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   id: number
-  // ) => void;
   handleDeleteProp?: (index: number) => void;
   editable: boolean;
   display?: "name" | "value";
+  fieldNames: FieldName[];
 }) {
   const [activeField, setActiveField] = useState<ActiveField>(null);
 
@@ -39,10 +40,10 @@ export function WordPropField({
       setActiveField={setActiveField}
       inputValue={inputValue[0]}
       field="name"
-      // handleChangeProp={handleChangeProp}
       handleChangeProp={handleChangeField}
       index={index}
       editable={editable}
+      fieldNames={fieldNames}
     />
   );
   const valueField = (
@@ -52,10 +53,10 @@ export function WordPropField({
       setActiveField={setActiveField}
       inputValue={inputValue[1]}
       field="value"
-      // handleChangeProp={handleChangeProp}
       handleChangeProp={handleChangeField}
       index={index}
       editable={editable}
+      fieldNames={fieldNames}
     />
   );
 
@@ -90,6 +91,7 @@ function FieldInput({
   handleChangeProp,
   index,
   editable,
+  fieldNames,
   // readOnly,
   // placeholder
 }: {
@@ -98,12 +100,15 @@ function FieldInput({
   inputValue: string;
   field: "name" | "value";
   handleChangeProp: (
-    e: React.ChangeEvent<HTMLInputElement>,
+    // e: React.ChangeEvent<HTMLInputElement>,
+    value: string,
     index: number,
     field: PropField
   ) => void;
   index: number;
   editable: boolean;
+  fieldNames: FieldName[];
+
   // readOnly: boolean;
   // placeholder: string
 }) {
@@ -127,15 +132,16 @@ function FieldInput({
         : "";
 
   return (
-    <TextInput
+    <Autocomplete
       classNames={inputStyle}
       variant="unstyled"
       placeholder={placeholder}
       value={inputValue}
-      onChange={(e) => handleChangeProp(e, index, field)}
+      onChange={(val) => handleChangeProp(val, index, field)}
       onFocus={() => setActiveField(field)}
       onBlur={() => setActiveField(null)}
       disabled={!editable}
+      data={field === "name" ? fieldNames : []}
       // rightSection={editable && readOnlyProp && <IconLock />}
       // required={inputProp === "word"}
     />
