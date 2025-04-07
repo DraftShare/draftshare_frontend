@@ -30,29 +30,12 @@ function WordCardScreenContent({ id }: { id: cardId }) {
 
   const {
     properties,
-    // setDefaultProps,
     handleChangeProp,
     handleDeleteProp,
     resetProps,
     addEmptyProp,
     getProps,
   } = useDynamicProps(data[id].fields);
-
-  // const id = useAppSelector((state) =>
-  //   wordSlice.selectors.selectOpenWordId(state)
-  // );
-  // if (!id) return <Box>Error! wordId === null</Box>;
-
-  // const filteredData = Object.entries(data[id])
-  //   .map(([key, value]) => {
-  //     if (key !== "id" && key !== "_id") {
-  //       return { property: key, value };
-  //     }
-  //     return null;
-  //   })
-  //   .filter((item) => item !== null);
-
-  // const dataProps = data[id].fields;
 
   function handleEdit() {
     setEditable(!editable);
@@ -66,14 +49,11 @@ function WordCardScreenContent({ id }: { id: cardId }) {
       { ...getProps(), id: id },
       {
         onSuccess: () => {
-          // resetProps();
           setEditable(false);
         },
       }
     );
   }
-
-  // const listProps = editable ? properties : dataProps;
 
   const btnGroup = editable ? (
     <>
@@ -94,7 +74,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
       <DeleteWord id={id} />
       <ActionIcon onClick={handleEdit}>
         <IconEdit />
-      </ActionIcon>{" "}
+      </ActionIcon>
       <Link to="/" onClick={() => dispatch(closedWordCard())}>
         <ActionIcon>
           <IconArrowBackUp />

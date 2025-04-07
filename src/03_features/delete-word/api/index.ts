@@ -1,8 +1,9 @@
+import { cardId } from "src/04_entities/word/api/types";
 import { baseFetch } from "src/05_shared/api";
-import { deleteResultSchema } from "./types";
+import { API_CARDS } from "src/05_shared/api/urls";
 
-export async function deleteWords(ids: string[]) {
-  const data = await baseFetch("api/words", {
+export async function deleteWords(ids: cardId[]) {
+await baseFetch(API_CARDS, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -10,10 +11,4 @@ export async function deleteWords(ids: string[]) {
     body: JSON.stringify({ids}),
   });
 
-  try {
-    return deleteResultSchema.parse(data);
-  } catch (e) {
-    console.log(e);
-    throw e;
-  }
 }
