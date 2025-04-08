@@ -5,16 +5,16 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { DeleteWord } from "src/03_features/delete-word";
 import { SideMenu } from "src/04_entities/side-menu";
-import { getAllWords } from "src/04_entities/word/api";
-import { cardId } from "src/04_entities/word/api/types";
-import { closedWordCard, wordSlice } from "src/04_entities/word/model";
+import { getAllCards } from "src/05_shared/api/card/get-all-cards";
+import { cardId } from "src/05_shared/api/card/types";
+import { closedWordCard, wordSlice } from "src/04_entities/card/model";
 import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { Header } from "src/05_shared/ui/header";
 import { useUpdateWord } from "../api/use-update-word";
 import classes from "./classes.module.css";
-import { getAllFields } from "src/01_pages/settings-change-properties/api";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 
 export function WordCardScreen() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -25,7 +25,7 @@ export function WordCardScreen() {
 
 function WordCardScreenContent({ id }: { id: cardId }) {
   const dispatch = useAppDispatch();
-  const { data } = useSuspenseQuery(getAllWords());
+  const { data } = useSuspenseQuery(getAllCards());
   const { data: fields } = useSuspenseQuery(getAllFields());
   const fieldNames = fields.map((field) => field.name);
   const [editable, setEditable] = useState(false);

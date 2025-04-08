@@ -1,7 +1,7 @@
 import { Box, Text } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import { useAppDispatch } from "src/05_shared/redux";
-import { wordCard } from "../../api/types";
+import { wordCard } from "../../../../05_shared/api/card/types";
 import { openedWordCard } from "../../model";
 import classes from "./classes.module.css";
 

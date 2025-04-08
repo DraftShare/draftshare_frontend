@@ -5,7 +5,7 @@ import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { useAddWord } from "../api/use-add-word";
 import classes from "./classes.module.css";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getAllFields } from "src/01_pages/settings-change-properties/api";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 
 interface AddWordScreenProps {
   opened: boolean;

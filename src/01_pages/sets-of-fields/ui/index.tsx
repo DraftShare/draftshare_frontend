@@ -1,15 +1,15 @@
 import { Box, Button, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { getAll } from "src/01_pages/set-of-fields/api";
-import { SetId } from "src/01_pages/set-of-fields/api/types";
+import { SetId } from "src/05_shared/api/set-of-fields/types";
 import { useDeleteSets } from "src/01_pages/set-of-fields/api/use-delete-sets";
-import { Field } from "src/01_pages/settings-change-properties/api/types";
+import { Field } from "src/05_shared/api/field/types";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
+import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
 
 export function SetsOfFields() {
-  const { data } = useSuspenseQuery(getAll());
+  const { data } = useSuspenseQuery(getAllSets());
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { fieldSchema } from "src/01_pages/settings-change-properties/api/types";
+import { fieldSchema } from "src/05_shared/api/field/types";
 import { z } from "zod";
 
 const setIdSchema = z.number();

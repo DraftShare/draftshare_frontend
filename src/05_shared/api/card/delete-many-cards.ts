@@ -1,14 +1,13 @@
-import { cardId } from "src/04_entities/word/api/types";
+import { cardId } from "src/05_shared/api/card/types";
 import { baseFetch } from "src/05_shared/api";
 import { API_CARDS } from "src/05_shared/api/urls";
 
-export async function deleteWords(ids: cardId[]) {
-await baseFetch(API_CARDS, {
+export async function deleteManyCards(ids: cardId[]) {
+  await baseFetch(API_CARDS, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },
-    body: JSON.stringify({ids}),
+    body: JSON.stringify({ ids }),
   });
-
 }

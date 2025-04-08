@@ -3,7 +3,7 @@ import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import {
   FieldName
-} from "src/01_pages/settings-change-properties/api/types";
+} from "src/05_shared/api/field/types";
 import { PropField } from "src/05_shared/lib/useDynamicProps";
 import classes from "./classes.module.css";
 

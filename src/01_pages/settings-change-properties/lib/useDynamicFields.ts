@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { getAllFields } from "../api";
-import { DynamicField, FieldId } from "../api/types";
+import { DynamicField, FieldId } from "../../../05_shared/api/field/types";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 
 export function useDynamicFields() {
   const { data } = useSuspenseQuery(getAllFields());

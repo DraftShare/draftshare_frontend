@@ -1,8 +1,8 @@
-import { updateCard } from "src/04_entities/word/api/types";
+import { updateCard } from "src/05_shared/api/card/types";
 import { baseFetch } from "src/05_shared/api";
 import { API_CARDS } from "src/05_shared/api/urls";
 
-export async function updateOneWord(initialData: updateCard) {
+export async function updateOneCard(initialData: updateCard) {
   await baseFetch(API_CARDS, {
     method: "PUT",
     headers: {

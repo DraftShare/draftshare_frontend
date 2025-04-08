@@ -1,9 +1,8 @@
-import { addCard } from "src/04_entities/word/api/types";
+import { addCard } from "src/05_shared/api/card/types";
 import { baseFetch } from "src/05_shared/api";
 import { API_CARDS } from "src/05_shared/api/urls";
 
-export async function addOneWord(initialData: addCard) {
-  // const data =
+export async function addOneCard(initialData: addCard) {
   await baseFetch(API_CARDS, {
     method: "POST",
     headers: {
@@ -11,11 +10,4 @@ export async function addOneWord(initialData: addCard) {
     },
     body: JSON.stringify(initialData),
   });
-
-  // try {
-  //   return responseIdSchema.parse(data);
-  // } catch (e) {
-  //   console.log(e);
-  //   throw e;
-  // }
 }

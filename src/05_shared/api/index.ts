@@ -1,12 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
-
-let baseUrl = "";
-if (import.meta.env.DEV) {
-  baseUrl = "http://localhost:7829";
-} else if (import.meta.env.PROD) {
-  baseUrl = "https://flying-squirrel.duckdns.org";
-}
+import { baseUrl } from "./urls";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

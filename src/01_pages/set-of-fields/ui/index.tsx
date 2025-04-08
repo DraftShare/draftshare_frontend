@@ -2,11 +2,11 @@ import { Autocomplete, Box, Button, TextInput } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { getAllFields } from "src/01_pages/settings-change-properties/api";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
-import { setOfFields } from "../api/types";
+import { setOfFields } from "../../../05_shared/api/set-of-fields/types";
 import { useUpsertMutation } from "../api/use-upsert-mutation";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 
 export function SetOfFieldsForm({
   initialData,

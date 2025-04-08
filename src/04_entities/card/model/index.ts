@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { rootReducer } from "src/05_shared/redux";
-import { cardId } from "../api/types";
+import { cardId } from "../../../05_shared/api/card/types";
 
 interface initialState {
   openWordId: null | cardId;

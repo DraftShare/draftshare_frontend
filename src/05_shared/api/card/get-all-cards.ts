@@ -4,7 +4,7 @@ import { incomingCardsSchema } from "./types";
 import { API_CARDS } from "src/05_shared/api/urls";
 import { CARDS_KEY } from "src/05_shared/api/query-keys";
 
-export const getAllWords = () => {
+export const getAllCards = () => {
   return queryOptions({
     queryKey: [CARDS_KEY],
     queryFn: async () => {

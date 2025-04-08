@@ -1,7 +1,7 @@
 import { ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
-import { AddWordScreen } from "src/04_entities/add-word-screen";
+import { AddWordScreen } from "src/01_pages/add-word-screen";
 
 export function SmallBtn() {
   const [opened, { open, close }] = useDisclosure(false);

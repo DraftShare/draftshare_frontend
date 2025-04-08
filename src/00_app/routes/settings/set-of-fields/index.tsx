@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CreateSetOfFields } from "src/01_pages/set-of-fields";
+import { SetOfFieldsForm } from "src/01_pages/set-of-fields/ui";
 
 export const Route = createFileRoute("/settings/set-of-fields/")({
-  component: CreateSetOfFields,
+  component: SetOfFieldsForm,
 });

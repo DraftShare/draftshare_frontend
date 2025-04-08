@@ -1,7 +1,6 @@
-import { Box, Burger, Container, Drawer, Title } from "@mantine/core";
-import classes from "./style.module.css";
-import { useDisclosure } from "@mantine/hooks";
+import { Box, Container, Title } from "@mantine/core";
 import { JSX, ReactNode } from "react";
+import classes from "./style.module.css";
 
 export function Header({
   title = "",
