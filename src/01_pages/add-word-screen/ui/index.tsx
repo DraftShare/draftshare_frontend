@@ -1,11 +1,11 @@
 import { Box, Drawer, LoadingOverlay } from "@mantine/core";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
 import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { useAddWord } from "../api/use-add-word";
 import classes from "./classes.module.css";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 
 interface AddWordScreenProps {
   opened: boolean;
@@ -74,6 +74,12 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
             );
           })}
         </Box>
+        {/* <BottomBtnGroup>
+          <DashedBtn onClick={addEmptyProp} type="button">
+            Add a property
+          </DashedBtn>
+          <Button type="submit">Create</Button>
+        </BottomBtnGroup> */}
         <BlockOfTwoButtons addEmptyProp={addEmptyProp} secondName="Create" />
       </form>
     </Drawer>

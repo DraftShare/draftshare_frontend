@@ -15,6 +15,7 @@ import { Header } from "src/05_shared/ui/header";
 import { useUpdateWord } from "../api/use-update-word";
 import classes from "./classes.module.css";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
+import { MainContainer } from "src/05_shared/ui/main-container";
 
 export function WordCardScreen() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -91,25 +92,27 @@ function WordCardScreenContent({ id }: { id: cardId }) {
   return (
     <>
       <Header title="Word info" btnGroup={btnGroup} menu={<SideMenu />} />
-      <form
-        id="word-card-form"
-        className={classes["body"]}
-        onSubmit={(e) => handleSubmit(e)}
-      >
-        {properties.map((item, index) => (
-          <WordPropField
-            key={index}
-            inputValue={[item.name, item.value]}
-            index={index}
-            handleChangeField={handleChangeProp}
-            handleDeleteProp={handleDeleteProp}
-            editable={editable}
-            fieldNames={fieldNames}
-          />
-        ))}
+      <MainContainer>
+        <form
+          id="word-card-form"
+          className={classes["body"]}
+          onSubmit={(e) => handleSubmit(e)}
+        >
+          {properties.map((item, index) => (
+            <WordPropField
+              key={index}
+              inputValue={[item.name, item.value]}
+              index={index}
+              handleChangeField={handleChangeProp}
+              handleDeleteProp={handleDeleteProp}
+              editable={editable}
+              fieldNames={fieldNames}
+            />
+          ))}
 
-        {editable && <Button onClick={addEmptyProp}>Add prop</Button>}
-      </form>
+          {editable && <Button onClick={addEmptyProp}>Add prop</Button>}
+        </form>
+      </MainContainer>
     </>
   );
 }

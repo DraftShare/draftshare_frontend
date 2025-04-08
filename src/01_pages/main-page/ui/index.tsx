@@ -1,9 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { MainPageHeader } from "src/04_entities/main-page-header";
 import { WordCard } from "src/04_entities/card";
+import { MainPageHeader } from "src/04_entities/main-page-header";
 import { getAllCards } from "src/05_shared/api/card/get-all-cards";
-import classes from "./style.module.css";
+import { ListEntities } from "src/05_shared/ui/list-entities/list";
+import { MainContainer } from "src/05_shared/ui/main-container";
 
 export function MainPage() {
   const { data } = useSuspenseQuery(getAllCards());
@@ -22,7 +23,9 @@ export function MainPage() {
   return (
     <>
       <MainPageHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <ul className={classes["list-cards"]}>{listCards}</ul>
+      <MainContainer>
+        <ListEntities>{listCards}</ListEntities>
+      </MainContainer>
     </>
   );
 }

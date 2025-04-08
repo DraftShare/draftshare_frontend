@@ -1,29 +1,19 @@
-.add-property-btn__root {
-  background-color: var(--mantine-color-dark-6);
-  border: 2px dashed var(--mantine-color-dark-3);
-}
-
-
-
-.btn-group__wrap {
-  position: sticky;
+.btn-group-wrap {
+  position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   background: linear-gradient(
     to top,
     var(--mantine-color-body) 85%,
     rgba(1, 1, 1, 0)
   );
-  z-index: 100;
+
+  z-index: 2;
 }
 .btn-group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   /* grid-template-columns: repeat(auto-fill, minmax(50%, 1fr)); */
   padding: var(--mantine-spacing-md);
-}
-.add-property-btn {
-  /* width: 100%; */
-}
-.create-btn {
-  /* width: 100%; */
 }

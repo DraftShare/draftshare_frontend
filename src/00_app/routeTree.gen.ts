@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as WordCardImport } from './routes/word-card'
 import { Route as SettingsPageImport } from './routes/settings-page'
+import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as SettingsSetsOfFieldsImport } from './routes/settings/sets-of-fields'
 import { Route as SettingsChangePropertiesImport } from './routes/settings/change-properties'
@@ -30,6 +31,11 @@ const WordCardRoute = WordCardImport.update({
 const SettingsPageRoute = SettingsPageImport.update({
   id: '/settings-page',
   path: '/settings-page',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutRoute = LayoutImport.update({
+  id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -72,6 +78,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
     '/settings-page': {
@@ -123,6 +136,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof LayoutRoute
   '/settings-page': typeof SettingsPageRoute
   '/word-card': typeof WordCardRoute
   '/settings/change-properties': typeof SettingsChangePropertiesRoute
@@ -133,6 +147,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof LayoutRoute
   '/settings-page': typeof SettingsPageRoute
   '/word-card': typeof WordCardRoute
   '/settings/change-properties': typeof SettingsChangePropertiesRoute
@@ -144,6 +159,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_layout': typeof LayoutRoute
   '/settings-page': typeof SettingsPageRoute
   '/word-card': typeof WordCardRoute
   '/settings/change-properties': typeof SettingsChangePropertiesRoute
@@ -156,6 +172,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
     | '/settings-page'
     | '/word-card'
     | '/settings/change-properties'
@@ -165,6 +182,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
     | '/settings-page'
     | '/word-card'
     | '/settings/change-properties'
@@ -174,6 +192,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_layout'
     | '/settings-page'
     | '/word-card'
     | '/settings/change-properties'
@@ -185,6 +204,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LayoutRoute: typeof LayoutRoute
   SettingsPageRoute: typeof SettingsPageRoute
   WordCardRoute: typeof WordCardRoute
   SettingsChangePropertiesRoute: typeof SettingsChangePropertiesRoute
@@ -195,6 +215,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LayoutRoute: LayoutRoute,
   SettingsPageRoute: SettingsPageRoute,
   WordCardRoute: WordCardRoute,
   SettingsChangePropertiesRoute: SettingsChangePropertiesRoute,
@@ -214,6 +235,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_layout",
         "/settings-page",
         "/word-card",
         "/settings/change-properties",
@@ -224,6 +246,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_layout": {
+      "filePath": "_layout.tsx"
     },
     "/settings-page": {
       "filePath": "settings-page.tsx"

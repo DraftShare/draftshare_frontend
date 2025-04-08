@@ -41,7 +41,9 @@ export function SettingsPage() {
     <>
       <Header title="Settings" menu={<SideMenu />} />
       <Box className={classes["body"]}>
-        <Accordion variant="separated">{items}</Accordion>
+        <Accordion variant="separated" defaultValue={titles[0].label}>
+          {items}
+        </Accordion>
       </Box>
     </>
   );

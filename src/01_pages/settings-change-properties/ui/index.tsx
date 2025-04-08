@@ -1,10 +1,15 @@
-import { ActionIcon, Box, Fieldset, TextInput } from "@mantine/core";
+import { ActionIcon, Button, TextInput } from "@mantine/core";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
 import { IconSearch, IconTrash } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
-import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
+import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
+import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
+import { ListEntities } from "src/05_shared/ui/list-entities/list";
+import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
+import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
+import { MainContainer } from "src/05_shared/ui/main-container";
 import { useUpdateFields } from "../api/use-update-fields";
 import { useDynamicFields } from "../lib/useDynamicFields";
 import classes from "./style.module.css";
@@ -36,7 +41,7 @@ export function SettingsChangeProperties() {
   return (
     <>
       <Header title="Change properties" menu={<SideMenu />} />
-      <Box className={classes["body"]}>
+      <MainContainer>
         <TextInput
           leftSection={<IconSearch />}
           placeholder="Search property"
@@ -45,19 +50,28 @@ export function SettingsChangeProperties() {
         />
 
         <form className={classes["form"]} onSubmit={handleSubmit}>
-          {filteredList.map((field, index) => (
-            <FieldPanel
-              key={field.id}
-              index={index}
-              value={field.name}
-              handleDeleteField={handleDeleteField}
-              handleChangeField={handleChangeField}
-            />
-          ))}
+          <ListWrapEntities>
+            <ListEntities>
+              {filteredList.map((field, index) => (
+                <FieldPanel
+                  key={index}
+                  index={index}
+                  value={field.name}
+                  handleDeleteField={handleDeleteField}
+                  handleChangeField={handleChangeField}
+                />
+              ))}
+            </ListEntities>
+          </ListWrapEntities>
 
-          <BlockOfTwoButtons addEmptyProp={addEmptyField} secondName="Save" />
+          <BottomBtnGroup>
+            <DashedBtn onClick={addEmptyField} type="button">
+              Add a property
+            </DashedBtn>
+            <Button type="submit">Save</Button>
+          </BottomBtnGroup>
         </form>
-      </Box>
+      </MainContainer>
     </>
   );
 }
@@ -77,26 +91,16 @@ function FieldPanel({
   ) => void;
 }) {
   return (
-    <>
-      <Fieldset>
-        <Box
-          style={{
-            display: "flex",
-          }}
-        >
-          <TextInput
-            value={value}
-            onChange={(e) => handleChangeField(e, index)}
-          />
-          <ActionIcon
-            type="button"
-            onClick={() => handleDeleteField(index)}
-            size="lg"
-          >
+    <ListItemEntities>
+      <TextInput
+        value={value}
+        onChange={(e) => handleChangeField(e, index)}
+        rightSection={
+          <ActionIcon type="button" onClick={() => handleDeleteField(index)}>
             <IconTrash />
           </ActionIcon>
-        </Box>
-      </Fieldset>
-    </>
+        }
+      />
+    </ListItemEntities>
   );
 }
