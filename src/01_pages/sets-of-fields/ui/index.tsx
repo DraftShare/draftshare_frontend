@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Button, Text } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { IconArrowBackUp, IconTrash } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useDeleteSets } from "src/01_pages/set-of-fields/api/use-delete-sets";
@@ -18,10 +18,20 @@ import { PlainLink } from "src/05_shared/ui/plain-link";
 
 export function SetsOfFields() {
   const { data } = useSuspenseQuery(getAllSets());
-
+  const btnGroup = (
+    <ActionIcon.Group>
+      <ActionIcon component={Link} to="/settings-page">
+        <IconArrowBackUp />
+      </ActionIcon>
+    </ActionIcon.Group>
+  );
   return (
     <>
-      <Header title="Change field sets" menu={<SideMenu />} />
+      <Header
+        title="Change field sets"
+        menu={<SideMenu />}
+        btnGroup={btnGroup}
+      />
       <MainContainer>
         <ListWrapEntities>
           <ListEntities>

@@ -2,7 +2,7 @@ import { ActionIcon, Button, TextInput } from "@mantine/core";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
-import { IconSearch, IconTrash } from "@tabler/icons-react";
+import { IconArrowBackUp, IconSearch, IconTrash } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
@@ -13,6 +13,7 @@ import { MainContainer } from "src/05_shared/ui/main-container";
 import { useUpdateFields } from "../api/use-update-fields";
 import { useDynamicFields } from "../lib/useDynamicFields";
 import classes from "./style.module.css";
+import { Link } from "@tanstack/react-router";
 
 export function SettingsChangeProperties() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,9 +39,20 @@ export function SettingsChangeProperties() {
     updateMutation.mutate(dataToSend());
   }
 
+  const btnGroup = (
+    <ActionIcon.Group>
+      <ActionIcon
+        component={Link}
+        to="/settings-page"
+      >
+        <IconArrowBackUp />
+      </ActionIcon>
+    </ActionIcon.Group>
+  );
+
   return (
     <>
-      <Header title="Change properties" menu={<SideMenu />} />
+      <Header title="Change properties" menu={<SideMenu />} btnGroup={btnGroup} />
       <MainContainer>
         <TextInput
           leftSection={<IconSearch />}

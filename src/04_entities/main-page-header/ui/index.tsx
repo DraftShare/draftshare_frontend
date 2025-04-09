@@ -1,4 +1,4 @@
-import { ActionIcon, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Divider, TextInput } from "@mantine/core";
 import { IconArrowBackUp, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { AddWordIcon } from "src/03_features/add-word";
@@ -19,14 +19,17 @@ export function MainPageHeader({
   }
 
   const btnGroup = (
-    <>
+    <ActionIcon.Group>
       {!searchMod && (
-        <ActionIcon>
-          <IconSearch onClick={() => setSearchMod(true)} />
-        </ActionIcon>
+        <>
+          <ActionIcon>
+            <IconSearch onClick={() => setSearchMod(true)} />
+          </ActionIcon>
+          <Divider orientation="vertical" />
+        </>
       )}
       <AddWordIcon />
-    </>
+    </ActionIcon.Group>
   );
 
   return (

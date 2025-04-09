@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button } from "@mantine/core";
+import { ActionIcon, Box, Button, Divider } from "@mantine/core";
 import { IconArrowBackUp, IconCheck, IconEdit } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
@@ -62,10 +62,11 @@ function WordCardScreenContent({ id }: { id: cardId }) {
   }
 
   const btnGroup = editable ? (
-    <>
+    <ActionIcon.Group>
       <ActionIcon form="word-card-form" type="submit">
         <IconCheck />
       </ActionIcon>
+      <Divider orientation="vertical" />
       <ActionIcon
         onClick={() => {
           setEditable(!editable);
@@ -74,19 +75,23 @@ function WordCardScreenContent({ id }: { id: cardId }) {
       >
         <IconArrowBackUp />
       </ActionIcon>
-    </>
+    </ActionIcon.Group>
   ) : (
-    <>
+    <ActionIcon.Group>
       <DeleteWord id={id} />
+      <Divider orientation="vertical" />
       <ActionIcon onClick={handleEdit}>
         <IconEdit />
       </ActionIcon>
-      <Link to="/" onClick={() => dispatch(closedWordCard())}>
-        <ActionIcon>
-          <IconArrowBackUp />
-        </ActionIcon>
-      </Link>
-    </>
+      <Divider orientation="vertical" />
+      <ActionIcon
+        component={Link}
+        to="/"
+        onClick={() => dispatch(closedWordCard())}
+      >
+        <IconArrowBackUp />
+      </ActionIcon>
+    </ActionIcon.Group>
   );
 
   return (
