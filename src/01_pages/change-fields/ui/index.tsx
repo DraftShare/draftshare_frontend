@@ -10,12 +10,12 @@ import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
 import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { MainContainer } from "src/05_shared/ui/main-container";
-import { useUpdateFields } from "../api/use-update-fields";
+import { useUpdateFields } from "../../../04_entities/field/api/use-update-fields";
 import { useDynamicFields } from "../lib/useDynamicFields";
 import classes from "./style.module.css";
 import { Link } from "@tanstack/react-router";
 
-export function SettingsChangeProperties() {
+export function ChangeFields() {
   const [searchTerm, setSearchTerm] = useState("");
   const updateMutation = useUpdateFields();
 
@@ -52,7 +52,7 @@ export function SettingsChangeProperties() {
 
   return (
     <>
-      <Header title="Change properties" menu={<SideMenu />} btnGroup={btnGroup} />
+      <Header title="Change fields" menu={<SideMenu />} btnGroup={btnGroup} />
       <MainContainer>
         <TextInput
           leftSection={<IconSearch />}

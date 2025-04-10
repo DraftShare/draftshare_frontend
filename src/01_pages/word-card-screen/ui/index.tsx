@@ -12,7 +12,7 @@ import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { Header } from "src/05_shared/ui/header";
-import { useUpdateWord } from "../api/use-update-word";
+import { useUpdateCard } from "../../../04_entities/card/api/use-update-card";
 import classes from "./classes.module.css";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { MainContainer } from "src/05_shared/ui/main-container";
@@ -30,7 +30,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
   const { data: fields } = useSuspenseQuery(getAllFields());
   const fieldNames = fields.map((field) => field.name);
   const [editable, setEditable] = useState(false);
-  const updateWordMutation = useUpdateWord();
+  const updateWordMutation = useUpdateCard();
 
   const {
     properties,

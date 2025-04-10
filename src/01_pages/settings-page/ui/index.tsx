@@ -15,8 +15,8 @@ export function SettingsPage() {
         <>
           <List>
             <ListItem>
-              <Link to={"/settings/change-properties"}>
-                <Text>Change properties</Text>
+              <Link to={"/settings/change-fields"}>
+                <Text>Change fields</Text>
               </Link>
             </ListItem>
             <ListItem>

@@ -4,7 +4,7 @@ import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
 import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
-import { useAddWord } from "../api/use-add-word";
+import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
 
 interface AddWordScreenProps {
@@ -23,7 +23,7 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
     addEmptyProp,
     getProps,
   } = useDynamicProps();
-  const addWordMutation = useAddWord();
+  const addWordMutation = useAddCard();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     console.log("submit");

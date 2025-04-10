@@ -20,7 +20,7 @@ import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-i
 import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { MainContainer } from "src/05_shared/ui/main-container";
 import { setOfFields } from "../../../05_shared/api/set-of-fields/types";
-import { useUpsertMutation } from "../api/use-upsert-mutation";
+import { useUpsertSet } from "../../../04_entities/set-of-fields/api/use-upsert-set";
 
 export function SetOfFieldsForm({
   initialData,
@@ -35,8 +35,8 @@ export function SetOfFieldsForm({
   const [fieldsInSet, setFieldsInSet] = useState<string[]>(
     initialData?.fields.map((field) => field.name) || []
   );
-  const upsertMutation = useUpsertMutation();
-  const navigate = useNavigate({ from: "/settings/sets-of-fields" });
+  const upsertMutation = useUpsertSet();
+  const navigate = useNavigate();
 
   function handleAddField() {
     if (!fieldsInSet.includes(fieldToAdd)) {
@@ -65,6 +65,7 @@ export function SetOfFieldsForm({
           },
       {
         onSuccess: () => {
+          console.log("success");
           navigate({ to: "/settings/sets-of-fields" });
         },
       }

@@ -1,13 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "src/05_shared/api";
-import { addOneCard } from "src/05_shared/api/card/add-one-card";
+import { useNavigate } from "@tanstack/react-router";
 import { CARDS_KEY } from "src/05_shared/api/query-keys";
+import { deleteManyCards } from "src/05_shared/api/card/delete-many-cards";
 
-export function useAddWord() {
+export function useDeleteCards() {
+  const navigate = useNavigate({ from: "/word-card" });
   return useMutation({
-    mutationFn: addOneCard,
+    mutationFn: deleteManyCards,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [CARDS_KEY] });
+      navigate({ to: "/" });
     },
   });
 }

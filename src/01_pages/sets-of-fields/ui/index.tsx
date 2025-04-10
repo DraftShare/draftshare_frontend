@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Text } from "@mantine/core";
 import { IconArrowBackUp, IconTrash } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { useDeleteSets } from "src/01_pages/set-of-fields/api/use-delete-sets";
+import { useDeleteSets } from "src/04_entities/set-of-fields/api/use-delete-sets";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Field } from "src/05_shared/api/field/types";
 import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
