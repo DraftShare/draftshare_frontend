@@ -23,13 +23,13 @@ export function WordCard({ card }: { card: wordCard }) {
       >
         <ListItemContainerEntities>
           <Box className={classes["card__left-section"]}>
-            <Text>{card.fields[0].name}</Text>
-            <Text>{card.id}</Text>
+            {/* <Text>{card.fields[0].name || ""}</Text> */}
+            <Text>{card.id || ""}</Text>
             {/* <Text>{card.word}</Text> */}
             {/* <Text>{transcription}</Text> */}
           </Box>
           <Box className={classes["card__right-section"]}>
-            <Text>{card.fields[0].value}</Text>
+            {/* <Text>{card.fields[0].value || ""}</Text> */}
 
             {/* <Text>{translate}</Text> */}
           </Box>
