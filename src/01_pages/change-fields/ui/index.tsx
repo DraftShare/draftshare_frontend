@@ -1,4 +1,11 @@
-import { ActionIcon, Button, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Modal,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
@@ -14,10 +21,12 @@ import { useUpdateFields } from "../../../04_entities/field/api/use-update-field
 import { useDynamicFields } from "../lib/useDynamicFields";
 import classes from "./style.module.css";
 import { Link } from "@tanstack/react-router";
+import { useDisclosure } from "@mantine/hooks";
 
 export function ChangeFields() {
   const [searchTerm, setSearchTerm] = useState("");
   const updateMutation = useUpdateFields();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const {
     fields,
@@ -25,7 +34,7 @@ export function ChangeFields() {
     handleDeleteField,
     addEmptyField,
     dataToSend,
-    // resetStore,
+    resetChanges,
   } = useDynamicFields();
 
   const filteredList = useMemo(
@@ -34,17 +43,27 @@ export function ChangeFields() {
     [fields, searchTerm]
   );
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function handleConfirmSave() {
     updateMutation.mutate(dataToSend());
+    close();
+  }
+
+  function handleSave() {
+    if (dataToSend().fieldsToDelete.length > 0) {
+      open();
+    } else {
+      updateMutation.mutate(dataToSend());
+    }
+  }
+
+  function handleReset() {
+    resetChanges();
+    close();
   }
 
   const btnGroup = (
     <ActionIcon.Group>
-      <ActionIcon
-        component={Link}
-        to="/settings-page"
-      >
+      <ActionIcon component={Link} to="/settings-page">
         <IconArrowBackUp />
       </ActionIcon>
     </ActionIcon.Group>
@@ -61,7 +80,7 @@ export function ChangeFields() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <form className={classes["form"]} onSubmit={handleSubmit}>
+        <form className={classes["form"]}>
           <ListWrapEntities>
             <ListEntities>
               {filteredList.map((field, index) => (
@@ -80,10 +99,26 @@ export function ChangeFields() {
             <DashedBtn onClick={addEmptyField} type="button">
               Add a property
             </DashedBtn>
-            <Button type="submit">Save</Button>
+            <Button type="button" onClick={handleSave}>
+              Save
+            </Button>
           </BottomBtnGroup>
         </form>
       </MainContainer>
+      <Modal opened={opened} onClose={close} title="Are you sure?" centered>
+        <Text>
+          Among the Fields that are being deleted is Field, which is used in
+          Card and/or SetOfFields. If continued, the Field will be deleted from
+          all SetOfFields and all Cards with all its data. The cards remaining
+          without the Fields will also be deleted.
+        </Text>
+        <Flex justify={"space-between"} mt={20}>
+          <Button onClick={handleReset}>Reset changes</Button>
+          <Button type="button" onClick={handleConfirmSave}>
+            Save
+          </Button>
+        </Flex>
+      </Modal>
     </>
   );
 }

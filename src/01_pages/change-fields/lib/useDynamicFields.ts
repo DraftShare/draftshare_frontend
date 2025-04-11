@@ -26,10 +26,10 @@ export function useDynamicFields() {
     setFields((oldData) => oldData.filter((_, i) => i !== index));
   }
 
-  // function resetStore() {
-  //   setFields(existingFields);
-  //   setDelFieldIds([]);
-  // }
+  function resetChanges() {
+    setFields(data);
+    setDelFieldIds([]);
+  }
 
   function addEmptyField() {
     setFields((oldData) => [...oldData, { name: "" }]);
@@ -45,6 +45,6 @@ export function useDynamicFields() {
     handleDeleteField,
     addEmptyField,
     dataToSend,
-    // resetStore,
+    resetChanges,
   };
 }
