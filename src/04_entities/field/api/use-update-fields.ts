@@ -13,7 +13,10 @@ export function useUpdateFields() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [FIELDS_KEY] });
       queryClient.invalidateQueries({ queryKey: [CARDS_KEY] });
-      queryClient.invalidateQueries({ queryKey: [SET_OF_FIELDS_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [SET_OF_FIELDS_KEY],
+        refetchType: "all",
+      });
     },
   });
 }
