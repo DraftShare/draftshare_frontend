@@ -9,6 +9,7 @@ import { QueryProvider } from "./providers/query-provider";
 import { Outlet } from "@tanstack/react-router";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { ErrorModal } from "src/04_entities/error/ui/error-modal";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <ColorSchemeScript defaultColorScheme="auto" />
         <MantineProvider defaultColorScheme="auto" theme={mantineTheme}>
           <QueryProvider client={queryClient}>
+            <ErrorModal />
             <Outlet />
           </QueryProvider>
         </MantineProvider>
