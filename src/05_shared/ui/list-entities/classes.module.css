@@ -9,7 +9,7 @@
 .list-item {
   list-style-type: none;
 
-  border-radius: 5px;
+  border-radius: var(--mantine-radius-sm);
   background-color: var(--mantine-color-secondary-0);
 }
 

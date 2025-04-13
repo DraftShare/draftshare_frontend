@@ -16,8 +16,8 @@ export function SideMenu() {
   const mockdata = [
     {
       icon: IconMenu3,
-      title: "All words",
-      description: "..",
+      title: "All cards",
+      description: "Main page",
       link: "/"
     },
     {

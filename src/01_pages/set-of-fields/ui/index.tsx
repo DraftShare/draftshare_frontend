@@ -4,9 +4,13 @@ import {
   Box,
   Button,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core";
-import { IconArrowBackUp, IconArrowRight, IconTrash } from "@tabler/icons-react";
+import {
+  IconArrowBackUp,
+  IconArrowRight,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
@@ -21,6 +25,7 @@ import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { MainContainer } from "src/05_shared/ui/main-container";
 import { setOfFields } from "../../../05_shared/api/set-of-fields/types";
 import { useUpsertSet } from "../../../04_entities/set-of-fields/api/use-upsert-set";
+import { Banner } from "src/05_shared/ui/banners/banner";
 
 export function SetOfFieldsForm({
   initialData,
@@ -72,20 +77,21 @@ export function SetOfFieldsForm({
     );
   }
 
-    const btnGroup = (
-      <ActionIcon.Group>
-        <ActionIcon
-          component={Link}
-          to="/settings/sets-of-fields"
-        >
-          <IconArrowBackUp />
-        </ActionIcon>
-      </ActionIcon.Group>
-    );
+  const btnGroup = (
+    <ActionIcon.Group>
+      <ActionIcon component={Link} to="/settings/sets-of-fields">
+        <IconArrowBackUp />
+      </ActionIcon>
+    </ActionIcon.Group>
+  );
 
   return (
     <>
-      <Header title="Edit set of field" menu={<SideMenu />} btnGroup={btnGroup} />
+      <Header
+        title="Edit set of field"
+        menu={<SideMenu />}
+        btnGroup={btnGroup}
+      />
       <MainContainer>
         <Box>
           <Box mb={"lg"}>
@@ -124,6 +130,12 @@ export function SetOfFieldsForm({
 
           <ListWrapEntities>
             <ListEntities>
+              {fieldsInSet.length === 0 && (
+                <Banner>
+                  There's not a single field in this set. You urgently need to
+                  specify a few!
+                </Banner>
+              )}
               {fieldsInSet.map((field) => (
                 <ListItemEntities key={field}>
                   <ListItemContainerEntities>

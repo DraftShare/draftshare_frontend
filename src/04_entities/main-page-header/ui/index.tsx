@@ -33,7 +33,7 @@ export function MainPageHeader({
   );
 
   return (
-    <Header title="All words" btnGroup={btnGroup} menu={<SideMenu />}>
+    <Header title="All cards" btnGroup={btnGroup} menu={<SideMenu />}>
       {searchMod && (
         <TextInput
           leftSection={<IconSearch />}

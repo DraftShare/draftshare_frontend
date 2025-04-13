@@ -14,7 +14,9 @@ import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
 import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-item-container";
 import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { MainContainer } from "src/05_shared/ui/main-container";
-import { PlainLink } from "src/05_shared/ui/plain-link";
+
+import classes from "./classes.module.css";
+import { Banner } from "src/05_shared/ui/banners/banner";
 
 export function SetsOfFields() {
   const { data } = useSuspenseQuery(getAllSets());
@@ -35,6 +37,12 @@ export function SetsOfFields() {
       <MainContainer>
         <ListWrapEntities>
           <ListEntities>
+            {data.length === 0 && (
+              <Banner>
+                You don't have any sets. Try adding one using the button at the
+                bottom.
+              </Banner>
+            )}
             {data.map((item) => (
               <Card
                 key={item.id}
@@ -64,16 +72,21 @@ function Card({ id, name }: { id: SetId; name: string; fields: Field[] }) {
   }
   return (
     <ListItemEntities>
-      <PlainLink to="/settings/set-of-fields/$id" params={{ id: String(id) }}>
-        <ListItemContainerEntities>
+      <ListItemContainerEntities>
+        <Link
+          className={classes.link}
+          to="/settings/set-of-fields/$id"
+          params={{ id: String(id) }}
+        >
           <Text>{name}</Text>
-          <Box display={"flex"}>
-            <ActionIcon type="button" onClick={handleDelete}>
-              <IconTrash />
-            </ActionIcon>
-          </Box>
-        </ListItemContainerEntities>
-      </PlainLink>
+        </Link>
+
+        <Box display={"flex"}>
+          <ActionIcon type="button" onClick={handleDelete}>
+            <IconTrash />
+          </ActionIcon>
+        </Box>
+      </ListItemContainerEntities>
     </ListItemEntities>
   );
 }

@@ -2,7 +2,7 @@ import { Accordion, Box, List, ListItem, Text } from "@mantine/core";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
-import classes from "./style.module.css";
+import classes from "./classes.module.css";
 import { Icon123 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
@@ -10,7 +10,7 @@ export function SettingsPage() {
   const titles = [
     {
       image: <Icon123 />,
-      label: "Properties managment",
+      label: "Field management",
       content: (
         <>
           <List>

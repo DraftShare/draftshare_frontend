@@ -1,6 +1,6 @@
 import { Box, Container, Title } from "@mantine/core";
 import { JSX, ReactNode } from "react";
-import classes from "./style.module.css";
+import classes from "./classes.module.css";
 
 export function Header({
   title = "",

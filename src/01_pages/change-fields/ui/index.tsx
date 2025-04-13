@@ -19,9 +19,10 @@ import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { MainContainer } from "src/05_shared/ui/main-container";
 import { useUpdateFields } from "../../../04_entities/field/api/use-update-fields";
 import { useDynamicFields } from "../lib/useDynamicFields";
-import classes from "./style.module.css";
+import classes from "./classes.module.css";
 import { Link } from "@tanstack/react-router";
 import { useDisclosure } from "@mantine/hooks";
+import { Banner } from "src/05_shared/ui/banners/banner";
 
 export function ChangeFields() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,6 +82,12 @@ export function ChangeFields() {
         />
 
         <form className={classes["form"]}>
+          {filteredList.length === 0 && (
+            <Banner>
+              No fields found. You can add a field by clicking on the "Add a
+              field" button at the bottom of the screen.
+            </Banner>
+          )}
           <ListWrapEntities>
             <ListEntities>
               {filteredList.map((field, index) => (
@@ -97,7 +104,7 @@ export function ChangeFields() {
 
           <BottomBtnGroup>
             <DashedBtn onClick={addEmptyField} type="button">
-              Add a property
+              Add a field
             </DashedBtn>
             <Button type="button" onClick={handleSave}>
               Save
@@ -142,6 +149,7 @@ function FieldPanel({
       <TextInput
         value={value}
         onChange={(e) => handleChangeField(e, index)}
+        placeholder="Type the name of the field..."
         rightSection={
           <ActionIcon type="button" onClick={() => handleDeleteField(index)}>
             <IconTrash />
