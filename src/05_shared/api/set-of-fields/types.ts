@@ -3,11 +3,13 @@ import { z } from "zod";
 
 const setIdSchema = z.number();
 const setNameSchema = z.string();
+const defaultSetSchema = z.boolean();
 
 export const setOfFieldsSchema = z.object({
   id: setIdSchema,
   name: setNameSchema,
   fields: z.array(fieldSchema),
+  defaultSet: defaultSetSchema,
 });
 export const setsOfFieldsSchema = z.array(setOfFieldsSchema);
 export const deleteResponseSchema = z.null();

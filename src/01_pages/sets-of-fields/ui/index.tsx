@@ -1,12 +1,16 @@
 import { ActionIcon, Box, Button, Text } from "@mantine/core";
-import { IconArrowBackUp, IconTrash } from "@tabler/icons-react";
+import {
+  IconArrowBackUp,
+  IconStar,
+  IconStarFilled,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useDeleteSets } from "src/04_entities/set-of-fields/api/use-delete-sets";
 import { SideMenu } from "src/04_entities/side-menu";
-import { Field } from "src/05_shared/api/field/types";
 import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
-import { SetId } from "src/05_shared/api/set-of-fields/types";
+import { setOfFields } from "src/05_shared/api/set-of-fields/types";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { Header } from "src/05_shared/ui/header";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
@@ -15,8 +19,9 @@ import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-i
 import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { MainContainer } from "src/05_shared/ui/main-container";
 
-import classes from "./classes.module.css";
 import { Banner } from "src/05_shared/ui/banners/banner";
+import classes from "./classes.module.css";
+import { useSetDefault } from "src/04_entities/set-of-fields";
 
 export function SetsOfFields() {
   const { data } = useSuspenseQuery(getAllSets());
@@ -27,6 +32,9 @@ export function SetsOfFields() {
       </ActionIcon>
     </ActionIcon.Group>
   );
+
+  const sortedList = data.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <>
       <Header
@@ -37,19 +45,14 @@ export function SetsOfFields() {
       <MainContainer>
         <ListWrapEntities>
           <ListEntities>
-            {data.length === 0 && (
+            {sortedList.length === 0 && (
               <Banner>
                 You don't have any sets. Try adding one using the button at the
                 bottom.
               </Banner>
             )}
-            {data.map((item) => (
-              <Card
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                fields={item.fields}
-              />
+            {sortedList.map((set) => (
+              <Card key={set.id} set={set} />
             ))}
           </ListEntities>
         </ListWrapEntities>
@@ -64,15 +67,24 @@ export function SetsOfFields() {
   );
 }
 
-function Card({ id, name }: { id: SetId; name: string; fields: Field[] }) {
+function Card({ set }: { set: setOfFields }) {
+  const { id, name, defaultSet } = set;
   const deleteMutation = useDeleteSets();
+  const setDefaultMutation = useSetDefault();
 
   function handleDelete() {
     deleteMutation.mutate([id]);
   }
+  function handleSetDefault() {
+    setDefaultMutation.mutate(id);
+  }
+
   return (
     <ListItemEntities>
       <ListItemContainerEntities>
+        <ActionIcon variant="subtle" onClick={handleSetDefault} mr={10}>
+          {defaultSet ? <IconStarFilled /> : <IconStar />}
+        </ActionIcon>
         <Link
           className={classes.link}
           to="/settings/set-of-fields/$id"

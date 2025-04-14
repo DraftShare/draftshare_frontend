@@ -6,6 +6,7 @@ import { BlockOfTwoButtons } from "src/05_shared/ui/blockOfTwoButtons";
 import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
 import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
+import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
 
 interface AddWordScreenProps {
   opened: boolean;
@@ -13,6 +14,8 @@ interface AddWordScreenProps {
 }
 export function AddWordScreen({ opened, close }: AddWordScreenProps) {
   const { data: fields } = useSuspenseQuery(getAllFields());
+  const { data: sets } = useSuspenseQuery(getAllSets());
+  const defaultSet = sets.find((set) => set.defaultSet);
   const fieldNames = fields.map((field) => field.name);
 
   const {
@@ -22,7 +25,9 @@ export function AddWordScreen({ opened, close }: AddWordScreenProps) {
     resetProps,
     addEmptyProp,
     getProps,
-  } = useDynamicProps();
+  } = useDynamicProps(
+    defaultSet?.fields.map((field) => ({ name: field.name, value: "" })) || []
+  );
   const addWordMutation = useAddCard();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
