@@ -17,7 +17,7 @@ export function WordCard({ card }: { card: wordCard }) {
   return (
     <ListItemEntities>
       <Link
-        to="/word-card"
+        to="/card-info"
         className={classes["link"]}
         onClick={() => dispatch(openedWordCard(card.id))}
       >

@@ -11,8 +11,8 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as WordCardImport } from './routes/word-card'
 import { Route as SettingsPageImport } from './routes/settings-page'
+import { Route as CardInfoImport } from './routes/card-info'
 import { Route as AddCardImport } from './routes/add-card'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
@@ -23,15 +23,15 @@ import { Route as SettingsSetOfFieldsIdImport } from './routes/settings/set-of-f
 
 // Create/Update Routes
 
-const WordCardRoute = WordCardImport.update({
-  id: '/word-card',
-  path: '/word-card',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const SettingsPageRoute = SettingsPageImport.update({
   id: '/settings-page',
   path: '/settings-page',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CardInfoRoute = CardInfoImport.update({
+  id: '/card-info',
+  path: '/card-info',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -101,18 +101,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AddCardImport
       parentRoute: typeof rootRoute
     }
+    '/card-info': {
+      id: '/card-info'
+      path: '/card-info'
+      fullPath: '/card-info'
+      preLoaderRoute: typeof CardInfoImport
+      parentRoute: typeof rootRoute
+    }
     '/settings-page': {
       id: '/settings-page'
       path: '/settings-page'
       fullPath: '/settings-page'
       preLoaderRoute: typeof SettingsPageImport
-      parentRoute: typeof rootRoute
-    }
-    '/word-card': {
-      id: '/word-card'
-      path: '/word-card'
-      fullPath: '/word-card'
-      preLoaderRoute: typeof WordCardImport
       parentRoute: typeof rootRoute
     }
     '/settings/change-fields': {
@@ -152,8 +152,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
   '/add-card': typeof AddCardRoute
+  '/card-info': typeof CardInfoRoute
   '/settings-page': typeof SettingsPageRoute
-  '/word-card': typeof WordCardRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
   '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
   '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
@@ -164,8 +164,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
   '/add-card': typeof AddCardRoute
+  '/card-info': typeof CardInfoRoute
   '/settings-page': typeof SettingsPageRoute
-  '/word-card': typeof WordCardRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
   '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
   '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
@@ -177,8 +177,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRoute
   '/add-card': typeof AddCardRoute
+  '/card-info': typeof CardInfoRoute
   '/settings-page': typeof SettingsPageRoute
-  '/word-card': typeof WordCardRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
   '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
   '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
@@ -191,8 +191,8 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-card'
+    | '/card-info'
     | '/settings-page'
-    | '/word-card'
     | '/settings/change-fields'
     | '/settings/sets-of-fields'
     | '/settings/set-of-fields/$id'
@@ -202,8 +202,8 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-card'
+    | '/card-info'
     | '/settings-page'
-    | '/word-card'
     | '/settings/change-fields'
     | '/settings/sets-of-fields'
     | '/settings/set-of-fields/$id'
@@ -213,8 +213,8 @@ export interface FileRouteTypes {
     | '/'
     | '/_layout'
     | '/add-card'
+    | '/card-info'
     | '/settings-page'
-    | '/word-card'
     | '/settings/change-fields'
     | '/settings/sets-of-fields'
     | '/settings/set-of-fields/$id'
@@ -226,8 +226,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRoute
   AddCardRoute: typeof AddCardRoute
+  CardInfoRoute: typeof CardInfoRoute
   SettingsPageRoute: typeof SettingsPageRoute
-  WordCardRoute: typeof WordCardRoute
   SettingsChangeFieldsRoute: typeof SettingsChangeFieldsRoute
   SettingsSetsOfFieldsRoute: typeof SettingsSetsOfFieldsRoute
   SettingsSetOfFieldsIdRoute: typeof SettingsSetOfFieldsIdRoute
@@ -238,8 +238,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRoute,
   AddCardRoute: AddCardRoute,
+  CardInfoRoute: CardInfoRoute,
   SettingsPageRoute: SettingsPageRoute,
-  WordCardRoute: WordCardRoute,
   SettingsChangeFieldsRoute: SettingsChangeFieldsRoute,
   SettingsSetsOfFieldsRoute: SettingsSetsOfFieldsRoute,
   SettingsSetOfFieldsIdRoute: SettingsSetOfFieldsIdRoute,
@@ -259,8 +259,8 @@ export const routeTree = rootRoute
         "/",
         "/_layout",
         "/add-card",
+        "/card-info",
         "/settings-page",
-        "/word-card",
         "/settings/change-fields",
         "/settings/sets-of-fields",
         "/settings/set-of-fields/$id",
@@ -276,11 +276,11 @@ export const routeTree = rootRoute
     "/add-card": {
       "filePath": "add-card.tsx"
     },
+    "/card-info": {
+      "filePath": "card-info.tsx"
+    },
     "/settings-page": {
       "filePath": "settings-page.tsx"
-    },
-    "/word-card": {
-      "filePath": "word-card.tsx"
     },
     "/settings/change-fields": {
       "filePath": "settings/change-fields.tsx"

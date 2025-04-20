@@ -1,38 +1,16 @@
 import { useCallback, useState } from "react";
 
-export interface Property {
+interface Field {
   name: string;
   value: string;
 }
 
-export type PropField = keyof Property;
-
-export function useDynamicProps(initialData: Property[] = []) {
-  const [properties, setProperties] = useState<Property[]>(initialData);
-
-  // function setDefaultProps(defaultProps: Property[] = []) {
-  //   setProperties(defaultProps);
-  // }
-  // function setDefaultProps(cards: cards, id: cardId | null) {
-  //   if (id) setProperties(cards[id].fields);
-  // }
-
-  function handleChangeProp(
-    // e: React.ChangeEvent<HTMLInputElement>,
-    value: string,
-    index: number,
-    field: PropField
-  ) {
-    setProperties((oldData) =>
-      oldData.map((item, idx) =>
-        idx === index ? { ...item, [field]: value } : item
-      )
-    );
-  }
+export function useDynamicFields(initialData: Field[] = []) {
+  const [fields, setFields] = useState<Field[]>(initialData);
 
   const handleFieldUpdate = useCallback(
     (index: number, name: string, value: string) => {
-      setProperties((prev) => {
+      setFields((prev) => {
         const newFields = [...prev];
         newFields[index] = { name, value };
         return newFields;
@@ -41,36 +19,36 @@ export function useDynamicProps(initialData: Property[] = []) {
     []
   );
 
-  const handleDeleteProp = useCallback(
+  const handleFieldDelete = useCallback(
     (index: number) => {
-      setProperties((oldData) => oldData.filter((_, i) => i !== index));
+      setFields((prev) => prev.filter((_, i) => i !== index));
     },
     []
   );
 
-  function resetProps() {
-    setProperties(initialData);
+  function resetFields() {
+    setFields(initialData);
   }
 
-  function addEmptyProp() {
-    setProperties((oldData) => [...oldData, { name: "", value: "" }]);
+  function addEmptyField() {
+    setFields((prev) => [...prev, { name: "", value: "" }]);
   }
 
-  function getFields() {
-    const result = properties.map((prop) => ({ name: prop.name }));
-    return result;
-  }
+  // function getFields() {
+  //   const result = fields.map((prop) => ({ name: prop.name }));
+  //   return result;
+  // }
 
-  function getProps() {
-    const fields = properties.map((prop) => ({
-      name: prop.name,
-      value: prop.value,
-    }));
+  // function getProps() {
+  //   const result = fields.map((field) => ({
+  //     name: field.name,
+  //     value: field.value,
+  //   }));
 
-    return {
-      fields,
-    };
-  }
+  //   return {
+  //     fields: result,
+  //   };
+  // }
 
   // function getProps(operation: "add"): addWordCard;
   // function getProps(operation: "update", id: cardId): wordCard;
@@ -109,14 +87,12 @@ export function useDynamicProps(initialData: Property[] = []) {
   // }
 
   return {
-    properties,
-    // setDefaultProps,
-    handleChangeProp,
+    dynamicFields: fields,
     handleFieldUpdate,
-    handleDeleteProp,
-    resetProps,
-    addEmptyProp,
-    getFields,
-    getProps,
+    handleFieldDelete,
+    resetDynamicFields: resetFields,
+    addEmptyField,
+    // getFields,
+    // getProps,
   };
 }

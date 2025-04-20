@@ -7,36 +7,35 @@ import {
   Modal,
   Text,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBackUp, IconCheck, IconEdit } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { DeleteWord } from "src/03_features/delete-word";
+import { closedWordCard, wordSlice } from "src/04_entities/card/model";
 import { SideMenu } from "src/04_entities/side-menu";
 import { getAllCards } from "src/05_shared/api/card/get-all-cards";
 import { cardId } from "src/05_shared/api/card/types";
-import { closedWordCard, wordSlice } from "src/04_entities/card/model";
-import { useDynamicProps } from "src/05_shared/lib/useDynamicProps";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
+import { useDynamicFields } from "src/05_shared/lib/useDynamicProps";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
-import { WordPropField } from "src/05_shared/ui/card-text-info/word-prop-field";
+import { EditableField } from "src/05_shared/ui/card-text-info";
 import { Header } from "src/05_shared/ui/header";
+import { MainContainer } from "src/05_shared/ui/main-container";
 import { useUpdateCard } from "../../../04_entities/card/api/use-update-card";
 import classes from "./classes.module.css";
-import { getAllFields } from "src/05_shared/api/field/get-all-fields";
-import { MainContainer } from "src/05_shared/ui/main-container";
-import { useDisclosure } from "@mantine/hooks";
-import { EditableField } from "src/05_shared/ui/card-text-info";
 
-export function WordCardScreen() {
+export function CardInfo() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
   if (!id) return <Box>Error! wordId === null</Box>;
 
-  return <WordCardScreenContent key={id} id={id} />;
+  return <CardInfoContent key={id} id={id} />;
 }
 
-function WordCardScreenContent({ id }: { id: cardId }) {
+function CardInfoContent({ id }: { id: cardId }) {
   const dispatch = useAppDispatch();
-  const { data } = useSuspenseQuery(getAllCards());
+  const { data: cards } = useSuspenseQuery(getAllCards());
   const { data: fields } = useSuspenseQuery(getAllFields());
   const fieldNames = useMemo(() => fields.map((field) => field.name), [fields]);
   const [editable, setEditable] = useState(false);
@@ -45,25 +44,23 @@ function WordCardScreenContent({ id }: { id: cardId }) {
   const navigate = useNavigate();
 
   const {
-    properties,
-    handleChangeProp,
+    dynamicFields,
     handleFieldUpdate,
-    handleDeleteProp,
-    resetProps,
-    addEmptyProp,
-    getProps,
-  } = useDynamicProps(data[id].fields);
+    handleFieldDelete,
+    resetDynamicFields,
+    addEmptyField,
+  } = useDynamicFields(cards[id].fields);
 
   // const sortedList = properties.sort((a, b) => a.name.localeCompare(b.name));
 
   function handleEdit() {
     setEditable(!editable);
-    resetProps();
+    resetDynamicFields();
   }
 
   function runMutation() {
     updateWordMutation.mutate(
-      { ...getProps(), id: id },
+      { fields: dynamicFields, id: id },
       {
         onSuccess: () => {
           setEditable(false);
@@ -73,7 +70,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
   }
 
   function handleSave() {
-    if (getProps().fields.length === 0) {
+    if (dynamicFields.length === 0) {
       open();
     } else {
       runMutation();
@@ -84,8 +81,8 @@ function WordCardScreenContent({ id }: { id: cardId }) {
     close();
     navigate({ to: "/" });
   }
-  function handleReset() {
-    resetProps();
+  function handleResetChanges() {
+    resetDynamicFields();
     close();
   }
 
@@ -98,7 +95,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
       <ActionIcon
         onClick={() => {
           setEditable(!editable);
-          resetProps();
+          resetDynamicFields();
         }}
       >
         <IconArrowBackUp />
@@ -127,7 +124,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
       <Header title="Word info" btnGroup={btnGroup} menu={<SideMenu />} />
       <MainContainer>
         <form className={classes["body"]}>
-          {properties.map((field, index) => (
+          {dynamicFields.map((field, index) => (
             <EditableField
               key={index}
               initialName={field.name}
@@ -135,21 +132,12 @@ function WordCardScreenContent({ id }: { id: cardId }) {
               fieldNames={fieldNames}
               editable={editable}
               onUpdate={handleFieldUpdate}
-              onDelete={handleDeleteProp}
+              onDelete={handleFieldDelete}
               index={index}
             />
-            // <WordPropField
-            //   key={index}
-            //   inputValue={[item.name, item.value]}
-            //   index={index}
-            //   handleChangeField={handleChangeProp}
-            //   handleDeleteProp={handleDeleteProp}
-            //   editable={editable}
-            //   fieldNames={fieldNames}
-            // />
           ))}
 
-          {editable && <Button onClick={addEmptyProp}>Add prop</Button>}
+          {editable && <Button onClick={addEmptyField}>Add prop</Button>}
         </form>
       </MainContainer>
       <Modal opened={opened} onClose={close} title="Are you sure?" centered>
@@ -158,7 +146,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
           Are you sure you want to delete this card?
         </Text>
         <Flex justify={"space-between"} mt={20}>
-          <Button onClick={handleReset}>Reset changes</Button>
+          <Button onClick={handleResetChanges}>Reset changes</Button>
           <Button onClick={handleConfirmSave}>Save</Button>
         </Flex>
       </Modal>
