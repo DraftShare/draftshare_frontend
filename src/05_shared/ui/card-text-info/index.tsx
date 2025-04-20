@@ -1,45 +1,59 @@
-import { ActionIcon, TextInput } from "@mantine/core";
-import classes from "./classes.module.css";
+import { Autocomplete, ActionIcon, TextInput } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
+import { memo, useState } from "react";
 
-export function CardTextInfo({
-  label,
-  content = "",
-  editable,
-  onChangeValue,
-  handleDelete,
-}: {
-  label: string;
-  content: string | undefined;
+interface EditableFieldProps {
+  initialName: string;
+  initialValue: string;
+  fieldNames: string[];
   editable: boolean;
-  onChangeValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDelete: () => void;
-}) {
-  // const [value, setValue] = useState(content);
-  return (
-    <TextInput
-      disabled={!editable}
-      label={label}
-      // placeholder={value === "" ? "Type here" : ""}
-      variant="unstyled"
-      value={content}
-      // onChange={(e) => setValue(e.target.value)}
-      onChange={onChangeValue}
-      classNames={{
-        root: classes.root,
-        label: classes.label,
-        input: classes.input,
-      }}
-      rightSection={editable &&
-        <ActionIcon>
-          <IconTrash onClick={handleDelete} />
-        </ActionIcon>
-      }
-    />
-    // <Box className={classes["card"]}>
-    //   <Text classNames={{ root: classes.label }}>{label}</Text>
-    //   <Text classNames={{ root: classes.content }}>{content}</Text>
-
-    // </Box>
-  );
+  onUpdate: (index: number, name: string, value: string) => void;
+  onDelete?: (index: number) => void;
+  index: number;
 }
+
+export const EditableField = memo(function EditableField({
+  initialName,
+  initialValue,
+  fieldNames,
+  editable,
+  onUpdate,
+  onDelete,
+  index,
+}: EditableFieldProps) {
+  const [name, setName] = useState(initialName);
+  const [value, setValue] = useState(initialValue);
+
+  const handleNameChange = (newName: string) => {
+    setName(newName);
+    onUpdate(index, newName, value);
+  };
+
+  const handleValueChange = (newValue: string) => {
+    setValue(newValue);
+    onUpdate(index, name, newValue);
+  };
+
+  return (
+    <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+      <Autocomplete
+        value={name}
+        onChange={handleNameChange}
+        data={fieldNames}
+        placeholder="Property name"
+        disabled={!editable}
+      />
+      <TextInput
+        value={value}
+        onChange={(e) => handleValueChange(e.target.value)}
+        placeholder="Property value"
+        disabled={!editable}
+      />
+      {editable && onDelete && (
+        <ActionIcon onClick={() => onDelete(index)} size="lg">
+          <IconTrash />
+        </ActionIcon>
+      )}
+    </div>
+  );
+});

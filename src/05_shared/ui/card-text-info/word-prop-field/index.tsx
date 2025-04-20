@@ -1,9 +1,7 @@
 import { ActionIcon, Autocomplete, Box, Fieldset } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import {
-  FieldName
-} from "src/05_shared/api/field/types";
+import { FieldName } from "src/05_shared/api/field/types";
 import { PropField } from "src/05_shared/lib/useDynamicProps";
 import classes from "./classes.module.css";
 
@@ -15,7 +13,7 @@ export function WordPropField({
   handleChangeField,
   handleDeleteProp,
   editable,
-  display,
+  // display,
   fieldNames,
 }: {
   inputValue: [string, string];
@@ -28,7 +26,7 @@ export function WordPropField({
   ) => void;
   handleDeleteProp?: (index: number) => void;
   editable: boolean;
-  display?: "name" | "value";
+  // display?: "name" | "value";
   fieldNames: FieldName[];
 }) {
   const [activeField, setActiveField] = useState<ActiveField>(null);
@@ -63,11 +61,12 @@ export function WordPropField({
   return (
     <Fieldset variant="unstyled" className={classes["fieldset-n"]}>
       <Box className={classes["add-prpoerty-input__wrap-n"]}>
-        {display === "name"
+        {/* {display === "name"
           ? nameField
           : display === "value"
             ? valueField
-            : [nameField, valueField]}
+            : [nameField, valueField]} */}
+            {[nameField, valueField]}
       </Box>
 
       {editable && index !== undefined && handleDeleteProp && (

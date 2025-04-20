@@ -1,7 +1,7 @@
 import { ActionIcon, Divider, TextInput } from "@mantine/core";
-import { IconArrowBackUp, IconSearch } from "@tabler/icons-react";
+import { IconArrowBackUp, IconPlus, IconSearch } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { AddWordIcon } from "src/03_features/add-word";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
@@ -22,13 +22,15 @@ export function MainPageHeader({
     <ActionIcon.Group>
       {!searchMod && (
         <>
-          <ActionIcon>
-            <IconSearch onClick={() => setSearchMod(true)} />
+          <ActionIcon onClick={() => setSearchMod(true)}>
+            <IconSearch />
           </ActionIcon>
           <Divider orientation="vertical" />
         </>
       )}
-      <AddWordIcon />
+      <ActionIcon component={Link} to="/add-card">
+        <IconPlus />
+      </ActionIcon>
     </ActionIcon.Group>
   );
 

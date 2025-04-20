@@ -10,7 +10,7 @@ import {
 import { IconArrowBackUp, IconCheck, IconEdit } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DeleteWord } from "src/03_features/delete-word";
 import { SideMenu } from "src/04_entities/side-menu";
 import { getAllCards } from "src/05_shared/api/card/get-all-cards";
@@ -25,6 +25,7 @@ import classes from "./classes.module.css";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { MainContainer } from "src/05_shared/ui/main-container";
 import { useDisclosure } from "@mantine/hooks";
+import { EditableField } from "src/05_shared/ui/card-text-info";
 
 export function WordCardScreen() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -37,7 +38,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
   const dispatch = useAppDispatch();
   const { data } = useSuspenseQuery(getAllCards());
   const { data: fields } = useSuspenseQuery(getAllFields());
-  const fieldNames = fields.map((field) => field.name);
+  const fieldNames = useMemo(() => fields.map((field) => field.name), [fields]);
   const [editable, setEditable] = useState(false);
   const updateWordMutation = useUpdateCard();
   const [opened, { open, close }] = useDisclosure(false);
@@ -46,6 +47,7 @@ function WordCardScreenContent({ id }: { id: cardId }) {
   const {
     properties,
     handleChangeProp,
+    handleFieldUpdate,
     handleDeleteProp,
     resetProps,
     addEmptyProp,
@@ -125,16 +127,26 @@ function WordCardScreenContent({ id }: { id: cardId }) {
       <Header title="Word info" btnGroup={btnGroup} menu={<SideMenu />} />
       <MainContainer>
         <form className={classes["body"]}>
-          {properties.map((item, index) => (
-            <WordPropField
+          {properties.map((field, index) => (
+            <EditableField
               key={index}
-              inputValue={[item.name, item.value]}
-              index={index}
-              handleChangeField={handleChangeProp}
-              handleDeleteProp={handleDeleteProp}
-              editable={editable}
+              initialName={field.name}
+              initialValue={field.value}
               fieldNames={fieldNames}
+              editable={editable}
+              onUpdate={handleFieldUpdate}
+              onDelete={handleDeleteProp}
+              index={index}
             />
+            // <WordPropField
+            //   key={index}
+            //   inputValue={[item.name, item.value]}
+            //   index={index}
+            //   handleChangeField={handleChangeProp}
+            //   handleDeleteProp={handleDeleteProp}
+            //   editable={editable}
+            //   fieldNames={fieldNames}
+            // />
           ))}
 
           {editable && <Button onClick={addEmptyProp}>Add prop</Button>}

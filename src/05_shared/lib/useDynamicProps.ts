@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export interface Property {
   name: string;
@@ -29,9 +29,24 @@ export function useDynamicProps(initialData: Property[] = []) {
       )
     );
   }
-  function handleDeleteProp(index: number) {
-    setProperties((oldData) => oldData.filter((_, i) => i !== index));
-  }
+
+  const handleFieldUpdate = useCallback(
+    (index: number, name: string, value: string) => {
+      setProperties((prev) => {
+        const newFields = [...prev];
+        newFields[index] = { name, value };
+        return newFields;
+      });
+    },
+    []
+  );
+
+  const handleDeleteProp = useCallback(
+    (index: number) => {
+      setProperties((oldData) => oldData.filter((_, i) => i !== index));
+    },
+    []
+  );
 
   function resetProps() {
     setProperties(initialData);
@@ -97,6 +112,7 @@ export function useDynamicProps(initialData: Property[] = []) {
     properties,
     // setDefaultProps,
     handleChangeProp,
+    handleFieldUpdate,
     handleDeleteProp,
     resetProps,
     addEmptyProp,
