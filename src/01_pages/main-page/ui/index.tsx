@@ -8,14 +8,18 @@ import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { MainContainer } from "src/05_shared/ui/main-container";
 
 export function MainPage() {
-  const { data } = useSuspenseQuery(getAllCards());
+  const { data: cards } = useSuspenseQuery(getAllCards());
   const [searchTerm, setSearchTerm] = useState("");
 
-  // const filteredData = Object.values(data).filter((card) =>
-  //   card.word.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
+  const filteredData = Object.values(cards).filter((card) => {
+    const firstThreeFields = card.fields.slice(0, 3);
 
-  const filteredData = Object.values(data).filter((card) => card.id);
+    return firstThreeFields.some(
+      (field) =>
+        field.value.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        field.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   const listCards = filteredData.map((card, index) => (
     <WordCard key={index} card={card} />
