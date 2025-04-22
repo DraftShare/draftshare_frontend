@@ -5,6 +5,10 @@ import { Header } from "src/05_shared/ui/header";
 import classes from "./classes.module.css";
 import { Icon123 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
+import {
+  SETTINGS_CHANGE_FIELDS_PATH,
+  SETTINGS_SETS_OF_FIELDS_PATH,
+} from "src/05_shared/api/query-const";
 
 export function SettingsPage() {
   const titles = [
@@ -15,12 +19,12 @@ export function SettingsPage() {
         <>
           <List>
             <ListItem>
-              <Link to={"/settings/change-fields"}>
+              <Link to={SETTINGS_CHANGE_FIELDS_PATH}>
                 <Text>Change fields</Text>
               </Link>
             </ListItem>
             <ListItem>
-              <Link to={"/settings/sets-of-fields"}>
+              <Link to={SETTINGS_SETS_OF_FIELDS_PATH}>
                 <Text>Change field sets</Text>
               </Link>
             </ListItem>

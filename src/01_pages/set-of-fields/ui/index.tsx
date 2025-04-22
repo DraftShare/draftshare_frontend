@@ -26,6 +26,7 @@ import { MainContainer } from "src/05_shared/ui/main-container";
 import { setOfFields } from "../../../05_shared/api/set-of-fields/types";
 import { useUpsertSet } from "../../../04_entities/set-of-fields/api/use-upsert-set";
 import { Banner } from "src/05_shared/ui/banners/banner";
+import { SETTINGS_SETS_OF_FIELDS_PATH } from "src/05_shared/api/query-const";
 
 export function SetOfFieldsForm({
   initialData,
@@ -71,7 +72,7 @@ export function SetOfFieldsForm({
       {
         onSuccess: () => {
           console.log("success");
-          navigate({ to: "/settings/sets-of-fields" });
+          navigate({ to: SETTINGS_SETS_OF_FIELDS_PATH });
         },
       }
     );
@@ -79,7 +80,7 @@ export function SetOfFieldsForm({
 
   const btnGroup = (
     <ActionIcon.Group>
-      <ActionIcon component={Link} to="/settings/sets-of-fields">
+      <ActionIcon component={Link} to={SETTINGS_SETS_OF_FIELDS_PATH}>
         <IconArrowBackUp />
       </ActionIcon>
     </ActionIcon.Group>

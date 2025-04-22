@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { baseFetch } from "src/05_shared/api";
 import { incomingCardsSchema } from "./types";
 import { API_CARDS } from "src/05_shared/api/urls";
-import { CARDS_KEY } from "src/05_shared/api/query-keys";
+import { CARDS_KEY } from "src/05_shared/api/query-const";
 
 export const getAllCards = () => {
   return queryOptions({

@@ -29,6 +29,7 @@ import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
+import { ROOT_PATH } from "src/05_shared/api/query-const";
 
 export function CardInfo() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -83,7 +84,7 @@ function CardInfoContent({ id }: { id: cardId }) {
   function handleConfirmSave() {
     runMutation();
     close();
-    navigate({ to: "/" });
+    navigate({ to: ROOT_PATH });
   }
   function handleResetChanges() {
     resetDynamicFields();
@@ -115,7 +116,7 @@ function CardInfoContent({ id }: { id: cardId }) {
       <Divider orientation="vertical" />
       <ActionIcon
         component={Link}
-        to="/"
+        to={ROOT_PATH}
         onClick={() => dispatch(closedWordCard())}
       >
         <IconArrowBackUp />

@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { SET_OF_FIELDS_KEY } from "../query-keys";
+import { SET_OF_FIELDS_KEY } from "../query-const";
 import { baseFetch } from "..";
 import { setsOfFieldsSchema } from "src/05_shared/api/set-of-fields/types";
 import { API_SET_OF_FIELDS } from "../urls";

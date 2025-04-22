@@ -9,6 +9,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconMenu3, IconSettings } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import classes from "./classes.module.css";
+import { ROOT_PATH, SETTINGS_PAGE_PATH } from "src/05_shared/api/query-const";
 
 export function SideMenu() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -18,13 +19,13 @@ export function SideMenu() {
       icon: IconMenu3,
       title: "All cards",
       description: "Main page",
-      link: "/"
+      link: ROOT_PATH
     },
     {
       icon: IconSettings,
       title: "Settings",
       description: "These are the settings, what else can I say..",
-      link: "/settings-page"
+      link: SETTINGS_PAGE_PATH
     },
   ];
 

@@ -16,6 +16,7 @@ import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { EditableField } from "src/04_entities/card";
+import { ROOT_PATH } from "src/05_shared/api/query-const";
 
 export function AddCard() {
   const { data: fields } = useSuspenseQuery(getAllFields());
@@ -42,7 +43,7 @@ export function AddCard() {
       {
         onSuccess: () => {
           resetDynamicFields();
-          navigate({ to: "/" });
+          navigate({ to: ROOT_PATH });
         },
       }
     );
@@ -50,7 +51,7 @@ export function AddCard() {
 
   const btnGroup = (
     <ActionIcon.Group>
-      <ActionIcon component={Link} to="/">
+      <ActionIcon component={Link} to={ROOT_PATH}>
         <IconArrowBackUp />
       </ActionIcon>
     </ActionIcon.Group>

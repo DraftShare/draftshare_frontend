@@ -5,7 +5,7 @@ import {
   CARDS_KEY,
   FIELDS_KEY,
   SET_OF_FIELDS_KEY,
-} from "src/05_shared/api/query-keys";
+} from "src/05_shared/api/query-const";
 
 export function useUpdateFields() {
   return useMutation({

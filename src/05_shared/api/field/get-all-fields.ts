@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { baseFetch } from "..";
 import { fieldsSchema } from "src/05_shared/api/field/types";
-import { FIELDS_KEY } from "../query-keys";
+import { FIELDS_KEY } from "../query-const";
 import { API_FIELDS } from "../urls";
 
 export function getAllFields() {

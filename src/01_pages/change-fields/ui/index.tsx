@@ -23,6 +23,7 @@ import classes from "./classes.module.css";
 import { Link } from "@tanstack/react-router";
 import { useDisclosure } from "@mantine/hooks";
 import { Banner } from "src/05_shared/ui/banners/banner";
+import { SETTINGS_PAGE_PATH } from "src/05_shared/api/query-const";
 
 export function ChangeFields() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,7 +65,7 @@ export function ChangeFields() {
 
   const btnGroup = (
     <ActionIcon.Group>
-      <ActionIcon component={Link} to="/settings-page">
+      <ActionIcon component={Link} to={SETTINGS_PAGE_PATH}>
         <IconArrowBackUp />
       </ActionIcon>
     </ActionIcon.Group>

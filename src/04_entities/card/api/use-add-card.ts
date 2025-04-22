@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "src/05_shared/api";
 import { addOneCard } from "src/05_shared/api/card/add-one-card";
-import { CARDS_KEY, FIELDS_KEY } from "src/05_shared/api/query-keys";
+import { CARDS_KEY, FIELDS_KEY } from "src/05_shared/api/query-const";
 
 export function useAddCard() {
   return useMutation({

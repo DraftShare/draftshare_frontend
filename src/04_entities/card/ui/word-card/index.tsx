@@ -6,6 +6,7 @@ import { wordCard } from "../../../../05_shared/api/card/types";
 import { openedWordCard } from "../../model";
 import classes from "./classes.module.css";
 import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-item-container";
+import { CARD_INFO_PATH } from "src/05_shared/api/query-const";
 
 export function WordCard({ card }: { card: wordCard }) {
   const dispatch = useAppDispatch();
@@ -17,7 +18,7 @@ export function WordCard({ card }: { card: wordCard }) {
   return (
     <ListItemEntities>
       <Link
-        to="/card-info"
+        to={CARD_INFO_PATH}
         className={classes["link"]}
         onClick={() => dispatch(openedWordCard(card.id))}
       >
@@ -28,17 +29,14 @@ export function WordCard({ card }: { card: wordCard }) {
             {/* <Text>{card.word}</Text> */}
             {/* <Text>{transcription}</Text> */}
 
-            <Text>{card.fields[0] && card.fields[0].value || ""}</Text>
-            <Text>{card.fields[1] && card.fields[1].value || ""}</Text>
-
-
+            <Text>{(card.fields[0] && card.fields[0].value) || ""}</Text>
+            <Text>{(card.fields[1] && card.fields[1].value) || ""}</Text>
           </Box>
           <Box className={classes["card__right-section"]}>
             {/* <Text>{card.fields[0].value || ""}</Text> */}
             {/* <Text>{translate}</Text> */}
 
-            <Text>{card.fields[2] && card.fields[2].value || ""}</Text>
-
+            <Text>{(card.fields[2] && card.fields[2].value) || ""}</Text>
           </Box>
         </ListItemContainerEntities>
       </Link>
