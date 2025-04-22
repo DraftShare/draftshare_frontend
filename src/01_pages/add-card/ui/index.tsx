@@ -1,6 +1,6 @@
-import { Button, LoadingOverlay } from "@mantine/core";
+import { ActionIcon, Button, LoadingOverlay } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { SideMenu } from "src/04_entities/side-menu";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
@@ -8,13 +8,14 @@ import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
 import { useDynamicFields } from "src/05_shared/lib/useDynamicProps";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
-import { EditableField } from "src/05_shared/ui/card-text-info";
 import { Header } from "src/05_shared/ui/header";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { MainContainer } from "src/05_shared/ui/main-container";
 import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
+import { IconArrowBackUp } from "@tabler/icons-react";
+import { EditableField } from "src/04_entities/card";
 
 export function AddCard() {
   const { data: fields } = useSuspenseQuery(getAllFields());
@@ -47,9 +48,17 @@ export function AddCard() {
     );
   }
 
+  const btnGroup = (
+    <ActionIcon.Group>
+      <ActionIcon component={Link} to="/">
+        <IconArrowBackUp />
+      </ActionIcon>
+    </ActionIcon.Group>
+  );
+
   return (
     <>
-      <Header title="Add card" menu={<SideMenu />} />
+      <Header title="Add card" menu={<SideMenu />} btnGroup={btnGroup} />
       <MainContainer>
         <LoadingOverlay
           visible={addWordMutation.isPending}

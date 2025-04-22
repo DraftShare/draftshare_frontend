@@ -20,11 +20,15 @@ import { cardId } from "src/05_shared/api/card/types";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { useDynamicFields } from "src/05_shared/lib/useDynamicProps";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
-import { EditableField } from "src/05_shared/ui/card-text-info";
+import { EditableField } from "src/04_entities/card";
 import { Header } from "src/05_shared/ui/header";
 import { MainContainer } from "src/05_shared/ui/main-container";
 import { useUpdateCard } from "../../../04_entities/card/api/use-update-card";
 import classes from "./classes.module.css";
+import { ListEntities } from "src/05_shared/ui/list-entities/list";
+import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
+import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
+import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
 
 export function CardInfo() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -94,8 +98,8 @@ function CardInfoContent({ id }: { id: cardId }) {
       <Divider orientation="vertical" />
       <ActionIcon
         onClick={() => {
-          setEditable(!editable);
           resetDynamicFields();
+          setEditable(!editable);
         }}
       >
         <IconArrowBackUp />
@@ -121,23 +125,31 @@ function CardInfoContent({ id }: { id: cardId }) {
 
   return (
     <>
-      <Header title="Word info" btnGroup={btnGroup} menu={<SideMenu />} />
+      <Header title="Card info" btnGroup={btnGroup} menu={<SideMenu />} />
       <MainContainer>
-        <form className={classes["body"]}>
-          {dynamicFields.map((field, index) => (
-            <EditableField
-              key={index}
-              initialName={field.name}
-              initialValue={field.value}
-              fieldNames={fieldNames}
-              editable={editable}
-              onUpdate={handleFieldUpdate}
-              onDelete={handleFieldDelete}
-              index={index}
-            />
-          ))}
+        <form>
+          <ListWrapEntities>
+            <ListEntities>
+              {dynamicFields.map((field, index) => (
+                <EditableField
+                  key={index}
+                  initialName={field.name}
+                  initialValue={field.value}
+                  fieldNames={fieldNames}
+                  editable={editable}
+                  onUpdate={handleFieldUpdate}
+                  onDelete={handleFieldDelete}
+                  index={index}
+                />
+              ))}
+            </ListEntities>
+          </ListWrapEntities>
 
-          {editable && <Button onClick={addEmptyField}>Add prop</Button>}
+          {editable && (
+            <BottomBtnGroup>
+              <DashedBtn onClick={addEmptyField}>Add a field</DashedBtn>
+            </BottomBtnGroup>
+          )}
         </form>
       </MainContainer>
       <Modal opened={opened} onClose={close} title="Are you sure?" centered>

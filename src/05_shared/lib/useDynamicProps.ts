@@ -19,12 +19,9 @@ export function useDynamicFields(initialData: Field[] = []) {
     []
   );
 
-  const handleFieldDelete = useCallback(
-    (index: number) => {
-      setFields((prev) => prev.filter((_, i) => i !== index));
-    },
-    []
-  );
+  const handleFieldDelete = useCallback((index: number) => {
+    setFields((prev) => prev.filter((_, i) => i !== index));
+  }, []);
 
   function resetFields() {
     setFields(initialData);

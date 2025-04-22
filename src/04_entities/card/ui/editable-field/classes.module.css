@@ -2,25 +2,18 @@
   display: flex;
   align-items: center;
   margin: 0;
-}
-.add-prpoerty-input__wrap {
-  display: flex;
-}
 
-.fieldset-n {
-  display: flex;
-  align-items: center;
-  margin: 0;
-
-  border-radius: 5px;
+  border-radius: var(--mantine-radius-sm);
   background-color: var(--mantine-color-secondary-0);
   padding: 0.3rem var(--mantine-spacing-xs);
 }
-.add-prpoerty-input__wrap-n {
+
+.input-wrap {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
+
 .input {
   line-height: var(--mantine-line-height);
   height: var(--mantine-line-height);
@@ -36,11 +29,11 @@
   &:disabled.input_inactive {
     opacity: 0.6;
   }
-}
-.input_inactive {
-  opacity: 0.6;
-  font-weight: 500;
-  font-size: var(--mantine-font-size-sm);
+  &_inactive {
+    opacity: 0.6;
+    font-weight: 500;
+    font-size: var(--mantine-font-size-sm);
+  }
 }
 
 .root {
