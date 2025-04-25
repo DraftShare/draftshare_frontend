@@ -12,15 +12,15 @@ export const queryClient = new QueryClient({
 });
 
 // const initData = window.Telegram.WebApp.initData;
-// const { initDataRaw } = retrieveLaunchParams();
+const { initDataRaw } = retrieveLaunchParams();
 
 export const baseFetch = async (url: string, init?: RequestInit) => {
   try {
     const response = await fetch(baseUrl + "/" + url, {
       ...init,
       headers: {
-        // Authorization: `tma ${initDataRaw}`,
-        Authorization: "test abc",
+        Authorization: `tma ${initDataRaw}`,
+        // Authorization: "test abc",
         ...init?.headers,
       },
     });
