@@ -3,6 +3,7 @@ name: Deploy Frontend
 on:
   release:
     types: [released]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
