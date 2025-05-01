@@ -11,16 +11,23 @@ export const queryClient = new QueryClient({
   },
 });
 
-// const initData = window.Telegram.WebApp.initData;
-const { initDataRaw } = retrieveLaunchParams();
+let authorization = "";
+if (
+  import.meta.env.MODE === "development" &&
+  import.meta.env.PUBLIC_APP_MODE === "browser"
+) {
+  authorization = "test abc";
+} else {
+  const { initDataRaw } = retrieveLaunchParams();
+  authorization = `tma ${initDataRaw}`;
+}
 
 export const baseFetch = async (url: string, init?: RequestInit) => {
   try {
     const response = await fetch(baseUrl + "/" + url, {
       ...init,
       headers: {
-        Authorization: `tma ${initDataRaw}`,
-        // Authorization: "test abc",
+        Authorization: authorization,
         ...init?.headers,
       },
     });
