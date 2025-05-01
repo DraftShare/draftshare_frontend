@@ -1,43 +1,41 @@
-import { Accordion, Box, List, ListItem, Text } from "@mantine/core";
+import { Accordion, Box, Text, ThemeIcon } from "@mantine/core";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
-import classes from "./classes.module.css";
-import { Icon123 } from "@tabler/icons-react";
-import { Link } from "@tanstack/react-router";
+import { IconArticle, IconInputSpark } from "@tabler/icons-react";
+import { JSX } from "react";
 import {
   AppRoutes,
   ROUTES
 } from "src/05_shared/api/query-const";
+import { PlainLink } from "src/05_shared/ui/plain-link";
+import classes from "./classes.module.css";
 
 export function SettingsPage() {
   const titles = [
     {
-      image: <Icon123 />,
       label: "Field management",
       content: (
-        <>
-          <List>
-            <ListItem>
-              <Link to={SETTINGS_CHANGE_FIELDS_PATH}>
-                <Text>Change fields</Text>
-              </Link>
-            </ListItem>
-            <ListItem>
-              <Link to={SETTINGS_SETS_OF_FIELDS_PATH}>
-                <Text>Change field sets</Text>
-              </Link>
-            </ListItem>
-          </List>
-        </>
+          <ul className={classes.list}>
+            <SettingsItem
+              title="Change fields"
+              linkPath={ROUTES.CHANGE_FIELDS}
+              icon={<IconInputSpark />}
+            />
+            <SettingsItem
+              title="Change field sets"
+              linkPath={ROUTES.SETS_OF_FIELDS}
+              icon={<IconArticle />}
+            />
+          </ul>
       ),
     },
-    { image: <Icon123 />, label: "Misc", content: <></> },
+    { label: "Misc", content: <></> },
   ];
 
   const items = titles.map((item, index) => (
     <Accordion.Item key={index} value={item.label}>
-      <Accordion.Control icon={item.image}>{item.label}</Accordion.Control>
+      <Accordion.Control>{item.label}</Accordion.Control>
       <Accordion.Panel>{item.content}</Accordion.Panel>
     </Accordion.Item>
   ));
@@ -50,5 +48,24 @@ export function SettingsPage() {
         </Accordion>
       </Box>
     </>
+  );
+}
+
+function SettingsItem({
+  title,
+  linkPath,
+  icon,
+}: {
+  title: string;
+  linkPath: AppRoutes;
+  icon: JSX.Element;
+}) {
+  return (
+    <li className={classes["list-item"]}>
+      <PlainLink to={linkPath} className={classes.link}>
+        <ThemeIcon variant="transparent">{icon}</ThemeIcon>
+        <Text>{title}</Text>
+      </PlainLink>
+    </li>
   );
 }
