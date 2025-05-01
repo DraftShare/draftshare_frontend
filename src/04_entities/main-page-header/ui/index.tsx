@@ -3,7 +3,7 @@ import { IconArrowBackUp, IconPlus, IconSearch } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { SideMenu } from "src/04_entities/side-menu";
-import { ADD_CARD_PATH } from "src/05_shared/api/query-const";
+import { ROUTES } from "src/05_shared/api/query-const";
 import { Header } from "src/05_shared/ui/header";
 
 export function MainPageHeader({
@@ -29,7 +29,7 @@ export function MainPageHeader({
           <Divider orientation="vertical" />
         </>
       )}
-      <ActionIcon component={Link} to={ADD_CARD_PATH}>
+      <ActionIcon component={Link} to={ROUTES.ADD_CARD}>
         <IconPlus />
       </ActionIcon>
     </ActionIcon.Group>

@@ -6,7 +6,7 @@ import { wordCard } from "../../../../05_shared/api/card/types";
 import { openedWordCard } from "../../model";
 import classes from "./classes.module.css";
 import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-item-container";
-import { CARD_INFO_PATH } from "src/05_shared/api/query-const";
+import { ROUTES } from "src/05_shared/api/query-const";
 
 export function WordCard({ card }: { card: wordCard }) {
   const dispatch = useAppDispatch();
@@ -18,7 +18,7 @@ export function WordCard({ card }: { card: wordCard }) {
   return (
     <ListItemEntities>
       <Link
-        to={CARD_INFO_PATH}
+        to={ROUTES.CARD_INFO}
         className={classes["link"]}
         onClick={() => dispatch(openedWordCard(card.id))}
       >

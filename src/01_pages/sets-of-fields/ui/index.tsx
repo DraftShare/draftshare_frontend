@@ -22,13 +22,13 @@ import { MainContainer } from "src/05_shared/ui/main-container";
 import { Banner } from "src/05_shared/ui/banners/banner";
 import classes from "./classes.module.css";
 import { useSetDefault } from "src/04_entities/set-of-fields";
-import { SETTINGS_PAGE_PATH, SETTINGS_SET_OF_FIELDS_ID_PATH, SETTINGS_SET_OF_FIELDS_PATH } from "src/05_shared/api/query-const";
+import { ROUTES } from "src/05_shared/api/query-const";
 
 export function SetsOfFields() {
   const { data } = useSuspenseQuery(getAllSets());
   const btnGroup = (
     <ActionIcon.Group>
-      <ActionIcon component={Link} to={SETTINGS_PAGE_PATH}>
+      <ActionIcon component={Link} to={ROUTES.SETTINGS}>
         <IconArrowBackUp />
       </ActionIcon>
     </ActionIcon.Group>
@@ -59,7 +59,7 @@ export function SetsOfFields() {
         </ListWrapEntities>
 
         <BottomBtnGroup>
-          <Button component={Link} to={SETTINGS_SET_OF_FIELDS_PATH}>
+          <Button component={Link} to={ROUTES.SET_OF_FIELDS}>
             Add new set
           </Button>
         </BottomBtnGroup>
@@ -88,7 +88,7 @@ function Card({ set }: { set: setOfFields }) {
         </ActionIcon>
         <Link
           className={classes.link}
-          to={SETTINGS_SET_OF_FIELDS_ID_PATH}
+          to={ROUTES.SET_OF_FIELDS}
           params={{ id: String(id) }}
         >
           <Text>{name}</Text>

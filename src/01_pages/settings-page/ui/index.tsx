@@ -6,8 +6,8 @@ import classes from "./classes.module.css";
 import { Icon123 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import {
-  SETTINGS_CHANGE_FIELDS_PATH,
-  SETTINGS_SETS_OF_FIELDS_PATH,
+  AppRoutes,
+  ROUTES
 } from "src/05_shared/api/query-const";
 
 export function SettingsPage() {

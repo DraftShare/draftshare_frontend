@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AddCard } from "src/01_pages/add-card/ui";
-import { ADD_CARD_PATH } from "src/05_shared/api/query-const";
+import { ROUTES } from "src/05_shared/api/query-const";
 
-export const Route = createFileRoute(ADD_CARD_PATH)({
+export const Route = createFileRoute(ROUTES.ADD_CARD)({
   component: AddCard,
 });

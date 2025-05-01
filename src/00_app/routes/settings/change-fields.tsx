@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { ChangeFields } from 'src/01_pages/change-fields/ui'
-import { SETTINGS_CHANGE_FIELDS_PATH } from 'src/05_shared/api/query-const'
+import { createFileRoute } from "@tanstack/react-router";
+import { ChangeFields } from "src/01_pages/change-fields/ui";
+import { ROUTES } from "src/05_shared/api/query-const";
 
-export const Route = createFileRoute(SETTINGS_CHANGE_FIELDS_PATH)({
+export const Route = createFileRoute(ROUTES.CHANGE_FIELDS)({
   component: ChangeFields,
-})
+});

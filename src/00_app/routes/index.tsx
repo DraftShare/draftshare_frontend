@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 // import { retrieveLaunchParams } from "@telegram-apps/sdk";
 import { MainPage } from "src/01_pages/main-page";
-import { ROOT_PATH } from "src/05_shared/api/query-const";
+import { ROUTES } from "src/05_shared/api/query-const";
 // import { baseFetch } from "src/05_shared/api";
 
-export const Route = createFileRoute(ROOT_PATH)({
+export const Route = createFileRoute(ROUTES.HOME)({
   // beforeLoad: async () => {
   //   const token = localStorage.getItem("token");
   //   console.log('hi')

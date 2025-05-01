@@ -11,23 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SettingsPageImport } from './routes/settings-page'
 import { Route as CardInfoImport } from './routes/card-info'
 import { Route as AddCardImport } from './routes/add-card'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as SettingsIndexImport } from './routes/settings/index'
 import { Route as SettingsSetsOfFieldsImport } from './routes/settings/sets-of-fields'
 import { Route as SettingsChangeFieldsImport } from './routes/settings/change-fields'
 import { Route as SettingsSetOfFieldsIndexImport } from './routes/settings/set-of-fields/index'
 import { Route as SettingsSetOfFieldsIdImport } from './routes/settings/set-of-fields/$id'
 
 // Create/Update Routes
-
-const SettingsPageRoute = SettingsPageImport.update({
-  id: '/settings-page',
-  path: '/settings-page',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const CardInfoRoute = CardInfoImport.update({
   id: '/card-info',
@@ -49,6 +43,12 @@ const LayoutRoute = LayoutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsIndexRoute = SettingsIndexImport.update({
+  id: '/settings/',
+  path: '/settings/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -108,13 +108,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CardInfoImport
       parentRoute: typeof rootRoute
     }
-    '/settings-page': {
-      id: '/settings-page'
-      path: '/settings-page'
-      fullPath: '/settings-page'
-      preLoaderRoute: typeof SettingsPageImport
-      parentRoute: typeof rootRoute
-    }
     '/settings/change-fields': {
       id: '/settings/change-fields'
       path: '/settings/change-fields'
@@ -127,6 +120,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/sets-of-fields'
       fullPath: '/settings/sets-of-fields'
       preLoaderRoute: typeof SettingsSetsOfFieldsImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsIndexImport
       parentRoute: typeof rootRoute
     }
     '/settings/set-of-fields/$id': {
@@ -153,9 +153,9 @@ export interface FileRoutesByFullPath {
   '': typeof LayoutRoute
   '/add-card': typeof AddCardRoute
   '/card-info': typeof CardInfoRoute
-  '/settings-page': typeof SettingsPageRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
   '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
+  '/settings': typeof SettingsIndexRoute
   '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
   '/settings/set-of-fields': typeof SettingsSetOfFieldsIndexRoute
 }
@@ -165,9 +165,9 @@ export interface FileRoutesByTo {
   '': typeof LayoutRoute
   '/add-card': typeof AddCardRoute
   '/card-info': typeof CardInfoRoute
-  '/settings-page': typeof SettingsPageRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
   '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
+  '/settings': typeof SettingsIndexRoute
   '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
   '/settings/set-of-fields': typeof SettingsSetOfFieldsIndexRoute
 }
@@ -178,9 +178,9 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRoute
   '/add-card': typeof AddCardRoute
   '/card-info': typeof CardInfoRoute
-  '/settings-page': typeof SettingsPageRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
   '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
+  '/settings/': typeof SettingsIndexRoute
   '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
   '/settings/set-of-fields/': typeof SettingsSetOfFieldsIndexRoute
 }
@@ -192,9 +192,9 @@ export interface FileRouteTypes {
     | ''
     | '/add-card'
     | '/card-info'
-    | '/settings-page'
     | '/settings/change-fields'
     | '/settings/sets-of-fields'
+    | '/settings'
     | '/settings/set-of-fields/$id'
     | '/settings/set-of-fields'
   fileRoutesByTo: FileRoutesByTo
@@ -203,9 +203,9 @@ export interface FileRouteTypes {
     | ''
     | '/add-card'
     | '/card-info'
-    | '/settings-page'
     | '/settings/change-fields'
     | '/settings/sets-of-fields'
+    | '/settings'
     | '/settings/set-of-fields/$id'
     | '/settings/set-of-fields'
   id:
@@ -214,9 +214,9 @@ export interface FileRouteTypes {
     | '/_layout'
     | '/add-card'
     | '/card-info'
-    | '/settings-page'
     | '/settings/change-fields'
     | '/settings/sets-of-fields'
+    | '/settings/'
     | '/settings/set-of-fields/$id'
     | '/settings/set-of-fields/'
   fileRoutesById: FileRoutesById
@@ -227,9 +227,9 @@ export interface RootRouteChildren {
   LayoutRoute: typeof LayoutRoute
   AddCardRoute: typeof AddCardRoute
   CardInfoRoute: typeof CardInfoRoute
-  SettingsPageRoute: typeof SettingsPageRoute
   SettingsChangeFieldsRoute: typeof SettingsChangeFieldsRoute
   SettingsSetsOfFieldsRoute: typeof SettingsSetsOfFieldsRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
   SettingsSetOfFieldsIdRoute: typeof SettingsSetOfFieldsIdRoute
   SettingsSetOfFieldsIndexRoute: typeof SettingsSetOfFieldsIndexRoute
 }
@@ -239,9 +239,9 @@ const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRoute,
   AddCardRoute: AddCardRoute,
   CardInfoRoute: CardInfoRoute,
-  SettingsPageRoute: SettingsPageRoute,
   SettingsChangeFieldsRoute: SettingsChangeFieldsRoute,
   SettingsSetsOfFieldsRoute: SettingsSetsOfFieldsRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
   SettingsSetOfFieldsIdRoute: SettingsSetOfFieldsIdRoute,
   SettingsSetOfFieldsIndexRoute: SettingsSetOfFieldsIndexRoute,
 }
@@ -260,9 +260,9 @@ export const routeTree = rootRoute
         "/_layout",
         "/add-card",
         "/card-info",
-        "/settings-page",
         "/settings/change-fields",
         "/settings/sets-of-fields",
+        "/settings/",
         "/settings/set-of-fields/$id",
         "/settings/set-of-fields/"
       ]
@@ -279,14 +279,14 @@ export const routeTree = rootRoute
     "/card-info": {
       "filePath": "card-info.tsx"
     },
-    "/settings-page": {
-      "filePath": "settings-page.tsx"
-    },
     "/settings/change-fields": {
       "filePath": "settings/change-fields.tsx"
     },
     "/settings/sets-of-fields": {
       "filePath": "settings/sets-of-fields.tsx"
+    },
+    "/settings/": {
+      "filePath": "settings/index.tsx"
     },
     "/settings/set-of-fields/$id": {
       "filePath": "settings/set-of-fields/$id.tsx"

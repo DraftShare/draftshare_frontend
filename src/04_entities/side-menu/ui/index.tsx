@@ -1,35 +1,29 @@
-import {
-  Burger,
-  Drawer,
-  Group,
-  Text,
-  ThemeIcon
-} from "@mantine/core";
+import { Burger, Drawer, Group, Text, ThemeIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconMenu3, IconSettings } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import classes from "./classes.module.css";
-import { ROOT_PATH, SETTINGS_PAGE_PATH } from "src/05_shared/api/query-const";
+import { ROUTES } from "src/05_shared/api/query-const";
 
 export function SideMenu() {
   const [opened, { open, close }] = useDisclosure(false);
 
-  const mockdata = [
+  const menuItems = [
     {
       icon: IconMenu3,
       title: "All cards",
       description: "Main page",
-      link: ROOT_PATH
+      link: ROUTES.HOME,
     },
     {
       icon: IconSettings,
       title: "Settings",
       description: "These are the settings, what else can I say..",
-      link: SETTINGS_PAGE_PATH
+      link: ROUTES.SETTINGS,
     },
   ];
 
-  const links = mockdata.map((item) => (
+  const links = menuItems.map((item) => (
     <Link className={classes.subLink} key={item.title} to={item.link}>
       <Group wrap="nowrap" align="center">
         <ThemeIcon size={34} variant="default" radius="md">
