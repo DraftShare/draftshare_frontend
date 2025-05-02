@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as CardInfoImport } from './routes/card-info'
 import { Route as AddCardImport } from './routes/add-card'
-import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutRouteImport } from './routes/_layout/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as SettingsIndexImport } from './routes/settings/index'
 import { Route as SettingsSetsOfFieldsImport } from './routes/settings/sets-of-fields'
@@ -35,7 +35,7 @@ const AddCardRoute = AddCardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutRoute = LayoutImport.update({
+const LayoutRouteRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
@@ -91,7 +91,7 @@ declare module '@tanstack/react-router' {
       id: '/_layout'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof LayoutImport
+      preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRoute
     }
     '/add-card': {
@@ -150,7 +150,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof LayoutRoute
+  '': typeof LayoutRouteRoute
   '/add-card': typeof AddCardRoute
   '/card-info': typeof CardInfoRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
@@ -162,7 +162,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof LayoutRoute
+  '': typeof LayoutRouteRoute
   '/add-card': typeof AddCardRoute
   '/card-info': typeof CardInfoRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
@@ -175,7 +175,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_layout': typeof LayoutRoute
+  '/_layout': typeof LayoutRouteRoute
   '/add-card': typeof AddCardRoute
   '/card-info': typeof CardInfoRoute
   '/settings/change-fields': typeof SettingsChangeFieldsRoute
@@ -224,7 +224,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LayoutRoute: typeof LayoutRoute
+  LayoutRouteRoute: typeof LayoutRouteRoute
   AddCardRoute: typeof AddCardRoute
   CardInfoRoute: typeof CardInfoRoute
   SettingsChangeFieldsRoute: typeof SettingsChangeFieldsRoute
@@ -236,7 +236,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LayoutRoute: LayoutRoute,
+  LayoutRouteRoute: LayoutRouteRoute,
   AddCardRoute: AddCardRoute,
   CardInfoRoute: CardInfoRoute,
   SettingsChangeFieldsRoute: SettingsChangeFieldsRoute,
@@ -271,7 +271,7 @@ export const routeTree = rootRoute
       "filePath": "index.tsx"
     },
     "/_layout": {
-      "filePath": "_layout.tsx"
+      "filePath": "_layout/route.tsx"
     },
     "/add-card": {
       "filePath": "add-card.tsx"

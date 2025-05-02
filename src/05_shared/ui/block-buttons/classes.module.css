@@ -1,11 +1,11 @@
 .btn-group-wrap {
-  position: fixed;
+  position: sticky;
   bottom: 0;
   left: 0;
   right: 0;
   background: linear-gradient(
     to top,
-    var(--mantine-color-body) 85%,
+    var(--mantine-color-body) 80%,
     rgba(1, 1, 1, 0)
   );
 
@@ -15,5 +15,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   /* grid-template-columns: repeat(auto-fill, minmax(50%, 1fr)); */
-  padding: var(--mantine-spacing-md);
+  padding-bottom: var(--mantine-spacing-sm);
+  padding-top: var(--mantine-spacing-lg);
 }

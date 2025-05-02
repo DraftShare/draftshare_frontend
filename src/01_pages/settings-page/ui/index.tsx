@@ -1,33 +1,32 @@
-import { Accordion, Box, Text, ThemeIcon } from "@mantine/core";
+import { Accordion, Text, ThemeIcon } from "@mantine/core";
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
 import { IconArticle, IconInputSpark } from "@tabler/icons-react";
 import { JSX } from "react";
-import {
-  AppRoutes,
-  ROUTES
-} from "src/05_shared/api/query-const";
+import { AppRoutes, ROUTES } from "src/05_shared/api/query-const";
+import { BaseContainer } from "src/05_shared/ui/main-container";
 import { PlainLink } from "src/05_shared/ui/plain-link";
 import classes from "./classes.module.css";
+import { Main } from "src/05_shared/ui/main";
 
 export function SettingsPage() {
   const titles = [
     {
       label: "Field management",
       content: (
-          <ul className={classes.list}>
-            <SettingsItem
-              title="Change fields"
-              linkPath={ROUTES.CHANGE_FIELDS}
-              icon={<IconInputSpark />}
-            />
-            <SettingsItem
-              title="Change field sets"
-              linkPath={ROUTES.SETS_OF_FIELDS}
-              icon={<IconArticle />}
-            />
-          </ul>
+        <ul className={classes.list}>
+          <SettingsItem
+            title="Change fields"
+            linkPath={ROUTES.CHANGE_FIELDS}
+            icon={<IconInputSpark />}
+          />
+          <SettingsItem
+            title="Change field sets"
+            linkPath={ROUTES.SETS_OF_FIELDS}
+            icon={<IconArticle />}
+          />
+        </ul>
       ),
     },
     { label: "Misc", content: <></> },
@@ -42,11 +41,13 @@ export function SettingsPage() {
   return (
     <>
       <Header title="Settings" menu={<SideMenu />} />
-      <Box className={classes["body"]}>
-        <Accordion variant="separated" defaultValue={titles[0].label}>
-          {items}
-        </Accordion>
-      </Box>
+      <Main>
+        <BaseContainer>
+          <Accordion variant="separated" defaultValue={titles[0].label}>
+            {items}
+          </Accordion>
+        </BaseContainer>
+      </Main>
     </>
   );
 }

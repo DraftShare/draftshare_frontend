@@ -21,12 +21,12 @@ import { Header } from "src/05_shared/ui/header";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
 import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-item-container";
-import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
-import { MainContainer } from "src/05_shared/ui/main-container";
+import { BaseContainer } from "src/05_shared/ui/main-container";
 import { setOfFields } from "../../../05_shared/api/set-of-fields/types";
 import { useUpsertSet } from "../../../04_entities/set-of-fields/api/use-upsert-set";
 import { Banner } from "src/05_shared/ui/banners/banner";
 import { ROUTES } from "src/05_shared/api/query-const";
+import { Main } from "src/05_shared/ui/main";
 
 export function SetOfFieldsForm({
   initialData,
@@ -93,8 +93,8 @@ export function SetOfFieldsForm({
         menu={<SideMenu />}
         btnGroup={btnGroup}
       />
-      <MainContainer>
-        <Box>
+      <Main>
+        <BaseContainer>
           <Box mb={"lg"}>
             <TextInput
               label="Name of set"
@@ -129,34 +129,32 @@ export function SetOfFieldsForm({
             List of fields
           </Text>
 
-          <ListWrapEntities>
-            <ListEntities>
-              {fieldsInSet.length === 0 && (
-                <Banner>
-                  There's not a single field in this set. You urgently need to
-                  specify a few!
-                </Banner>
-              )}
-              {fieldsInSet.map((field) => (
-                <ListItemEntities key={field}>
-                  <ListItemContainerEntities>
-                    <Text>{field}</Text>
-                    <ActionIcon
-                      type="button"
-                      onClick={() => handleDeleteField(field)}
-                    >
-                      <IconTrash />
-                    </ActionIcon>
-                  </ListItemContainerEntities>
-                </ListItemEntities>
-              ))}
-            </ListEntities>
-          </ListWrapEntities>
-          <BottomBtnGroup>
-            <Button onClick={handleSave}>Save</Button>
-          </BottomBtnGroup>
-        </Box>
-      </MainContainer>
+          <ListEntities>
+            {fieldsInSet.length === 0 && (
+              <Banner>
+                There's not a single field in this set. You urgently need to
+                specify a few!
+              </Banner>
+            )}
+            {fieldsInSet.map((field) => (
+              <ListItemEntities key={field}>
+                <ListItemContainerEntities>
+                  <Text>{field}</Text>
+                  <ActionIcon
+                    type="button"
+                    onClick={() => handleDeleteField(field)}
+                  >
+                    <IconTrash />
+                  </ActionIcon>
+                </ListItemContainerEntities>
+              </ListItemEntities>
+            ))}
+          </ListEntities>
+        </BaseContainer>
+      </Main>
+      <BottomBtnGroup>
+        <Button onClick={handleSave}>Save</Button>
+      </BottomBtnGroup>
     </>
   );
 }

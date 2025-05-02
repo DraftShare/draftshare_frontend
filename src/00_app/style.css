@@ -7,3 +7,16 @@
 :root[data-mantine-color-scheme="dark"] {
   --mantine-color-body: #1a191b !important;
 }
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}

@@ -46,7 +46,7 @@ export function SideMenu() {
 
   return (
     <>
-      <Burger opened={opened} onClick={open} hiddenFrom="xs" size="sm" />
+      <Burger opened={opened} onClick={open} size="sm" />
       <Drawer opened={opened} onClose={close} size={"75%"} title={"Menu"}>
         {links}
       </Drawer>

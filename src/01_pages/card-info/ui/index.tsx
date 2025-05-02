@@ -22,14 +22,14 @@ import { useDynamicFields } from "src/05_shared/lib/useDynamicProps";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
 import { EditableField } from "src/04_entities/card";
 import { Header } from "src/05_shared/ui/header";
-import { MainContainer } from "src/05_shared/ui/main-container";
+import { BaseContainer } from "src/05_shared/ui/main-container";
 import { useUpdateCard } from "../../../04_entities/card/api/use-update-card";
 import classes from "./classes.module.css";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
-import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
 import { ROUTES } from "src/05_shared/api/query-const";
+import { Main } from "src/05_shared/ui/main";
 
 export function CardInfo() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -127,9 +127,9 @@ function CardInfoContent({ id }: { id: cardId }) {
   return (
     <>
       <Header title="Card info" btnGroup={btnGroup} menu={<SideMenu />} />
-      <MainContainer>
-        <form>
-          <ListWrapEntities>
+      <Main>
+        <BaseContainer>
+          <form>
             <ListEntities>
               {dynamicFields.map((field, index) => (
                 <EditableField
@@ -144,15 +144,14 @@ function CardInfoContent({ id }: { id: cardId }) {
                 />
               ))}
             </ListEntities>
-          </ListWrapEntities>
-
-          {editable && (
-            <BottomBtnGroup>
-              <DashedBtn onClick={addEmptyField}>Add a field</DashedBtn>
-            </BottomBtnGroup>
-          )}
-        </form>
-      </MainContainer>
+          </form>
+        </BaseContainer>
+      </Main>
+      {editable && (
+        <BottomBtnGroup>
+          <DashedBtn onClick={addEmptyField}>Add a field</DashedBtn>
+        </BottomBtnGroup>
+      )}
       <Modal opened={opened} onClose={close} title="Are you sure?" centered>
         <Text>
           The card cannot exist without fields and will therefore be deleted.

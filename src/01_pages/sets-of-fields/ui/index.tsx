@@ -16,13 +16,13 @@ import { Header } from "src/05_shared/ui/header";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
 import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-item-container";
-import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
-import { MainContainer } from "src/05_shared/ui/main-container";
+import { BaseContainer } from "src/05_shared/ui/main-container";
 
 import { Banner } from "src/05_shared/ui/banners/banner";
 import classes from "./classes.module.css";
 import { useSetDefault } from "src/04_entities/set-of-fields";
 import { ROUTES } from "src/05_shared/api/query-const";
+import { Main } from "src/05_shared/ui/main";
 
 export function SetsOfFields() {
   const { data } = useSuspenseQuery(getAllSets());
@@ -43,8 +43,8 @@ export function SetsOfFields() {
         menu={<SideMenu />}
         btnGroup={btnGroup}
       />
-      <MainContainer>
-        <ListWrapEntities>
+      <Main>
+        <BaseContainer>
           <ListEntities>
             {sortedList.length === 0 && (
               <Banner>
@@ -56,14 +56,13 @@ export function SetsOfFields() {
               <Card key={set.id} set={set} />
             ))}
           </ListEntities>
-        </ListWrapEntities>
-
-        <BottomBtnGroup>
-          <Button component={Link} to={ROUTES.SET_OF_FIELDS}>
-            Add new set
-          </Button>
-        </BottomBtnGroup>
-      </MainContainer>
+        </BaseContainer>
+      </Main>
+      <BottomBtnGroup>
+        <Button component={Link} to={ROUTES.SET_OF_FIELDS}>
+          Add new set
+        </Button>
+      </BottomBtnGroup>
     </>
   );
 }

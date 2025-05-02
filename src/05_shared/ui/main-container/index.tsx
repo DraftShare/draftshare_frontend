@@ -1,9 +1,9 @@
 import { Container } from "@mantine/core";
 import { ReactNode } from "react";
 
-export function MainContainer({ children }: { children: ReactNode }) {
+export function BaseContainer({ children }: { children: ReactNode }) {
   return (
-    <Container p={"var(--mantine-spacing-xs)"} size={"md"}>
+    <Container p={"0 var(--mantine-spacing-xs)"} size={"md"}>
       {children}
     </Container>
   );

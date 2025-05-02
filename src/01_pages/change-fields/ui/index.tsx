@@ -9,21 +9,21 @@ import {
 import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
+import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBackUp, IconSearch, IconTrash } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { ROUTES } from "src/05_shared/api/query-const";
+import { Banner } from "src/05_shared/ui/banners/banner";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
-import { ListWrapEntities } from "src/05_shared/ui/list-entities/list-wrap";
-import { MainContainer } from "src/05_shared/ui/main-container";
+import { BaseContainer } from "src/05_shared/ui/main-container";
 import { useUpdateFields } from "../../../04_entities/field/api/use-update-fields";
 import { useDynamicFields } from "../lib/useDynamicFields";
 import classes from "./classes.module.css";
-import { Link } from "@tanstack/react-router";
-import { useDisclosure } from "@mantine/hooks";
-import { Banner } from "src/05_shared/ui/banners/banner";
-import { ROUTES } from "src/05_shared/api/query-const";
+import { Main } from "src/05_shared/ui/main";
 
 export function ChangeFields() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -74,22 +74,21 @@ export function ChangeFields() {
   return (
     <>
       <Header title="Change fields" menu={<SideMenu />} btnGroup={btnGroup} />
-      <MainContainer>
-        <TextInput
-          leftSection={<IconSearch />}
-          placeholder="Search property"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-
-        <form className={classes["form"]}>
-          {filteredList.length === 0 && (
-            <Banner>
-              No fields found. You can add a field by clicking on the "Add a
-              field" button at the bottom of the screen.
-            </Banner>
-          )}
-          <ListWrapEntities>
+      <Main>
+        <BaseContainer>
+          <TextInput
+            leftSection={<IconSearch />}
+            placeholder="Search property"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <form className={classes["form"]}>
+            {filteredList.length === 0 && (
+              <Banner>
+                No fields found. You can add a field by clicking on the "Add a
+                field" button at the bottom of the screen.
+              </Banner>
+            )}
             <ListEntities>
               {filteredList.map((field, index) => (
                 <FieldPanel
@@ -101,18 +100,19 @@ export function ChangeFields() {
                 />
               ))}
             </ListEntities>
-          </ListWrapEntities>
+          </form>
+        </BaseContainer>
+      </Main>
 
-          <BottomBtnGroup>
-            <DashedBtn onClick={addEmptyField} type="button">
-              Add a field
-            </DashedBtn>
-            <Button type="button" onClick={handleSave}>
-              Save
-            </Button>
-          </BottomBtnGroup>
-        </form>
-      </MainContainer>
+      <BottomBtnGroup>
+        <DashedBtn onClick={addEmptyField} type="button">
+          Add a field
+        </DashedBtn>
+        <Button type="button" onClick={handleSave}>
+          Save
+        </Button>
+      </BottomBtnGroup>
+
       <Modal opened={opened} onClose={close} title="Are you sure?" centered>
         <Text>
           Among the Fields that are being deleted is Field, which is used in

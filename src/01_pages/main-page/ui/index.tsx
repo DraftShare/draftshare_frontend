@@ -5,7 +5,8 @@ import { MainPageHeader } from "src/04_entities/main-page-header";
 import { getAllCards } from "src/05_shared/api/card/get-all-cards";
 import { Banner } from "src/05_shared/ui/banners/banner";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
-import { MainContainer } from "src/05_shared/ui/main-container";
+import { Main } from "src/05_shared/ui/main";
+import { BaseContainer } from "src/05_shared/ui/main-container";
 
 export function MainPage() {
   const { data: cards } = useSuspenseQuery(getAllCards());
@@ -28,15 +29,18 @@ export function MainPage() {
   return (
     <>
       <MainPageHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <MainContainer>
-        {listCards.length === 0 && (
-          <Banner>
-            You don't have any created cards at the moment. You can create the
-            first card by clicking on the "Plus" icon in the upper-right corner.
-          </Banner>
-        )}
-        <ListEntities>{listCards}</ListEntities>
-      </MainContainer>
+      <Main>
+        <BaseContainer>
+          {listCards.length === 0 && (
+            <Banner>
+              You don't have any created cards at the moment. You can create the
+              first card by clicking on the "Plus" icon in the upper-right
+              corner.
+            </Banner>
+          )}
+          <ListEntities>{listCards}</ListEntities>
+        </BaseContainer>
+      </Main>
     </>
   );
 }
