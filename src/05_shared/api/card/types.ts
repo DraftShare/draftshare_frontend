@@ -1,16 +1,16 @@
 import { z } from "zod";
+import { dynamicFieldSchema } from "../field/types";
 
 const cardIdShcema = z.number();
 
-const propertyNameSchema = z.string();
-const propertyValueSchema = z.string();
-
 export const responseIdSchema = z.object({ id: cardIdShcema });
 
-const fieldSchema = z.object({
-  name: propertyNameSchema,
-  value: propertyValueSchema,
+const fieldSchema = dynamicFieldSchema.extend({
+  // value: z.union([z.string(), z.null()]),
+  // values: z.array(z.string()),
+  value: z.array(z.string()),
 });
+
 export const cardSchema = z.object({
   id: cardIdShcema,
   fields: z.array(fieldSchema),

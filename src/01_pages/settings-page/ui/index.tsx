@@ -5,7 +5,7 @@ import { Header } from "src/05_shared/ui/header";
 import { IconArticle, IconInputSpark } from "@tabler/icons-react";
 import { JSX } from "react";
 import { AppRoutes, ROUTES } from "src/05_shared/api/query-const";
-import { BaseContainer } from "src/05_shared/ui/main-container";
+import { BaseContainer } from "src/05_shared/ui/base-container";
 import { PlainLink } from "src/05_shared/ui/plain-link";
 import classes from "./classes.module.css";
 import { Main } from "src/05_shared/ui/main";

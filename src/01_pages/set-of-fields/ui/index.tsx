@@ -21,7 +21,7 @@ import { Header } from "src/05_shared/ui/header";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
 import { ListItemContainerEntities } from "src/05_shared/ui/list-entities/list-item-container";
-import { BaseContainer } from "src/05_shared/ui/main-container";
+import { BaseContainer } from "src/05_shared/ui/base-container";
 import { setOfFields } from "../../../05_shared/api/set-of-fields/types";
 import { useUpsertSet } from "../../../04_entities/set-of-fields/api/use-upsert-set";
 import { Banner } from "src/05_shared/ui/banners/banner";

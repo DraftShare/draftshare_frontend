@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Button,
   Flex,
+  Menu,
   Modal,
   Text,
   TextInput,
@@ -10,20 +11,20 @@ import { SideMenu } from "src/04_entities/side-menu";
 import { Header } from "src/05_shared/ui/header";
 
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowBackUp, IconSearch, IconTrash } from "@tabler/icons-react";
+import { IconArrowBackUp, IconSearch } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ROUTES } from "src/05_shared/api/query-const";
 import { Banner } from "src/05_shared/ui/banners/banner";
+import { BaseContainer } from "src/05_shared/ui/base-container";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
-import { ListItemEntities } from "src/05_shared/ui/list-entities/list-item";
-import { BaseContainer } from "src/05_shared/ui/main-container";
+import { Main } from "src/05_shared/ui/main";
 import { useUpdateFields } from "../../../04_entities/field/api/use-update-fields";
 import { useDynamicFields } from "../lib/useDynamicFields";
 import classes from "./classes.module.css";
-import { Main } from "src/05_shared/ui/main";
+import { FieldCard } from "./field-card";
 
 export function ChangeFields() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,11 +33,13 @@ export function ChangeFields() {
 
   const {
     fields,
-    handleChangeField,
+    handleChangeName,
     handleDeleteField,
     addEmptyField,
     dataToSend,
     resetChanges,
+    handleChangeType,
+    handleChangeOptions,
   } = useDynamicFields();
 
   const filteredList = useMemo(
@@ -89,14 +92,19 @@ export function ChangeFields() {
                 field" button at the bottom of the screen.
               </Banner>
             )}
+
             <ListEntities>
               {filteredList.map((field, index) => (
-                <FieldPanel
+                <FieldCard
                   key={index}
                   index={index}
-                  value={field.name}
+                  type={field.type}
+                  name={field.name}
+                  options={field.options ?? []}
+                  handleChangeName={handleChangeName}
+                  handleChangeType={handleChangeType}
                   handleDeleteField={handleDeleteField}
-                  handleChangeField={handleChangeField}
+                  handleChangeOptions={handleChangeOptions}
                 />
               ))}
             </ListEntities>
@@ -108,6 +116,22 @@ export function ChangeFields() {
         <DashedBtn onClick={addEmptyField} type="button">
           Add a field
         </DashedBtn>
+        {/* <Menu>
+          <Menu.Target>
+            <DashedBtn
+              // onClick={addEmptyField}
+              type="button"
+            >
+              Add a field
+            </DashedBtn>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item onClick={addEmptyField}>Input</Menu.Item>
+            <Menu.Item onClick={addEmptyField}>TextArea</Menu.Item>
+            <Menu.Item onClick={addEmptyField}>Select</Menu.Item>
+            <Menu.Item onClick={addEmptyField}>MultiSelect</Menu.Item>
+          </Menu.Dropdown>
+        </Menu> */}
         <Button type="button" onClick={handleSave}>
           Save
         </Button>
@@ -128,35 +152,5 @@ export function ChangeFields() {
         </Flex>
       </Modal>
     </>
-  );
-}
-
-function FieldPanel({
-  index,
-  value,
-  handleDeleteField,
-  handleChangeField,
-}: {
-  index: number;
-  value: string;
-  handleDeleteField: (index: number) => void;
-  handleChangeField: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => void;
-}) {
-  return (
-    <ListItemEntities>
-      <TextInput
-        value={value}
-        onChange={(e) => handleChangeField(e, index)}
-        placeholder="Type the name of the field..."
-        rightSection={
-          <ActionIcon type="button" onClick={() => handleDeleteField(index)}>
-            <IconTrash />
-          </ActionIcon>
-        }
-      />
-    </ListItemEntities>
   );
 }

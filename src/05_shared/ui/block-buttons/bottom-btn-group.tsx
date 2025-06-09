@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 import { ReactNode } from "react";
 import classes from "./classes.module.css";
-import { BaseContainer } from "../main-container";
+import { BaseContainer } from "../base-container";
 
 export function BottomBtnGroup({ children }: { children: ReactNode }) {
   return (
