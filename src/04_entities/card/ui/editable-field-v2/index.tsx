@@ -70,7 +70,7 @@ export function EditableFieldV2({
             // onFocus={() => setActiveInput("name")}
             // onBlur={() => setActiveInput(null)}
           />
-          {opened && (
+          {opened && editable && (
             <Select
               data={[
                 { value: "INPUT", label: "Input" },
@@ -136,16 +136,20 @@ export function EditableFieldV2({
       }
       actions={
         <>
-          <ActionIcon onClick={toggle} size="lg">
-            {opened ? <IconChevronUp /> : <IconChevronDown />}
-          </ActionIcon>
-          <ActionIcon
-            size="lg"
-            color="red"
-            onClick={() => handleDeleteField(index)}
-          >
-            <IconTrash />
-          </ActionIcon>
+          {editable && (
+            <>
+              <ActionIcon onClick={toggle} size="lg">
+                {opened ? <IconChevronUp /> : <IconChevronDown />}
+              </ActionIcon>
+              <ActionIcon
+                size="lg"
+                color="red"
+                onClick={() => handleDeleteField(index)}
+              >
+                <IconTrash />
+              </ActionIcon>
+            </>
+          )}
         </>
       }
       footer={<></>}

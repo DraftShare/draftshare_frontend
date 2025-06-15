@@ -30,6 +30,8 @@ import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group"
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
 import { ROUTES } from "src/05_shared/api/query-const";
 import { Main } from "src/05_shared/ui/main";
+import { EditableFieldV2 } from "src/04_entities/card/ui/editable-field-v2";
+import { useDynamicFieldsV2 } from "src/05_shared/lib/useDynamicFieldsV2";
 
 export function CardInfo() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -47,20 +49,34 @@ function CardInfoContent({ id }: { id: cardId }) {
   const updateWordMutation = useUpdateCard();
   const [opened, { open, close }] = useDisclosure(false);
   const navigate = useNavigate();
-
+  
   const {
-    dynamicFields,
-    handleFieldUpdate,
-    handleFieldDelete,
-    resetDynamicFields,
+    fields: dynamicFields,
+    handleChangeName,
+    handleChangeValue,
+    handleChangeType,
+    handleChangeOptions,
+    handleDeleteField,
     addEmptyField,
-  } = useDynamicFields(cards[id].fields);
+    dataToSend,
+    resetChanges,
+  } = useDynamicFieldsV2(
+    cards[id].fields
+  );
+
+  // const {
+  //   dynamicFields,
+  //   handleFieldUpdate,
+  //   handleFieldDelete,
+  //   resetDynamicFields,
+  //   addEmptyField,
+  // } = useDynamicFields(cards[id].fields);
 
   // const sortedList = properties.sort((a, b) => a.name.localeCompare(b.name));
 
   function handleEdit() {
     setEditable(!editable);
-    resetDynamicFields();
+    resetChanges();
   }
 
   function runMutation() {
@@ -87,7 +103,7 @@ function CardInfoContent({ id }: { id: cardId }) {
     navigate({ to: ROUTES.HOME });
   }
   function handleResetChanges() {
-    resetDynamicFields();
+    resetChanges();
     close();
   }
 
@@ -99,7 +115,7 @@ function CardInfoContent({ id }: { id: cardId }) {
       <Divider orientation="vertical" />
       <ActionIcon
         onClick={() => {
-          resetDynamicFields();
+          resetChanges();
           setEditable(!editable);
         }}
       >
@@ -132,14 +148,18 @@ function CardInfoContent({ id }: { id: cardId }) {
           <form>
             <ListEntities>
               {dynamicFields.map((field, index) => (
-                <EditableField
+                <EditableFieldV2
                   key={index}
                   initialName={field.name}
                   initialValue={field.value}
+                  type={field.type}
+                  options={field.options}
                   fieldNames={fieldNames}
                   editable={editable}
-                  onUpdate={handleFieldUpdate}
-                  onDelete={handleFieldDelete}
+                  handleChangeName={handleChangeName}
+                  handleChangeValue={handleChangeValue}
+                  handleDeleteField={handleDeleteField}
+                  handleChangeType={handleChangeType}
                   index={index}
                 />
               ))}
