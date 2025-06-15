@@ -18,20 +18,18 @@ import { SideMenu } from "src/04_entities/side-menu";
 import { getAllCards } from "src/05_shared/api/card/get-all-cards";
 import { cardId } from "src/05_shared/api/card/types";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
-import { useDynamicFields } from "src/05_shared/lib/useDynamicFields";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
-import { EditableField } from "src/04_entities/card";
-import { Header } from "src/05_shared/ui/header";
 import { BaseContainer } from "src/05_shared/ui/base-container";
+import { Header } from "src/05_shared/ui/header";
 import { useUpdateCard } from "../../../04_entities/card/api/use-update-card";
 // import classes from "./classes.module.css";
-import { ListEntities } from "src/05_shared/ui/list-entities/list";
+import { EditableField } from "src/04_entities/card/ui/editable-field";
+import { ROUTES } from "src/05_shared/api/query-const";
+import { useDynamicFields } from "src/05_shared/lib/useDynamicFields";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
-import { ROUTES } from "src/05_shared/api/query-const";
+import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { Main } from "src/05_shared/ui/main";
-import { EditableFieldV2 } from "src/04_entities/card/ui/editable-field-v2";
-import { useDynamicFieldsV2 } from "src/05_shared/lib/useDynamicFieldsV2";
 
 export function CardInfo() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -60,17 +58,10 @@ function CardInfoContent({ id }: { id: cardId }) {
     addEmptyField,
     dataToSend,
     resetChanges,
-  } = useDynamicFieldsV2(
+  } = useDynamicFields(
     cards[id].fields
   );
 
-  // const {
-  //   dynamicFields,
-  //   handleFieldUpdate,
-  //   handleFieldDelete,
-  //   resetDynamicFields,
-  //   addEmptyField,
-  // } = useDynamicFields(cards[id].fields);
 
   // const sortedList = properties.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -148,7 +139,7 @@ function CardInfoContent({ id }: { id: cardId }) {
           <form>
             <ListEntities>
               {dynamicFields.map((field, index) => (
-                <EditableFieldV2
+                <EditableField
                   key={index}
                   initialName={field.name}
                   initialValue={field.value}

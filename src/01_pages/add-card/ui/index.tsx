@@ -1,24 +1,22 @@
 import { ActionIcon, Button, LoadingOverlay } from "@mantine/core";
+import { IconArrowBackUp } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { EditableField } from "src/04_entities/card/ui/editable-field";
 import { SideMenu } from "src/04_entities/side-menu";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
+import { ROUTES } from "src/05_shared/api/query-const";
 import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
 import { useDynamicFields } from "src/05_shared/lib/useDynamicFields";
+import { BaseContainer } from "src/05_shared/ui/base-container";
 import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group";
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
 import { Header } from "src/05_shared/ui/header";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
-import { BaseContainer } from "src/05_shared/ui/base-container";
+import { Main } from "src/05_shared/ui/main";
 import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
-import { IconArrowBackUp } from "@tabler/icons-react";
-import { EditableField } from "src/04_entities/card";
-import { ROUTES } from "src/05_shared/api/query-const";
-import { Main } from "src/05_shared/ui/main";
-import { EditableFieldV2 } from "src/04_entities/card/ui/editable-field-v2";
-import { useDynamicFieldsV2 } from "src/05_shared/lib/useDynamicFieldsV2";
 
 export function AddCard() {
   const { data: fields } = useSuspenseQuery(getAllFields());
@@ -41,15 +39,6 @@ export function AddCard() {
   const navigate = useNavigate();
   const addWordMutation = useAddCard();
 
-  // const {
-  //   dynamicFields,
-  //   handleFieldUpdate,
-  //   handleFieldDelete,
-  //   resetDynamicFields,
-  //   addEmptyField,
-  // } = useDynamicFields(
-  //   defaultSet?.fields.map((field) => ({ name: field.name, value: "" })) || []
-  // );
   const {
     fields: dynamicFields,
     handleChangeName,
@@ -60,13 +49,12 @@ export function AddCard() {
     addEmptyField,
     dataToSend,
     resetChanges,
-  } = useDynamicFieldsV2(
+  } = useDynamicFields(
     defaultSet?.fields.map((field) => ({ ...field, value: [""] })) || []
   );
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(dynamicFields)
     addWordMutation.mutate(
       { fields: dynamicFields },
       {
@@ -96,11 +84,15 @@ export function AddCard() {
             zIndex={1000}
             overlayProps={{ radius: "sm", blur: 2 }}
           />
-          <form id="add-card-form" onSubmit={(e) => handleSubmit(e)} className={classes["form"]}>
+          <form
+            id="add-card-form"
+            onSubmit={(e) => handleSubmit(e)}
+            className={classes["form"]}
+          >
             <ListEntities>
               {dynamicFields.map((field, index) => {
                 return (
-                  <EditableFieldV2
+                  <EditableField
                     key={index}
                     initialName={field.name}
                     initialValue={field.value}
@@ -114,17 +106,6 @@ export function AddCard() {
                     handleChangeType={handleChangeType}
                     index={index}
                   />
-
-                  // <EditableField
-                  //   key={index}
-                  //   initialName={field.name}
-                  //   initialValue={field.value}
-                  //   fieldNames={fieldNames}
-                  //   editable={true}
-                  //   onUpdate={handleFieldUpdate}
-                  //   onDelete={handleFieldDelete}
-                  //   index={index}
-                  // />
                 );
               })}
             </ListEntities>
@@ -133,7 +114,9 @@ export function AddCard() {
       </Main>
       <BottomBtnGroup>
         <DashedBtn onClick={addEmptyField}>Add a field</DashedBtn>
-        <Button type="submit" form="add-card-form">Create</Button>
+        <Button type="submit" form="add-card-form">
+          Create
+        </Button>
       </BottomBtnGroup>
     </>
   );

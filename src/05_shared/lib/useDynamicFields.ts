@@ -1,95 +1,103 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { FieldId, FieldType } from "src/05_shared/api/field/types";
+import { getAllFields } from "../api/field/get-all-fields";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { field } from "../api/card/types";
 
-interface Field {
-  name: string;
-  value: string;
-}
+export function useDynamicFields(data: field[] = []) {
+  const { data: fields } = useSuspenseQuery(getAllFields());
+  const [dynamicFields, setDynamicFields] = useState<field[]>(data);
+  const [delFieldIds, setDelFieldIds] = useState<FieldId[]>([]);
 
-export function useDynamicFields(initialData: Field[] = []) {
-  const [fields, setFields] = useState<Field[]>(initialData);
+  function handleChangeName(name: string, index: number) {
+    const field = fields.find((field) => field.name === name);
+    if (field) {
+      setDynamicFields((oldData) =>
+        oldData.map((item, idx) =>
+          idx === index
+            ? {
+                ...item,
+                name: name,
+                type: field.type,
+                options: field.options,
+              }
+            : item
+        )
+      );
+    } else {
+      setDynamicFields((oldData) =>
+        oldData.map((item, idx) =>
+          idx === index ? { ...item, name: name, options: [] } : item
+        )
+      );
+    }
+  }
+  function handleChangeValue(value: string | string[], index: number) {
+    setDynamicFields((oldData) =>
+      oldData.map((item, idx) =>
+        idx === index
+          ? { ...item, value: Array.isArray(value) ? value : [value] }
+          : item
+      )
+    );
+  }
 
-  const handleFieldUpdate = useCallback(
-    (index: number, name: string, value: string) => {
-      setFields((prev) => {
-        const newFields = [...prev];
-        newFields[index] = { name, value };
-        return newFields;
-      });
-    },
-    []
-  );
+  function handleChangeType(type: FieldType, index: number) {
+    const field = fields.find(
+      (field) => field.name === dynamicFields[index].name && field.type === type
+    );
 
-  const handleFieldDelete = useCallback((index: number) => {
-    setFields((prev) => prev.filter((_, i) => i !== index));
-  }, []);
+    setDynamicFields((oldData) =>
+      oldData.map((item, idx) =>
+        idx === index
+          ? {
+              ...item,
+              type,
+              options: field?.options ?? [],
+            }
+          : item
+      )
+    );
+  }
 
-  function resetFields() {
-    setFields(initialData);
+  function handleChangeOptions(options: string[], index: number) {
+    setDynamicFields((oldData) =>
+      oldData.map((item, idx) => (idx === index ? { ...item, options } : item))
+    );
+  }
+
+  function handleDeleteField(index: number) {
+    if (dynamicFields[index].id) {
+      setDelFieldIds([...delFieldIds, dynamicFields[index].id]);
+    }
+    setDynamicFields((oldData) => oldData.filter((_, i) => i !== index));
+  }
+
+  function resetChanges() {
+    setDynamicFields(data);
+    setDelFieldIds([]);
   }
 
   function addEmptyField() {
-    setFields((prev) => [...prev, { name: "", value: "" }]);
+    setDynamicFields((oldData) => [
+      ...oldData,
+      { name: "", type: "INPUT", options: [], value: [""] },
+    ]);
   }
 
-  // function getFields() {
-  //   const result = fields.map((prop) => ({ name: prop.name }));
-  //   return result;
-  // }
-
-  // function getProps() {
-  //   const result = fields.map((field) => ({
-  //     name: field.name,
-  //     value: field.value,
-  //   }));
-
-  //   return {
-  //     fields: result,
-  //   };
-  // }
-
-  // function getProps(operation: "add"): addWordCard;
-  // function getProps(operation: "update", id: cardId): wordCard;
-  // function getProps(
-  //   operation: "add" | "update",
-  //   id?: cardId
-  // ): addWordCard | wordCard {
-  //   // const result: { [key: string]: string } = id ? { id: id } : {};
-  //   // const result: addWordCard = {word: word, properties: properties}
-  //   // const result: wordCard = {_id: id, word: word, properties: properties}
-  //   // properties.forEach((prop) => (result[prop.property] = prop.value));
-
-  //   let result: addWordCard | wordCard;
-
-  //   if (operation === "add") {
-  //     result = { properties: properties };
-  //   } else if (operation === "update" && id) {
-  //     result = { _id: id, properties: properties };
-  //   } else {
-  //     throw new Error("Invalid operation or missing id for update");
-  //   }
-
-  //   console.log(result);
-  //   // Валидируем результат с помощью Zod
-  //   let validatedResult;
-  //   if (operation === "add") {
-  //     validatedResult = addCardSchema.safeParse(result);
-  //   } else if (operation === "update") {
-  //     validatedResult = updateCardSchema.safeParse(result);
-  //   }
-  //   if (!validatedResult || !validatedResult.success) {
-  //     throw new Error("Invalid properties: " + validatedResult?.error.message);
-  //   }
-
-  //   return validatedResult.data;
-  // }
+  function dataToSend() {
+    return { fieldsToDelete: delFieldIds, fieldsToUpsert: dynamicFields };
+  }
 
   return {
-    dynamicFields: fields,
-    handleFieldUpdate,
-    handleFieldDelete,
-    resetDynamicFields: resetFields,
+    fields: dynamicFields,
+    handleChangeName,
+    handleChangeValue,
+    handleChangeType,
+    handleChangeOptions,
+    handleDeleteField,
     addEmptyField,
-    // getFields,
-    // getProps,
+    dataToSend,
+    resetChanges,
   };
 }
