@@ -11,13 +11,12 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBackUp, IconCheck, IconEdit } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { DeleteWord } from "src/03_features/delete-word";
 import { closedWordCard, wordSlice } from "src/04_entities/card/model";
 import { SideMenu } from "src/04_entities/side-menu";
 import { getAllCards } from "src/05_shared/api/card/get-all-cards";
 import { cardId } from "src/05_shared/api/card/types";
-import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { useAppDispatch, useAppSelector } from "src/05_shared/redux";
 import { BaseContainer } from "src/05_shared/ui/base-container";
 import { Header } from "src/05_shared/ui/header";
@@ -41,13 +40,11 @@ export function CardInfo() {
 function CardInfoContent({ id }: { id: cardId }) {
   const dispatch = useAppDispatch();
   const { data: cards } = useSuspenseQuery(getAllCards());
-  const { data: fields } = useSuspenseQuery(getAllFields());
-  const fieldNames = useMemo(() => fields.map((field) => field.name), [fields]);
   const [editable, setEditable] = useState(false);
   const updateWordMutation = useUpdateCard();
   const [opened, { open, close }] = useDisclosure(false);
   const navigate = useNavigate();
-  
+
   const {
     fields: dynamicFields,
     handleChangeName,
@@ -58,10 +55,7 @@ function CardInfoContent({ id }: { id: cardId }) {
     addEmptyField,
     dataToSend,
     resetChanges,
-  } = useDynamicFields(
-    cards[id].fields
-  );
-
+  } = useDynamicFields(cards[id].fields);
 
   // const sortedList = properties.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -141,11 +135,7 @@ function CardInfoContent({ id }: { id: cardId }) {
               {dynamicFields.map((field, index) => (
                 <EditableField
                   key={index}
-                  initialName={field.name}
-                  initialValue={field.value}
-                  type={field.type}
-                  options={field.options}
-                  fieldNames={fieldNames}
+                  field={field}
                   editable={editable}
                   handleChangeName={handleChangeName}
                   handleChangeValue={handleChangeValue}

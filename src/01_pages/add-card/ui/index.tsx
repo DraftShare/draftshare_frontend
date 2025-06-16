@@ -2,10 +2,8 @@ import { ActionIcon, Button, LoadingOverlay } from "@mantine/core";
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useMemo } from "react";
 import { EditableField } from "src/04_entities/card/ui/editable-field";
 import { SideMenu } from "src/04_entities/side-menu";
-import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { ROUTES } from "src/05_shared/api/query-const";
 import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
 import { useDynamicFields } from "src/05_shared/lib/useDynamicFields";
@@ -19,23 +17,9 @@ import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
 
 export function AddCard() {
-  const { data: fields } = useSuspenseQuery(getAllFields());
   const { data: sets } = useSuspenseQuery(getAllSets());
   const defaultSet = sets.find((set) => set.defaultSet);
-  const fieldNames = useMemo(
-    () =>
-      fields.map((field) => {
-        // let prefix = "";
-        // if (field.type === "INPUT") prefix = "I";
-        // if (field.type === "TEXTAREA") prefix = "TA";
-        // if (field.type === "SELECT") prefix = "S";
-        // if (field.type === "MULTISELECT") prefix = "MS";
 
-        // return prefix + " " + field.name;
-        return field.name;
-      }),
-    [fields]
-  );
   const navigate = useNavigate();
   const addWordMutation = useAddCard();
 
@@ -94,11 +78,7 @@ export function AddCard() {
                 return (
                   <EditableField
                     key={index}
-                    initialName={field.name}
-                    initialValue={field.value}
-                    type={field.type}
-                    options={field.options}
-                    fieldNames={fieldNames}
+                    field={field}
                     editable={true}
                     handleChangeName={handleChangeName}
                     handleChangeValue={handleChangeValue}

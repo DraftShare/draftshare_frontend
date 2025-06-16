@@ -7,35 +7,28 @@ import {
   TextInput,
 } from "@mantine/core";
 import { BaseFieldCard } from "src/05_shared/ui/base-field-card";
-import classes from "./classes.module.css";
-import { useState } from "react";
-import { FieldType } from "src/05_shared/api/field/types";
-import { IconChevronDown, IconChevronUp, IconTrash } from "@tabler/icons-react";
+// import classes from "./classes.module.css";
 import { useDisclosure } from "@mantine/hooks";
+import { IconChevronDown, IconChevronUp, IconTrash } from "@tabler/icons-react";
+import { field } from "src/05_shared/api/card/types";
+import { FieldType } from "src/05_shared/api/field/types";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
+import { useMemo } from "react";
 
 interface EditableFieldProps {
-  initialName: string;
-  initialValue: string[];
-  type: FieldType;
-  options?: string[];
-  fieldNames: string[];
+  field: field;
   editable: boolean;
   handleChangeName: (name: string, index: number) => void;
   handleChangeValue(value: string | string[], index: number): void;
   handleDeleteField: (index: number) => void;
-
   handleChangeType: (type: FieldType, index: number) => void;
-
   index: number;
 }
-type ActiveInput = "name" | "value" | null;
+// type ActiveInput = "name" | "value" | null;
 
 export function EditableField({
-  initialName,
-  initialValue,
-  type,
-  options,
-  fieldNames,
+  field,
   editable,
   handleChangeName,
   handleChangeValue,
@@ -44,6 +37,9 @@ export function EditableField({
   index,
 }: EditableFieldProps) {
   const [opened, { toggle }] = useDisclosure(false);
+  const { data: fields } = useSuspenseQuery(getAllFields());
+  const fieldNames = useMemo(() => fields.map((field) => field.name), [fields]);
+  const { name, value, type, options } = field;
   // const [activeInput, setActiveInput] = useState<ActiveInput>(null);
 
   // const nameInputClass = {
@@ -55,21 +51,30 @@ export function EditableField({
   //   input: `${classes.input} ${activeInput === "name" ? classes["input_inactive"] : ""}`,
   // };
 
+  const isFieldExists = fieldNames.includes(name);
+
   return (
     <BaseFieldCard
       inputs={
         <>
-          <Autocomplete
-            // classNames={nameInputClass}
-            variant="unstyled"
-            placeholder="Field name"
-            disabled={!editable}
-            data={fieldNames}
-            value={initialName}
-            onChange={(newName) => handleChangeName(newName, index)}
-            // onFocus={() => setActiveInput("name")}
-            // onBlur={() => setActiveInput(null)}
-          />
+          <div>
+            <Autocomplete
+              // classNames={nameInputClass}
+              variant="unstyled"
+              placeholder="Field name"
+              disabled={!editable}
+              data={fieldNames}
+              value={name}
+              onChange={(newName) => handleChangeName(newName, index)}
+              // onFocus={() => setActiveInput("name")}
+              // onBlur={() => setActiveInput(null)}
+            />
+            {!isFieldExists &&
+              (type === "SELECT" || type === "MULTISELECT") && (
+                <span>alert</span>
+              )}
+          </div>
+
           {opened && editable && (
             <Select
               data={[
@@ -92,7 +97,7 @@ export function EditableField({
               variant="unstyled"
               placeholder="Field value"
               disabled={!editable}
-              value={initialValue[0]}
+              value={value[0]}
               onChange={(e) => handleChangeValue(e.target.value, index)}
               // onFocus={() => setActiveInput("value")}
               // onBlur={() => setActiveInput(null)}
@@ -104,7 +109,7 @@ export function EditableField({
               variant="unstyled"
               placeholder="Field value"
               disabled={!editable}
-              value={initialValue[0]}
+              value={value[0]}
               onChange={(e) => handleChangeValue(e.target.value, index)}
               // onFocus={() => setActiveInput("value")}
               // onBlur={() => setActiveInput(null)}
@@ -117,7 +122,7 @@ export function EditableField({
               placeholder="Field value"
               searchable
               disabled={!editable}
-              value={initialValue[0]}
+              value={value[0]}
               onChange={(val) => val && handleChangeValue(val, index)}
             />
           )}
@@ -128,7 +133,7 @@ export function EditableField({
               placeholder="Field value"
               searchable
               disabled={!editable}
-              value={initialValue}
+              value={value}
               onChange={(val) => handleChangeValue(val, index)}
             />
           )}
