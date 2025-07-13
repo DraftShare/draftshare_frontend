@@ -1,9 +1,11 @@
-import { ActionIcon, Button, LoadingOverlay } from "@mantine/core";
+import { ActionIcon, Button, LoadingOverlay, Modal, Text } from "@mantine/core";
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { useCallback, useMemo } from "react";
 import { EditableField } from "src/04_entities/card/ui/editable-field";
 import { SideMenu } from "src/04_entities/side-menu";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 import { ROUTES } from "src/05_shared/api/query-const";
 import { getAllSets } from "src/05_shared/api/set-of-fields/get-all-sets";
 import { useDynamicFields } from "src/05_shared/lib/useDynamicFields";
@@ -15,10 +17,15 @@ import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { Main } from "src/05_shared/ui/main";
 import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import { field } from "src/05_shared/api/card/types";
+import { fieldValidationRules, ValidationError } from "../model/validation-rules";
 
 export function AddCard() {
   const { data: sets } = useSuspenseQuery(getAllSets());
+  const { data: allFields } = useSuspenseQuery(getAllFields());
   const defaultSet = sets.find((set) => set.defaultSet);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const navigate = useNavigate();
   const addWordMutation = useAddCard();
@@ -31,23 +38,59 @@ export function AddCard() {
     handleChangeOptions,
     handleDeleteField,
     addEmptyField,
-    dataToSend,
+    // dataToSend,
     resetChanges,
   } = useDynamicFields(
     defaultSet?.fields.map((field) => ({ ...field, value: [""] })) || []
   );
 
+  const validateField = useCallback((field: field, index: number): ValidationError[] => {
+    const errors: ValidationError[] = [];
+    
+    fieldValidationRules.forEach(rule => {
+      if (rule.condition(field, allFields)) {
+        errors.push({
+          fieldIndex: index,
+          fieldName: field.name,
+          errorType: rule.error.errorType,
+          message: typeof rule.error.message === 'function' 
+            ? rule.error.message(field, allFields)
+            : rule.error.message
+        });
+      }
+    });
+
+    return errors;
+  }, [allFields]);
+
+  const fieldsValidity = useMemo(() => {
+    return dynamicFields.map((field) => {
+      return (
+        !allFields.some(
+          (f) => f.name === field.name && f.type !== field.type
+        ) && field.name !== ""
+      );
+    });
+  }, [dynamicFields, allFields]);
+
+  const isFormValid =
+    fieldsValidity.every((valid) => valid) && dynamicFields.length > 0;
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    addWordMutation.mutate(
-      { fields: dynamicFields },
-      {
-        onSuccess: () => {
-          resetChanges();
-          navigate({ to: ROUTES.HOME });
-        },
-      }
-    );
+    if (isFormValid) {
+      addWordMutation.mutate(
+        { fields: dynamicFields },
+        {
+          onSuccess: () => {
+            resetChanges();
+            navigate({ to: ROUTES.HOME });
+          },
+        }
+      );
+    } else {
+      open();
+    }
   }
 
   const btnGroup = (
@@ -84,7 +127,10 @@ export function AddCard() {
                     handleChangeValue={handleChangeValue}
                     handleDeleteField={handleDeleteField}
                     handleChangeType={handleChangeType}
+                    handleChangeOptions={handleChangeOptions}
                     index={index}
+                    isValid={fieldsValidity[index]}
+                    allFields={allFields}
                   />
                 );
               })}
@@ -98,6 +144,9 @@ export function AddCard() {
           Create
         </Button>
       </BottomBtnGroup>
+      <Modal opened={opened} onClose={close} title="Validation failed" centered>
+        <Text>Correct the errors and resend the form.</Text>
+      </Modal>
     </>
   );
 }

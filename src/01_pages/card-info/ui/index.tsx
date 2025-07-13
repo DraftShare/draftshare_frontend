@@ -141,6 +141,7 @@ function CardInfoContent({ id }: { id: cardId }) {
                   handleChangeValue={handleChangeValue}
                   handleDeleteField={handleDeleteField}
                   handleChangeType={handleChangeType}
+                  handleChangeOptions={handleChangeOptions}
                   index={index}
                 />
               ))}

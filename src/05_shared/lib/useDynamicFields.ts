@@ -10,27 +10,32 @@ export function useDynamicFields(data: field[] = []) {
   const [delFieldIds, setDelFieldIds] = useState<FieldId[]>([]);
 
   function handleChangeName(name: string, index: number) {
-    const field = fields.find((field) => field.name === name);
-    if (field) {
-      setDynamicFields((oldData) =>
-        oldData.map((item, idx) =>
-          idx === index
-            ? {
-                ...item,
-                name: name,
-                type: field.type,
-                options: field.options,
-              }
-            : item
-        )
-      );
-    } else {
-      setDynamicFields((oldData) =>
-        oldData.map((item, idx) =>
-          idx === index ? { ...item, name: name, options: [] } : item
-        )
-      );
-    }
+    // const field = fields.find((field) => field.name === name);
+    // if (field) {
+    //   setDynamicFields((oldData) =>
+    //     oldData.map((item, idx) =>
+    //       idx === index
+    //         ? {
+    //             ...item,
+    //             name: name,
+    //             type: field.type,
+    //             options: field.options,
+    //           }
+    //         : item
+    //     )
+    //   );
+    // } else {
+    //   setDynamicFields((oldData) =>
+    //     oldData.map((item, idx) =>
+    //       idx === index ? { ...item, name: name, options: [] } : item
+    //     )
+    //   );
+    // }
+    setDynamicFields((oldData) =>
+      oldData.map((item, idx) =>
+        idx === index ? { ...item, name: name } : item
+      )
+    );
   }
   function handleChangeValue(value: string | string[], index: number) {
     setDynamicFields((oldData) =>
@@ -81,7 +86,7 @@ export function useDynamicFields(data: field[] = []) {
   function addEmptyField() {
     setDynamicFields((oldData) => [
       ...oldData,
-      { name: "", type: "INPUT", options: [], value: [""] },
+      { name: "", type: "INPUT", options: [], value: [] },
     ]);
   }
 
