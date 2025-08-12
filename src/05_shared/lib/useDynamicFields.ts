@@ -86,7 +86,7 @@ export function useDynamicFields(data: field[] = []) {
   function addEmptyField() {
     setDynamicFields((oldData) => [
       ...oldData,
-      { name: "", type: "INPUT", options: [], value: [] },
+      { name: "", type: "TEXT", options: [], value: [] },
     ]);
   }
 

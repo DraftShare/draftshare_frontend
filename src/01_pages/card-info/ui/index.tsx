@@ -29,6 +29,7 @@ import { BottomBtnGroup } from "src/05_shared/ui/block-buttons/bottom-btn-group"
 import { DashedBtn } from "src/05_shared/ui/buttons/dashed-btn";
 import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { Main } from "src/05_shared/ui/main";
+import { getAllFields } from "src/05_shared/api/field/get-all-fields";
 
 export function CardInfo() {
   const id = useAppSelector(wordSlice.selectors.selectOpenWordId);
@@ -40,6 +41,7 @@ export function CardInfo() {
 function CardInfoContent({ id }: { id: cardId }) {
   const dispatch = useAppDispatch();
   const { data: cards } = useSuspenseQuery(getAllCards());
+  const { data: allFields } = useSuspenseQuery(getAllFields());
   const [editable, setEditable] = useState(false);
   const updateWordMutation = useUpdateCard();
   const [opened, { open, close }] = useDisclosure(false);
@@ -53,7 +55,6 @@ function CardInfoContent({ id }: { id: cardId }) {
     handleChangeOptions,
     handleDeleteField,
     addEmptyField,
-    dataToSend,
     resetChanges,
   } = useDynamicFields(cards[id].fields);
 
@@ -143,6 +144,8 @@ function CardInfoContent({ id }: { id: cardId }) {
                   handleChangeType={handleChangeType}
                   handleChangeOptions={handleChangeOptions}
                   index={index}
+                  isValid={true}
+                  allFields={allFields}
                 />
               ))}
             </ListEntities>

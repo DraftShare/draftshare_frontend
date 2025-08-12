@@ -10,13 +10,13 @@ export const getAllCardsHandler = [
           {
             id: 1,
             name: "field",
-            type: "INPUT",
+            type: "TEXT",
             value: ["one"],
           },
           {
             id: 2,
             name: "word",
-            type: "INPUT",
+            type: "TEXT",
             value: ["two"],
           },
         ],

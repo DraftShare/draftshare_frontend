@@ -7,13 +7,13 @@ export const getAllFieldsHandler = [
       {
         id: 1,
         name: "field",
-        type: "INPUT",
+        type: "TEXT",
         options: [],
       },
       {
         id: 2,
         name: "word",
-        type: "INPUT",
+        type: "TEXT",
         options: [],
       },
       {

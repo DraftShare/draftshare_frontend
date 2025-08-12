@@ -7,7 +7,7 @@ export const getAllSetsHandler = [
       {
         id: 1,
         name: "firstSet",
-        fields: [{ id: 1, name: "field", type: "INPUT", options: []}],
+        fields: [{ id: 1, name: "field", type: "TEXT", options: []}],
         defaultSet: false,
       },
     ]);

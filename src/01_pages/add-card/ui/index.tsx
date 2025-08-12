@@ -1,8 +1,9 @@
 import { ActionIcon, Button, LoadingOverlay, Modal, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { EditableField } from "src/04_entities/card/ui/editable-field";
 import { SideMenu } from "src/04_entities/side-menu";
 import { getAllFields } from "src/05_shared/api/field/get-all-fields";
@@ -17,9 +18,6 @@ import { ListEntities } from "src/05_shared/ui/list-entities/list";
 import { Main } from "src/05_shared/ui/main";
 import { useAddCard } from "../../../04_entities/card/api/use-add-card";
 import classes from "./classes.module.css";
-import { useDisclosure } from "@mantine/hooks";
-import { field } from "src/05_shared/api/card/types";
-import { fieldValidationRules, ValidationError } from "../model/validation-rules";
 
 export function AddCard() {
   const { data: sets } = useSuspenseQuery(getAllSets());
@@ -44,32 +42,17 @@ export function AddCard() {
     defaultSet?.fields.map((field) => ({ ...field, value: [""] })) || []
   );
 
-  const validateField = useCallback((field: field, index: number): ValidationError[] => {
-    const errors: ValidationError[] = [];
-    
-    fieldValidationRules.forEach(rule => {
-      if (rule.condition(field, allFields)) {
-        errors.push({
-          fieldIndex: index,
-          fieldName: field.name,
-          errorType: rule.error.errorType,
-          message: typeof rule.error.message === 'function' 
-            ? rule.error.message(field, allFields)
-            : rule.error.message
-        });
-      }
-    });
-
-    return errors;
-  }, [allFields]);
 
   const fieldsValidity = useMemo(() => {
-    return dynamicFields.map((field) => {
-      return (
-        !allFields.some(
-          (f) => f.name === field.name && f.type !== field.type
-        ) && field.name !== ""
+    const names = dynamicFields.map((field) => field.name);
+
+    return dynamicFields.map((field, index) => {
+      const isNameUnique = names.indexOf(field.name) === index;
+      const isTypeConsistent = !allFields.some(
+        (f) => f.name === field.name && f.type !== field.type
       );
+
+      return !(field.name === "" || !isTypeConsistent || !isNameUnique);
     });
   }, [dynamicFields, allFields]);
 

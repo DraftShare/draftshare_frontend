@@ -2,17 +2,14 @@ import {
   ActionIcon,
   Autocomplete,
   Box,
-  ComboboxStringItem,
   Menu,
   MultiSelect,
   Textarea,
-  TextInput,
 } from "@mantine/core";
 import { BaseFieldCard } from "src/05_shared/ui/base-field-card";
 // import classes from "./classes.module.css";
 import {
   IconAlertSquareRounded,
-  IconLetterISmall,
   IconLetterMSmall,
   IconLetterSSmall,
   IconLetterTSmall,
@@ -21,7 +18,7 @@ import {
   IconSquareLetterT,
   IconTrash,
 } from "@tabler/icons-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { field } from "src/05_shared/api/card/types";
 import { Field, FieldType } from "src/05_shared/api/field/types";
 
@@ -37,7 +34,6 @@ interface EditableFieldProps {
   isValid: boolean;
   allFields: Field[];
 }
-// type ActiveInput = "name" | "value" | null;
 
 export function EditableField({
   field,
@@ -51,9 +47,6 @@ export function EditableField({
   isValid,
   allFields: fields,
 }: EditableFieldProps) {
-  // const [opened, { toggle }] = useDisclosure(false);
-  // const { data: fields } = useSuspenseQuery(getAllFields());
-  // const fieldNames = useMemo(() => fields.map((field) => field.name), [fields]);
   const { name, value, type, options } = field;
   const [searchValue, setSearchValue] = useState("");
   // const [activeInput, setActiveInput] = useState<ActiveInput>(null);
@@ -86,7 +79,7 @@ export function EditableField({
 
               return (
                 <Box style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  {optionType === "INPUT" && <IconSquareLetterT />}
+                  {optionType === "TEXT" && <IconSquareLetterT />}
                   {optionType === "SELECT" && <IconSquareLetterS />}
                   {optionType === "MULTISELECT" && <IconSquareLetterM />}
                   {option.value}
@@ -106,35 +99,7 @@ export function EditableField({
             // onBlur={() => setActiveInput(null)}
           />
 
-          {/* {opened && editable && (
-            <Select
-              data={[
-                { value: "INPUT", label: "Input" },
-                { value: "TEXTAREA", label: "TextArea" },
-                { value: "SELECT", label: "Select" },
-                { value: "MULTISELECT", label: "MultiSelect" },
-              ]}
-              variant="unstyled"
-              value={type}
-              w={"150"}
-              onChange={(val) =>
-                val && handleChangeType(val as FieldType, index)
-              }
-            />
-          )} */}
-          {type === "INPUT" && (
-            <TextInput
-              // classNames={valueInputClass}
-              variant="unstyled"
-              placeholder="Field value"
-              disabled={!editable}
-              value={value[0] ?? ""}
-              onChange={(e) => handleChangeValue(e.target.value, index)}
-              // onFocus={() => setActiveInput("value")}
-              // onBlur={() => setActiveInput(null)}
-            />
-          )}
-          {type === "TEXTAREA" && (
+          {type === "TEXT" && (
             <Textarea
               // classNames={valueInputClass}
               variant="unstyled"
@@ -167,7 +132,6 @@ export function EditableField({
           )}
           {type === "MULTISELECT" && (
             <MultiSelect
-              // data={options}
               data={
                 !options
                   ? undefined
@@ -184,7 +148,6 @@ export function EditableField({
               value={value.filter((val) => val !== "")}
               onChange={(val) => handleChangeValue(val, index)}
             />
-            // <CustomMultiSelect />
           )}
         </>
       }
@@ -201,21 +164,14 @@ export function EditableField({
               <Menu>
                 <Menu.Target>
                   <ActionIcon size="lg">
-                    {/* {opened ? <IconChevronUp /> : <IconChevronDown />} */}
-                    {type === "INPUT" && <IconLetterISmall />}
-                    {type === "TEXTAREA" && <IconLetterTSmall />}
+                    {type === "TEXT" && <IconLetterTSmall />}
                     {type === "SELECT" && <IconLetterSSmall />}
                     {type === "MULTISELECT" && <IconLetterMSmall />}
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item onClick={() => handleChangeType("INPUT", index)}>
-                    Input
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => handleChangeType("TEXTAREA", index)}
-                  >
-                    TextArea
+                  <Menu.Item onClick={() => handleChangeType("TEXT", index)}>
+                    Text
                   </Menu.Item>
                   <Menu.Item onClick={() => handleChangeType("SELECT", index)}>
                     Select

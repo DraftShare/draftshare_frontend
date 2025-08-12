@@ -1,7 +1,7 @@
 import { z } from "zod";
 const fieldIdSchema = z.number();
 const fieldNameSchema = z.string();
-const fieldTypeSchema = z.enum(["INPUT", "TEXTAREA", "SELECT", "MULTISELECT"]);
+const fieldTypeSchema = z.enum(["TEXT", "SELECT", "MULTISELECT"]);
 const fieldOptionSchema = z.string();
 
 export const fieldSchema = z.object({
