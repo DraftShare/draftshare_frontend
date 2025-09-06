@@ -8,292 +8,297 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as CollectionsIndexRouteImport } from './routes/collections/index'
+import { Route as CardsIndexRouteImport } from './routes/cards/index'
+import { Route as SettingsFieldsRouteImport } from './routes/settings/fields'
+import { Route as SettingsFieldSetsRouteImport } from './routes/settings/field-sets'
+import { Route as CollectionsCollectionIdRouteImport } from './routes/collections/$collectionId'
+import { Route as CardsAddCardRouteImport } from './routes/cards/add-card'
+import { Route as CardsCardIdRouteImport } from './routes/cards/$cardId'
+import { Route as SettingsFieldSetsFieldSetIdRouteImport } from './routes/settings/field-sets.$fieldSetId'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as CardInfoImport } from './routes/card-info'
-import { Route as AddCardImport } from './routes/add-card'
-import { Route as LayoutRouteImport } from './routes/_layout/route'
-import { Route as IndexImport } from './routes/index'
-import { Route as SettingsIndexImport } from './routes/settings/index'
-import { Route as SettingsSetsOfFieldsImport } from './routes/settings/sets-of-fields'
-import { Route as SettingsChangeFieldsImport } from './routes/settings/change-fields'
-import { Route as SettingsSetOfFieldsIndexImport } from './routes/settings/set-of-fields/index'
-import { Route as SettingsSetOfFieldsIdImport } from './routes/settings/set-of-fields/$id'
-
-// Create/Update Routes
-
-const CardInfoRoute = CardInfoImport.update({
-  id: '/card-info',
-  path: '/card-info',
-  getParentRoute: () => rootRoute,
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AddCardRoute = AddCardImport.update({
-  id: '/add-card',
-  path: '/add-card',
-  getParentRoute: () => rootRoute,
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const LayoutRouteRoute = LayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const SettingsIndexRoute = SettingsIndexImport.update({
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const SettingsSetsOfFieldsRoute = SettingsSetsOfFieldsImport.update({
-  id: '/settings/sets-of-fields',
-  path: '/settings/sets-of-fields',
-  getParentRoute: () => rootRoute,
+const CollectionsIndexRoute = CollectionsIndexRouteImport.update({
+  id: '/collections/',
+  path: '/collections/',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const SettingsChangeFieldsRoute = SettingsChangeFieldsImport.update({
-  id: '/settings/change-fields',
-  path: '/settings/change-fields',
-  getParentRoute: () => rootRoute,
+const CardsIndexRoute = CardsIndexRouteImport.update({
+  id: '/cards/',
+  path: '/cards/',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const SettingsSetOfFieldsIndexRoute = SettingsSetOfFieldsIndexImport.update({
-  id: '/settings/set-of-fields/',
-  path: '/settings/set-of-fields/',
-  getParentRoute: () => rootRoute,
+const SettingsFieldsRoute = SettingsFieldsRouteImport.update({
+  id: '/settings/fields',
+  path: '/settings/fields',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const SettingsSetOfFieldsIdRoute = SettingsSetOfFieldsIdImport.update({
-  id: '/settings/set-of-fields/$id',
-  path: '/settings/set-of-fields/$id',
-  getParentRoute: () => rootRoute,
+const SettingsFieldSetsRoute = SettingsFieldSetsRouteImport.update({
+  id: '/settings/field-sets',
+  path: '/settings/field-sets',
+  getParentRoute: () => rootRouteImport,
 } as any)
+const CollectionsCollectionIdRoute = CollectionsCollectionIdRouteImport.update({
+  id: '/collections/$collectionId',
+  path: '/collections/$collectionId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CardsAddCardRoute = CardsAddCardRouteImport.update({
+  id: '/cards/add-card',
+  path: '/cards/add-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CardsCardIdRoute = CardsCardIdRouteImport.update({
+  id: '/cards/$cardId',
+  path: '/cards/$cardId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsFieldSetsFieldSetIdRoute =
+  SettingsFieldSetsFieldSetIdRouteImport.update({
+    id: '/$fieldSetId',
+    path: '/$fieldSetId',
+    getParentRoute: () => SettingsFieldSetsRoute,
+  } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/cards/$cardId': typeof CardsCardIdRoute
+  '/cards/add-card': typeof CardsAddCardRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdRoute
+  '/settings/field-sets': typeof SettingsFieldSetsRouteWithChildren
+  '/settings/fields': typeof SettingsFieldsRoute
+  '/cards': typeof CardsIndexRoute
+  '/collections': typeof CollectionsIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/settings/field-sets/$fieldSetId': typeof SettingsFieldSetsFieldSetIdRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/cards/$cardId': typeof CardsCardIdRoute
+  '/cards/add-card': typeof CardsAddCardRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdRoute
+  '/settings/field-sets': typeof SettingsFieldSetsRouteWithChildren
+  '/settings/fields': typeof SettingsFieldsRoute
+  '/cards': typeof CardsIndexRoute
+  '/collections': typeof CollectionsIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/settings/field-sets/$fieldSetId': typeof SettingsFieldSetsFieldSetIdRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/cards/$cardId': typeof CardsCardIdRoute
+  '/cards/add-card': typeof CardsAddCardRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdRoute
+  '/settings/field-sets': typeof SettingsFieldSetsRouteWithChildren
+  '/settings/fields': typeof SettingsFieldsRoute
+  '/cards/': typeof CardsIndexRoute
+  '/collections/': typeof CollectionsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/settings/field-sets/$fieldSetId': typeof SettingsFieldSetsFieldSetIdRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/profile'
+    | '/cards/$cardId'
+    | '/cards/add-card'
+    | '/collections/$collectionId'
+    | '/settings/field-sets'
+    | '/settings/fields'
+    | '/cards'
+    | '/collections'
+    | '/settings'
+    | '/settings/field-sets/$fieldSetId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/profile'
+    | '/cards/$cardId'
+    | '/cards/add-card'
+    | '/collections/$collectionId'
+    | '/settings/field-sets'
+    | '/settings/fields'
+    | '/cards'
+    | '/collections'
+    | '/settings'
+    | '/settings/field-sets/$fieldSetId'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/profile'
+    | '/cards/$cardId'
+    | '/cards/add-card'
+    | '/collections/$collectionId'
+    | '/settings/field-sets'
+    | '/settings/fields'
+    | '/cards/'
+    | '/collections/'
+    | '/settings/'
+    | '/settings/field-sets/$fieldSetId'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
+  CardsCardIdRoute: typeof CardsCardIdRoute
+  CardsAddCardRoute: typeof CardsAddCardRoute
+  CollectionsCollectionIdRoute: typeof CollectionsCollectionIdRoute
+  SettingsFieldSetsRoute: typeof SettingsFieldSetsRouteWithChildren
+  SettingsFieldsRoute: typeof SettingsFieldsRoute
+  CardsIndexRoute: typeof CardsIndexRoute
+  CollectionsIndexRoute: typeof CollectionsIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutRouteImport
-      parentRoute: typeof rootRoute
-    }
-    '/add-card': {
-      id: '/add-card'
-      path: '/add-card'
-      fullPath: '/add-card'
-      preLoaderRoute: typeof AddCardImport
-      parentRoute: typeof rootRoute
-    }
-    '/card-info': {
-      id: '/card-info'
-      path: '/card-info'
-      fullPath: '/card-info'
-      preLoaderRoute: typeof CardInfoImport
-      parentRoute: typeof rootRoute
-    }
-    '/settings/change-fields': {
-      id: '/settings/change-fields'
-      path: '/settings/change-fields'
-      fullPath: '/settings/change-fields'
-      preLoaderRoute: typeof SettingsChangeFieldsImport
-      parentRoute: typeof rootRoute
-    }
-    '/settings/sets-of-fields': {
-      id: '/settings/sets-of-fields'
-      path: '/settings/sets-of-fields'
-      fullPath: '/settings/sets-of-fields'
-      preLoaderRoute: typeof SettingsSetsOfFieldsImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/settings/': {
       id: '/settings/'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof SettingsIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/settings/set-of-fields/$id': {
-      id: '/settings/set-of-fields/$id'
-      path: '/settings/set-of-fields/$id'
-      fullPath: '/settings/set-of-fields/$id'
-      preLoaderRoute: typeof SettingsSetOfFieldsIdImport
-      parentRoute: typeof rootRoute
+    '/collections/': {
+      id: '/collections/'
+      path: '/collections'
+      fullPath: '/collections'
+      preLoaderRoute: typeof CollectionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/settings/set-of-fields/': {
-      id: '/settings/set-of-fields/'
-      path: '/settings/set-of-fields'
-      fullPath: '/settings/set-of-fields'
-      preLoaderRoute: typeof SettingsSetOfFieldsIndexImport
-      parentRoute: typeof rootRoute
+    '/cards/': {
+      id: '/cards/'
+      path: '/cards'
+      fullPath: '/cards'
+      preLoaderRoute: typeof CardsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/fields': {
+      id: '/settings/fields'
+      path: '/settings/fields'
+      fullPath: '/settings/fields'
+      preLoaderRoute: typeof SettingsFieldsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/field-sets': {
+      id: '/settings/field-sets'
+      path: '/settings/field-sets'
+      fullPath: '/settings/field-sets'
+      preLoaderRoute: typeof SettingsFieldSetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collections/$collectionId': {
+      id: '/collections/$collectionId'
+      path: '/collections/$collectionId'
+      fullPath: '/collections/$collectionId'
+      preLoaderRoute: typeof CollectionsCollectionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cards/add-card': {
+      id: '/cards/add-card'
+      path: '/cards/add-card'
+      fullPath: '/cards/add-card'
+      preLoaderRoute: typeof CardsAddCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cards/$cardId': {
+      id: '/cards/$cardId'
+      path: '/cards/$cardId'
+      fullPath: '/cards/$cardId'
+      preLoaderRoute: typeof CardsCardIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/field-sets/$fieldSetId': {
+      id: '/settings/field-sets/$fieldSetId'
+      path: '/$fieldSetId'
+      fullPath: '/settings/field-sets/$fieldSetId'
+      preLoaderRoute: typeof SettingsFieldSetsFieldSetIdRouteImport
+      parentRoute: typeof SettingsFieldSetsRoute
     }
   }
 }
 
-// Create and export the route tree
-
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof LayoutRouteRoute
-  '/add-card': typeof AddCardRoute
-  '/card-info': typeof CardInfoRoute
-  '/settings/change-fields': typeof SettingsChangeFieldsRoute
-  '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
-  '/settings': typeof SettingsIndexRoute
-  '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
-  '/settings/set-of-fields': typeof SettingsSetOfFieldsIndexRoute
+interface SettingsFieldSetsRouteChildren {
+  SettingsFieldSetsFieldSetIdRoute: typeof SettingsFieldSetsFieldSetIdRoute
 }
 
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof LayoutRouteRoute
-  '/add-card': typeof AddCardRoute
-  '/card-info': typeof CardInfoRoute
-  '/settings/change-fields': typeof SettingsChangeFieldsRoute
-  '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
-  '/settings': typeof SettingsIndexRoute
-  '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
-  '/settings/set-of-fields': typeof SettingsSetOfFieldsIndexRoute
+const SettingsFieldSetsRouteChildren: SettingsFieldSetsRouteChildren = {
+  SettingsFieldSetsFieldSetIdRoute: SettingsFieldSetsFieldSetIdRoute,
 }
 
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_layout': typeof LayoutRouteRoute
-  '/add-card': typeof AddCardRoute
-  '/card-info': typeof CardInfoRoute
-  '/settings/change-fields': typeof SettingsChangeFieldsRoute
-  '/settings/sets-of-fields': typeof SettingsSetsOfFieldsRoute
-  '/settings/': typeof SettingsIndexRoute
-  '/settings/set-of-fields/$id': typeof SettingsSetOfFieldsIdRoute
-  '/settings/set-of-fields/': typeof SettingsSetOfFieldsIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/add-card'
-    | '/card-info'
-    | '/settings/change-fields'
-    | '/settings/sets-of-fields'
-    | '/settings'
-    | '/settings/set-of-fields/$id'
-    | '/settings/set-of-fields'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/add-card'
-    | '/card-info'
-    | '/settings/change-fields'
-    | '/settings/sets-of-fields'
-    | '/settings'
-    | '/settings/set-of-fields/$id'
-    | '/settings/set-of-fields'
-  id:
-    | '__root__'
-    | '/'
-    | '/_layout'
-    | '/add-card'
-    | '/card-info'
-    | '/settings/change-fields'
-    | '/settings/sets-of-fields'
-    | '/settings/'
-    | '/settings/set-of-fields/$id'
-    | '/settings/set-of-fields/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  LayoutRouteRoute: typeof LayoutRouteRoute
-  AddCardRoute: typeof AddCardRoute
-  CardInfoRoute: typeof CardInfoRoute
-  SettingsChangeFieldsRoute: typeof SettingsChangeFieldsRoute
-  SettingsSetsOfFieldsRoute: typeof SettingsSetsOfFieldsRoute
-  SettingsIndexRoute: typeof SettingsIndexRoute
-  SettingsSetOfFieldsIdRoute: typeof SettingsSetOfFieldsIdRoute
-  SettingsSetOfFieldsIndexRoute: typeof SettingsSetOfFieldsIndexRoute
-}
+const SettingsFieldSetsRouteWithChildren =
+  SettingsFieldSetsRoute._addFileChildren(SettingsFieldSetsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LayoutRouteRoute: LayoutRouteRoute,
-  AddCardRoute: AddCardRoute,
-  CardInfoRoute: CardInfoRoute,
-  SettingsChangeFieldsRoute: SettingsChangeFieldsRoute,
-  SettingsSetsOfFieldsRoute: SettingsSetsOfFieldsRoute,
+  LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
+  CardsCardIdRoute: CardsCardIdRoute,
+  CardsAddCardRoute: CardsAddCardRoute,
+  CollectionsCollectionIdRoute: CollectionsCollectionIdRoute,
+  SettingsFieldSetsRoute: SettingsFieldSetsRouteWithChildren,
+  SettingsFieldsRoute: SettingsFieldsRoute,
+  CardsIndexRoute: CardsIndexRoute,
+  CollectionsIndexRoute: CollectionsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
-  SettingsSetOfFieldsIdRoute: SettingsSetOfFieldsIdRoute,
-  SettingsSetOfFieldsIndexRoute: SettingsSetOfFieldsIndexRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_layout",
-        "/add-card",
-        "/card-info",
-        "/settings/change-fields",
-        "/settings/sets-of-fields",
-        "/settings/",
-        "/settings/set-of-fields/$id",
-        "/settings/set-of-fields/"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_layout": {
-      "filePath": "_layout/route.tsx"
-    },
-    "/add-card": {
-      "filePath": "add-card.tsx"
-    },
-    "/card-info": {
-      "filePath": "card-info.tsx"
-    },
-    "/settings/change-fields": {
-      "filePath": "settings/change-fields.tsx"
-    },
-    "/settings/sets-of-fields": {
-      "filePath": "settings/sets-of-fields.tsx"
-    },
-    "/settings/": {
-      "filePath": "settings/index.tsx"
-    },
-    "/settings/set-of-fields/$id": {
-      "filePath": "settings/set-of-fields/$id.tsx"
-    },
-    "/settings/set-of-fields/": {
-      "filePath": "settings/set-of-fields/index.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

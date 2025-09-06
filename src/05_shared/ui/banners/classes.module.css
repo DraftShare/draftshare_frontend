@@ -1,5 +1,0 @@
-.banner {
-  border-radius: var(--mantine-radius-sm);
-  border: 2px dashed var(--mantine-color-dark-3);
-  padding: var(--mantine-spacing-xs);
-}

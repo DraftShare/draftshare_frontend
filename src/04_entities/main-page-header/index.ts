@@ -1,1 +1,0 @@
-export { MainPageHeader } from "./ui";
